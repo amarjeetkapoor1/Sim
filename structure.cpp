@@ -22,12 +22,12 @@ structure::structure(fstream &file){
 		getline(file,temp);
 	}*/
 	do{
-		x=x+temps[0]+","+temps[1]+','+temps[2]+','+temps[3]+'\n';
-		file>>temps[0];
-		file>>temps[1];
-		file>>temps[2];
-		file>>temps[3];
-	}while(temps[0]!="MEMBER");
+		x=x+jo.name+","+jo.x+','+jo.y+','+jo.z+'\n';
+		file>>jo.name;
+		file>>jo.x;
+		file>>jo.y;
+		file>>jo.z;
+	}while(jo.name!="MEMBER");
 
 }
 
