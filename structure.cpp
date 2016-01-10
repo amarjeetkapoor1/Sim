@@ -71,12 +71,14 @@ void structure::print(){
     cout<<"unit,"<<unit<<endl;
     //cout<<"group:\t"<<group<<endl;
     cout<<"Job_Joints:\n";
+    cout<<"joint id , x cooordinates, y coordinates, z coordinates \n";
         for(int i=0;i<job_joints.size();i++)
         {
             cout<<job_joints[i].id<<","<<job_joints[i].x<<",";
             cout<<job_joints[i].y<<","<<job_joints[i].z<<endl;
         }
         cout<<"Job_Members:\n";
+        cout<<"member id , joint id ,joint id , .... \n";
         for(int i=0;i<job_members.size();i++)
         {
             cout<<job_members[i].id<<",";
@@ -107,10 +109,11 @@ structure::structure(fstream &file)
     char ch;
     while(file.get(ch))
     {
-        if(ch=='\n')
-            continue;
+        if(ch=='\n' || ch=='\r')
+        	ch=' ';
         str+=ch;
     }
+    //cout<<str;
     temp=split(str, "START JOB INFORMATION")[1];
     engineer=split(temp, "DATE")[0];
     temp=split(temp, "DATE ")[1];
@@ -155,17 +158,14 @@ structure::structure(fstream &file)
     }
     temp2.clear();
     temp=split(temp, "START GROUP DEFINITION")[1];
-
     group=split(temp, "END GROUP DEFINITION")[0];
     temp=split(temp, "END GROUP DEFINITION")[1];
     temp=split(temp, "DEFINE MATERIAL START")[1];
     temp1=split(temp, "END DEFINE MATERIAL")[0];
     job_material.name=split(temp1, "E ")[0];
-    //temp1=split(temp1, "E ")[1];
-    //cout<<temp1;
-   	temp=split(temp1, "POISSON")[0];
-   	job_material.E=split(temp,"E ")[1];
-    temp1=split(temp1, "POISSON")[1];
+    temp1=split(temp1, " E ")[1];
+   	job_material.E=split(temp1, "POISSON")[0];
+   	temp1=split(temp1, "POISSON")[1];
     istringstream(split(temp1, "DENSITY")[0])>>job_material.poison;
     temp1=split(temp1, "DENSITY")[1];
     istringstream(split(temp1, "ALPHA")[0])>>job_material.density;
