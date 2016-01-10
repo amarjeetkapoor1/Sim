@@ -108,17 +108,17 @@ structure::structure(fstream &file)
     while(file.get(ch))
     {
         if(ch=='\n')
-            ch=' ';
+            continue;
         str+=ch;
     }
     temp=split(str, "START JOB INFORMATION")[1];
-    engineer=split(temp, " DATE ")[0];
+    engineer=split(temp, "DATE")[0];
     temp=split(temp, "DATE ")[1];
     date=split(temp, "END JOB INFORMATION")[0];
     temp=split(temp, "END JOB INFORMATION")[1];
 
-    width=split(split(temp, " UNIT ")[0], "WIDTH ")[1];
-    temp=split(temp, " UNIT ")[1];
+    width=split(split(temp, "UNIT")[0], "WIDTH")[1];
+    temp=split(temp, "UNIT")[1];
     unit=split(temp, "JOINT COORDINATES")[0];
     temp=split(temp, "JOINT COORDINATES")[1];
     temp1=split(temp, "MEMBER INCIDENCES")[0];
@@ -137,9 +137,9 @@ structure::structure(fstream &file)
     temp2.clear();
     temp=split(temp, "MEMBER INCIDENCES")[1];
 
-    temp1=split(temp, "START GROUP DEFINITION \n")[0];
+    temp1=split(temp, "START GROUP DEFINITION")[0];
     temp2=split(temp1, ";");
-    for(int i=0;i<temp2.size();i++)
+    for(int i=0;i<temp2.size()-1;i++)
     {	
         temp3=split(temp2[i], " ");
         member m;
@@ -157,12 +157,12 @@ structure::structure(fstream &file)
     temp=split(temp, "START GROUP DEFINITION")[1];
 
     group=split(temp, "END GROUP DEFINITION")[0];
-    //temp=split(temp, " END GROUP DEFINITION")[1];
-
+    temp=split(temp, "END GROUP DEFINITION")[1];
     temp=split(temp, "DEFINE MATERIAL START")[1];
     temp1=split(temp, "END DEFINE MATERIAL")[0];
     job_material.name=split(temp1, " E ")[0];
-    temp1=split(temp1, "E ")[1];
+    //temp1=split(temp1, " E ")[1];
+    //cout<<temp1;
     job_material.E=split(temp1, "POISSON")[0];
     temp1=split(temp1, "POISSON")[1];
     istringstream(split(temp1, "DENSITY")[0])>>job_material.poison;
@@ -171,7 +171,6 @@ structure::structure(fstream &file)
     temp1=split(temp1, "ALPHA")[1];
     job_material.alfa=split(temp1, "DAMP")[0];
     temp1=split(temp1, "DAMP")[1];
-    cout<<temp1;
     istringstream(split(temp1, "TYPE")[0])>>job_material.damp;
     temp1=split(temp1, "TYPE")[1];
     job_material.type=split(temp1, "STRENGTH")[0];
