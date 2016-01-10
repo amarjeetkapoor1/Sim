@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include<cctype>
+#include<stdlib.h>
 /*#include"job.h"*/
 
 using namespace std;
@@ -23,6 +24,12 @@ struct material{
     double poison, density, damp;
 };
 
+struct mem_pro{
+	vector<int> joint_id;
+	string type;
+	float YD;
+	float ZD;
+};
 
 class structure{
 
@@ -35,6 +42,7 @@ class structure{
 	string widht;
 	joint jo;
 	string x;
+	vector<mem_pro> member_pr;
 	//group gr;
 	//matrial m;
 	public:

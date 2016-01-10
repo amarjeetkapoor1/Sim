@@ -98,7 +98,14 @@ void structure::print(){
         cout<<"type: ,"<<job_material.type<<endl;
         cout<<"strength: ,"<<job_material.strength<<endl;
         cout<<"G: ,"<<job_material.G<<endl;
-        
+        cout<<"MEMBER PROPERTY \n";
+        cout<<"TYPE, YD, ZD, Member,  Member, Member, ...... \n";
+        for(int i=0;i<member_pr.size();i++){
+        	cout<<member_pr[i].type<<","<<member_pr[i].YD<<","<<member_pr[i].ZD;
+        	for(int j=0;j<member_pr[i].joint_id.size();j++)
+        		cout<<","<<member_pr[i].joint_id[j];
+        	cout<<endl;
+        }
 }
     
 structure::structure(fstream &file)   
@@ -180,5 +187,37 @@ structure::structure(fstream &file)
     temp1=split(temp1, "G")[1];
     job_material.G=temp1;
     temp=split(temp, "END DEFINE MATERIAL")[1];
+    temp=split(temp, "MEMBER PROPERTY INDIAN  ")[1];
+    temp2=split(temp," ");
+    mem_pro *me;
+    me=new mem_pro;
+    for(int i=0; i<temp2.size();i++){
+    	float l=0,l1=0;
+    	if(isdigit(temp2[i][0])){
+    		istringstream(temp2[i])>>l;
+    		(*me).joint_id.push_back(l);
+    		continue;
+    	}
+    		if(temp2[i]=="TO"){
+    			istringstream(temp2[i-1])>>l;
+    			istringstream(temp2[i+1])>>l1;
+    			for( int j=l+1;j<l1;j++){
+    				(*me).joint_id.push_back(j);
+    			}
+    		}
+    		if(temp2[i]=="PRIS"){
+    			istringstream(temp2[i+2])>>l;
+    			istringstream(temp2[i+4])>>l1;
+    			(*me).type=temp2[i];
+    			(*me).YD=l;
+    			(*me).ZD=l1;
+    			member_pr.push_back(*me);
+    			delete me;
+    			mem_pro *me;
+    			me=new mem_pro;
+    			i=i+4;
+    		}
+    	
+    }
     
 }
