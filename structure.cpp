@@ -160,10 +160,11 @@ structure::structure(fstream &file)
     temp=split(temp, "END GROUP DEFINITION")[1];
     temp=split(temp, "DEFINE MATERIAL START")[1];
     temp1=split(temp, "END DEFINE MATERIAL")[0];
-    job_material.name=split(temp1, " E ")[0];
-    //temp1=split(temp1, " E ")[1];
+    job_material.name=split(temp1, "E ")[0];
+    //temp1=split(temp1, "E ")[1];
     //cout<<temp1;
-    job_material.E=split(temp1, "POISSON")[0];
+   	temp=split(temp1, "POISSON")[0];
+   	job_material.E=split(temp,"E ")[1];
     temp1=split(temp1, "POISSON")[1];
     istringstream(split(temp1, "DENSITY")[0])>>job_material.poison;
     temp1=split(temp1, "DENSITY")[1];
