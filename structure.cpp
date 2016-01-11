@@ -4,6 +4,14 @@ vector<string> split(string str, string del){
     vector<string> arr;
     while(str!=del && str!="")
     {
+    	/*if(cut>0)
+    	{
+    		if(arr.size()==cut)
+    		{
+    			arr.push_back(str);
+    			return arr;
+    		}
+    	}*/
         if(str.find(del)>str.length())
         {
             arr.push_back(str);
@@ -101,12 +109,35 @@ void structure::print(){
         cout<<"MEMBER PROPERTY \n";
         cout<<"TYPE, YD, ZD, Member,  Member, Member, ...... \n";
         for(int i=0;i<member_pr.size();i++){
-        	cout<<member_pr[i].type<<","<<member_pr[i].YD<<","<<member_pr[i].ZD;
+        	cout<<member_pr[i].type<<","<<member_pr[i].YD<<",";
+        	cout<<member_pr[i].ZD;
         	for(int j=0;j<member_pr[i].joint_id.size();j++)
         		cout<<","<<member_pr[i].joint_id[j];
         	cout<<endl;
         }
+        /*cout<<"START CONCRETE DESIGN"<<endl;
+        cout<<"CODE ,"<<con_des.code<<endl;
+        for(int i=0;i<member_pr.size();i++){
+        	cout<<con_des.cty[i].code<<","<<con_des.cty[i].section<<",";
+        	cout<<endl;
+        	for(int j=0;j<con_des.cty[i].member_id.size();j++)
+        		cout<<con_des.cty[i].member_id[j]<<",";
+        	cout<<endl;
+        }*/
+        cout<<"Design Beam"<<endl;
+        for(int i=0;i<beam.size();i++){
+        	cout<<beam[i]<<",";
+        }
+        
+        
+        cout<<endl<<"DESIGN COLUMN"<<endl;
+        for(int i=0;i<column.size();i++){
+        	cout<<column[i]<<",";
+        }
+        
+        
 }
+
     
 structure::structure(fstream &file)   
 {
@@ -187,8 +218,8 @@ structure::structure(fstream &file)
     temp1=split(temp1, "G")[1];
     job_material.G=temp1;
     temp=split(temp, "END DEFINE MATERIAL")[1];
-    temp=split(temp, "MEMBER PROPERTY INDIAN  ")[1];
-    temp2=split(temp," ");
+    temp1=split(temp, "MEMBER PROPERTY INDIAN  ")[1];
+    temp2=split(temp1," ");
     mem_pro *me;
     me=new mem_pro;
     for(int i=0; i<temp2.size();i++){
@@ -219,5 +250,84 @@ structure::structure(fstream &file)
     		}
     	
     }
+    
+    /*
+    temp1=split(temp,"START CONCRETE DESIGN")[1];
+    temp1=split(temp1,"DESIGN BEAM")[0];
+    temp2=split(temp1," ");
+    con_des.code=temp2[1];
+    
+    code_type *cd;
+    cd=new code_type;
+     for(int i=2; i<temp2.size();i++){
+    	float l=0,l1=0;
+    	if(isdigit(temp2[i][0])){
+    		istringstream(temp2[i])>>l;
+    		cd->member_id.push_back(l);
+    		continue;
+    	}
+    	if(temp2[i]=="TO"){
+    		istringstream(temp2[i-1])>>l;
+    		istringstream(temp2[i+1])>>l1;
+    		for( int j=l+1;j<l1;j++){
+    				cd->member_id.push_back(j);
+    			}
+    	}
+    	else{
+    	if(isalpha(temp2[i][0])){
+    		if(i>3){
+    		  	con_des.cty.push_back(*cd);
+    		  	continue;
+    		  }
+    		code_type *cd;
+    		cd=new code_type;
+    		cd->code=temp2[i];
+    		cout<<cd->code;
+    		cd->section=temp2[i+1];
+    		i=i+2;
+    		}
+    	}
+    	
+    		  
+    		  
+    }
+    */
+    temp1=split(temp,"DESIGN BEAM")[1];
+    temp2=split(temp1," ");
+     for(int i=0; i<temp2.size();i++){
+    	float l=0,l1=0;
+    	if(isdigit(temp2[i][0])){
+    		istringstream(temp2[i])>>l;
+    		beam.push_back(l);
+    		continue;
+    	}
+    	if(temp2[i]=="TO"){
+    		istringstream(temp2[i-1])>>l;
+    		istringstream(temp2[i+1])>>l1;
+    		for( int j=l+1;j<l1;j++){
+    				beam.push_back(j);
+    			}
+    		}
+    	
+    }
+    temp1=split(temp,"DESIGN COLUMN")[1];
+    temp2=split(temp1," ");
+     for(int i=0; i<temp2.size();i++){
+    	float l=0,l1=0;
+    	if(isdigit(temp2[i][0])){
+    		istringstream(temp2[i])>>l;
+    		column.push_back(l);
+    		continue;
+    	}
+    	if(temp2[i]=="TO"){
+    		istringstream(temp2[i-1])>>l;
+    		istringstream(temp2[i+1])>>l1;
+    		for( int j=l+1;j<l1;j++){
+    				column.push_back(j);
+    			}
+    		}
+    	
+    }
+    
     
 }

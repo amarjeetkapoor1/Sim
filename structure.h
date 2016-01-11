@@ -31,6 +31,18 @@ struct mem_pro{
 	float ZD;
 };
 
+struct code_type{
+	string code;
+	string section;
+	vector<int> member_id;
+};
+
+struct concrete_design{
+	string code;
+	vector<code_type> cty;
+};
+
+
 class structure{
 
 	//job job_d;
@@ -42,7 +54,10 @@ class structure{
 	string widht;
 	joint jo;
 	string x;
+	vector<int> beam;
+	vector<int> column;
 	vector<mem_pro> member_pr;
+	concrete_design con_des;
 	//group gr;
 	//matrial m;
 	public:
