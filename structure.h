@@ -5,7 +5,6 @@
 #include <sstream>
 #include<cctype>
 #include<stdlib.h>
-/*#include"job.h"*/
 
 using namespace std;
 
@@ -45,7 +44,6 @@ struct concrete_design{
 
 class structure{
 
-	//job job_d;
 	string engineer, date, width, unit, group;
     vector<joint> job_joints;
     vector<member> job_members;
@@ -58,8 +56,6 @@ class structure{
 	vector<int> column;
 	vector<mem_pro> member_pr;
 	concrete_design con_des;
-	//group gr;
-	//matrial m;
 	public:
 		structure(fstream &file);
 		void print();	
