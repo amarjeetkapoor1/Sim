@@ -10,9 +10,10 @@
 
 #include<iostream>
 #include<fstream>
-#include"structure.h"
+#include"header/structure.h"
 
 using namespace std;
+
 
 int main(int argc ,char *argv[]){
 	
@@ -29,5 +30,6 @@ int main(int argc ,char *argv[]){
 	// printing the structure information 
 	file.close();
 	s.print();
+
 	return 0;	
 }

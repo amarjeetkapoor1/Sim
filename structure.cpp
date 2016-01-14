@@ -1,17 +1,17 @@
-#include "structure.h"
+#include "header/structure.h"
 
-vector<string> split(string str, string del){
+vector<string> split(string str, string del,int cut=0){
     vector<string> arr;
     while(str!=del && str!="")
     {
-    	/*if(cut>0)
+    	if(cut>0)
     	{
     		if(arr.size()==cut)
     		{
     			arr.push_back(str);
     			return arr;
     		}
-    	}*/
+    	}
         if(str.find(del)>str.length())
         {
             arr.push_back(str);
@@ -28,11 +28,27 @@ vector<string> split(string str, string del){
 }
 
 
+void job::print(){
+    cout<<"date,"<<date<<endl;
+    cout<<"JOB NAME,"<<name<<endl;
+    cout<<"JOB CLIENT,"<<client<<endl;
+    cout<<"JOB NO,"<<jobid<<endl;
+    cout<<"JOB COMMENT,"<<comment<<endl;
+    cout<<"CHECKER NAME,"<<checker_name<<endl;
+    cout<<"ENGINEER NAME,"<<engineer_name<<endl;
+    cout<<"APPROVED NAME,"<<approved_name<<endl;
+    cout<<"CHECKER DATE,"<<checker_date<<endl;
+    cout<<"JOB REF,"<<ref<<endl;
+    cout<<"JOB PART,"<<part<<endl;
+    cout<<"JOB REV,"<<rev<<endl;
+    cout<<"APPROVED DATE,"<<approved_date<<endl;
+
+}
 void structure::print(){
 	
 	//printing job info
-	cout<<"engineer,"<<engineer<<endl;
-    cout<<"date,"<<date<<endl;
+	job1.print();
+	//job1.insert();
     cout<<"width,"<<width<<endl;
     cout<<"unit,"<<unit<<endl;
     //cout<<"group:\t"<<group<<endl;
@@ -60,17 +76,18 @@ void structure::print(){
     }
     
     //printing material defination
+     for(int i=0;i<job_material.size();i++){
     cout<<"material definition:\n";
-    cout<<"name,"<<job_material.name<<endl;
-    cout<<"E,"<<job_material.E<<endl;
-    cout<<"poison,"<<job_material.poison<<endl;
-    cout<<"density,"<<job_material.density<<endl;
-    cout<<"alpha,"<<job_material.alfa<<endl;
-    cout<<"damp,"<<job_material.damp<<endl;
-    cout<<"type,"<<job_material.type<<endl;
-    cout<<"strength,"<<job_material.strength<<endl;
-    cout<<"G,"<<job_material.G<<endl;
-    
+    cout<<"name,"<<job_material[i].name<<endl;
+    cout<<"E,"<<job_material[i].E<<endl;
+    cout<<"poison,"<<job_material[i].poison<<endl;
+    cout<<"density,"<<job_material[i].density<<endl;
+    cout<<"alpha,"<<job_material[i].alpha<<endl;
+    cout<<"damp,"<<job_material[i].damp<<endl;
+    cout<<"type,"<<job_material[i].type<<endl;
+    cout<<"strength,"<<job_material[i].strength<<endl;
+    cout<<"G,"<<job_material[i].G<<endl;
+    }
     //printing member property
     cout<<"MEMBER PROPERTY \n";
     cout<<"TYPE, YD, ZD, Member,  Member, Member, ...... \n";
@@ -110,131 +127,113 @@ void structure::print(){
 structure::structure(fstream &file)   
 {
     string str="", temp, temp1;
-    vector<string> temp2;
-    vector<string> temp3;
+    vector<string> vect_temp2;
+    vector<string> vect_temp3;
     char ch;
     
-    //replacing newline wiht space
-    while(file.get(ch))
+    str=job1.get(file);
+    temp=str;
+    for(int i=0 ; i<temp.length();i++)
     {
-        if(ch=='\n' || ch=='\r')
-        	ch=' ';
-        str+=ch;
+        if(temp[i]=='\n' || temp[i]=='\r'){
+        	temp[i]=' ';
+        
+        }
     }
-    
-	//get enginner name 
-    temp=split(str, "START JOB INFORMATION")[1];
-    engineer=split(temp, "DATE")[0];
-    
-    //get date
-    temp=split(temp, "DATE ")[1];
-    date=split(temp, "END JOB INFORMATION")[0];
-    
-    //get width
     temp=split(temp, "END JOB INFORMATION")[1];
-    width=split(split(temp, "UNIT")[0], "WIDTH")[1];
-    
+	
+    width=split(split(temp, "UNIT")[0], "INPUT WIDTH")[1];
+   
     //get units
     temp=split(temp, "UNIT")[1];
     unit=split(temp, "JOINT COORDINATES")[0];
-    
     //get joint coordinates
+    
+     
     temp=split(temp, "JOINT COORDINATES")[1];
     temp1=split(temp, "MEMBER INCIDENCES")[0];
-    temp2=split(temp1, "; ");
-    for(int i=0;i<temp2.size()-1;i++)
+    vect_temp2=split(temp1, "; ");
+    for(int i=0;i<vect_temp2.size()-1;i++)
     {
-        temp3=split(temp2[i], " ");
+        vect_temp3=split(vect_temp2[i], " ");
         joint j;
-        istringstream(temp3[0])>>j.id;
-        istringstream(temp3[1])>>j.x;
-        istringstream(temp3[2])>>j.y;
-        istringstream(temp3[3])>>j.z;
+        istringstream(vect_temp3[0])>>j.id;
+        istringstream(vect_temp3[1])>>j.x;
+        istringstream(vect_temp3[2])>>j.y;
+        istringstream(vect_temp3[3])>>j.z;
         job_joints.push_back(j);
-        temp3.clear();
+        vect_temp3.clear();
     }
     
     
-    temp2.clear();
+    
+    vect_temp2.clear();
     
     //get MEMBER INCIDENCES
     temp=split(temp, "MEMBER INCIDENCES")[1];
     temp1=split(temp, "START GROUP DEFINITION")[0];
-    temp2=split(temp1, ";");
-    for(int i=0;i<temp2.size()-1;i++)
+    vect_temp2=split(temp1, ";");
+    for(int i=0;i<vect_temp2.size()-1;i++)
     {	
-        temp3=split(temp2[i], " ");
+        vect_temp3=split(vect_temp2[i], " ");
         member m;
-        istringstream(temp3[0])>>m.id;
-        for(int j=1;j<temp3.size();j++)
+        istringstream(vect_temp3[0])>>m.id;
+        for(int j=1;j<vect_temp3.size();j++)
         {
             int l;
-            istringstream(temp3[j])>>l;
+            istringstream(vect_temp3[j])>>l;
             m.joint_id.push_back(l);
         }
         job_members.push_back(m);
-        temp3.clear();
+        vect_temp3.clear();
     }
-    temp2.clear();
-    
+    vect_temp2.clear();
     //getting group information 
     temp=split(temp, "START GROUP DEFINITION")[1];
     group=split(temp, "END GROUP DEFINITION")[0];
     
     //getting material info
     temp=split(temp, "END GROUP DEFINITION")[1];
-    temp=split(temp, "DEFINE MATERIAL START")[1];
-    temp1=split(temp, "END DEFINE MATERIAL")[0];
-    job_material.name=split(temp1, " E ")[0];
-    temp1=split(temp1, " E ")[1];
-   	job_material.E=split(temp1, "POISSON")[0];
-   	temp1=split(temp1, "POISSON")[1];
-    istringstream(split(temp1, "DENSITY")[0])>>job_material.poison;
-    temp1=split(temp1, "DENSITY")[1];
-    istringstream(split(temp1, "ALPHA")[0])>>job_material.density;
-    temp1=split(temp1, "ALPHA")[1];
-    job_material.alfa=split(temp1, "DAMP")[0];
-    temp1=split(temp1, "DAMP")[1];
-    istringstream(split(temp1, "TYPE")[0])>>job_material.damp;
-    temp1=split(temp1, "TYPE")[1];
-    job_material.type=split(temp1, "STRENGTH")[0];
-    temp1=split(temp1, "STRENGTH")[1];
-    job_material.strength=split(temp1, "G")[0];
-    temp1=split(temp1, "G")[1];
-    job_material.G=temp1;
+   
     
+    
+    temp=split(str, "DEFINE MATERIAL START")[1];
+    temp1=split(temp, "END DEFINE MATERIAL")[0];
+    vect_temp2=split(temp1, "\n");
+    material3(temp1);
+    return;
     
     //gettin member properties
     temp=split(temp, "END DEFINE MATERIAL")[1];
     temp1=split(temp, "MEMBER PROPERTY INDIAN  ")[1];
-    temp2=split(temp1," ");
+    vect_temp2=split(temp1," ");
     mem_pro *me;
     me=new mem_pro;
-    for(int i=0; i<temp2.size();i++){
+    for(int i=0; i<vect_temp2.size();i++){
     	float l=0,l1=0;
-    	if(isdigit(temp2[i][0])){
-    		istringstream(temp2[i])>>l;
+    	if(isdigit(vect_temp2[i][0])){
+    		istringstream(vect_temp2[i])>>l;
     		(*me).joint_id.push_back(l);
     		continue;
     	}
-    	if(temp2[i]=="TO"){
-    		istringstream(temp2[i-1])>>l;
-    		istringstream(temp2[i+1])>>l1;
+    	if(vect_temp2[i]=="TO"){
+    		istringstream(vect_temp2[i-1])>>l;
+    		istringstream(vect_temp2[i+1])>>l1;
     		for( int j=l+1;j<l1;j++){
     			(*me).joint_id.push_back(j);
     		}
     	}
 		else{
-			if(isalpha(temp2[i][0])){
-				istringstream(temp2[i+2])>>l;
-				istringstream(temp2[i+4])>>l1;
-				(*me).type=temp2[i];
+			if(isalpha(vect_temp2[i][0])){
+				istringstream(vect_temp2[i+2])>>l;
+				istringstream(vect_temp2[i+4])>>l1;
+				(*me).type=vect_temp2[i];
 				(*me).YD=l;
 				(*me).ZD=l1;
 				member_pr.push_back(*me);
 				me=new mem_pro;
 				i=i+4;
-				if(!isdigit(temp2[i+1][0]))
+				if(!isdigit(vect_temp2[i+1][0]))
 					break;
 			}
 		}
@@ -244,32 +243,32 @@ structure::structure(fstream &file)
     //getting concrete info 
     temp1=split(temp,"START CONCRETE DESIGN")[1];
     temp1=split(temp1,"DESIGN BEAM")[0];
-    temp2=split(temp1," ");
-    con_des.code=temp2[1];
+    vect_temp2=split(temp1," ");
+    con_des.code=vect_temp2[1];
     code_type *cd;
     cd=new code_type;
-	for(int i=2; i<temp2.size();i++){
+	for(int i=2; i<vect_temp2.size();i++){
 		float l=0,l1=0;
-		if(isdigit(temp2[i][0])){
-			istringstream(temp2[i])>>l;
+		if(isdigit(vect_temp2[i][0])){
+			istringstream(vect_temp2[i])>>l;
 			cd->member_id.push_back(l);
 			continue;
 		}
-		if(temp2[i]=="TO"){
-			istringstream(temp2[i-1])>>l;
-			istringstream(temp2[i+1])>>l1;
+		if(vect_temp2[i]=="TO"){
+			istringstream(vect_temp2[i-1])>>l;
+			istringstream(vect_temp2[i+1])>>l1;
 			for( int j=l+1;j<l1;j++){
 					cd->member_id.push_back(j);
 				}
 		}
 		else{
-			if(isalpha(temp2[i][0])){
+			if(isalpha(vect_temp2[i][0])){
 				if(i>5){
 				  	con_des.cty.push_back(*cd);
 				}
 				cd=new code_type;
-				cd->code=temp2[i];
-				cd->section=temp2[i+1];
+				cd->code=vect_temp2[i];
+				cd->section=vect_temp2[i+1];
 				i=i+2;
 			}
 		}
@@ -280,17 +279,17 @@ structure::structure(fstream &file)
    	//getting design beam 
 	temp1=split(temp,"DESIGN BEAM")[1];
 	temp1=split(temp1,"DESIGN COLUMN")[0];
-	temp2=split(temp1," ");
-	for(int i=0; i<temp2.size();i++){
+	vect_temp2=split(temp1," ");
+	for(int i=0; i<vect_temp2.size();i++){
 		float l=0,l1=0;
-		if(isdigit(temp2[i][0])){
-			istringstream(temp2[i])>>l;
+		if(isdigit(vect_temp2[i][0])){
+			istringstream(vect_temp2[i])>>l;
 			beam.push_back(l);
 			continue;
 		}
-		if(temp2[i]=="TO"){
-			istringstream(temp2[i-1])>>l;
-			istringstream(temp2[i+1])>>l1;
+		if(vect_temp2[i]=="TO"){
+			istringstream(vect_temp2[i-1])>>l;
+			istringstream(vect_temp2[i+1])>>l1;
 			for( int j=l+1;j<l1;j++){
 				beam.push_back(j);
 			}
@@ -299,20 +298,211 @@ structure::structure(fstream &file)
 	
 	//getting design column
     temp1=split(temp,"DESIGN COLUMN")[1];
-    temp2=split(temp1," ");
-    for(int i=0; i<temp2.size();i++){
+    vect_temp2=split(temp1," ");
+    for(int i=0; i<vect_temp2.size();i++){
 		float l=0,l1=0;
-		if(isdigit(temp2[i][0])){
-			istringstream(temp2[i])>>l;
+		if(isdigit(vect_temp2[i][0])){
+			l;
 			column.push_back(l);
 			continue;
 		}
-		if(temp2[i]=="TO"){
-			istringstream(temp2[i-1])>>l;
-			istringstream(temp2[i+1])>>l1;
+		if(vect_temp2[i]=="TO"){
+			istringstream(vect_temp2[i-1])>>l;
+			istringstream(vect_temp2[i+1])>>l1;
 			for( int j=l+1;j<l1;j++){
 				column.push_back(j);
 			}
 		}
 	}
 }
+
+
+
+void job::insert(){
+    sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE SIM");
+	string query;
+	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid) VALUES (?)");
+	prep_stmt->setString(1,jobid);
+	prep_stmt->execute();
+	delete stmt;
+	delete con;
+}
+
+
+
+string job:: get( fstream &file){
+	string str="", temp, temp1;
+    vector<string> vect_temp2;
+    vector<string> vect_temp3;
+    char ch;
+    
+    //replacing newline wiht space
+    while(file.get(ch))
+    {
+        if(ch=='\r')
+        	continue;
+        str+=ch;
+    }
+    
+	//get enginner name 
+    temp=split(str, "START JOB INFORMATION")[1];
+    temp1=split(temp, "END JOB INFORMATION")[0];
+   	vect_temp2=split(temp1, "\n");
+   	for(int i=0;i<vect_temp2.size();i++)
+   	{
+   		vect_temp3=split(vect_temp2[i], " ", 2);
+   		string h=vect_temp3[0]+vect_temp3[1];
+		if( h=="ENGINEERDATE")
+		{
+			date=vect_temp3[2];
+		}
+		if( h=="JOBNAME")
+		{
+			name=vect_temp3[2];
+		}
+		if( h=="JOBCLIENT")
+		{
+			client=vect_temp3[2];
+		}
+		if( h=="JOBNO")
+		{
+			jobid=vect_temp3[2];
+
+		}
+		if( h=="JOBREV")
+		{
+			rev=vect_temp3[2];
+		}
+		if( h=="JOBPART")
+		{
+			part=vect_temp3[2];
+			
+		}
+		if( h=="JOBREF")
+		{
+			ref=vect_temp3[2];
+			
+		}
+		if( h=="JOBCOMMENT")
+		{
+			comment=vect_temp3[2];
+			
+		}
+		if( h=="ENGINEERNAME")
+		{
+			engineer_name=vect_temp3[2];
+			
+		}
+		if( h=="CHECKERNAME")
+		{
+			checker_name=vect_temp3[2];
+			
+		}
+		if( h=="APPROVEDNAME")
+		{
+			approved_name=vect_temp3[2];
+			
+		}
+		if( h=="CHECKERDATE")
+		{
+			checker_date=vect_temp3[2];
+			
+		}
+		if( h=="APPROVEDDATE")
+		{
+			approved_date=vect_temp3[2];
+			
+		}
+   		vect_temp3.clear();
+   	}
+   	vect_temp2.clear();
+   	
+   	return str;
+}
+	
+void structure::material3(string str){
+
+	string temp, temp1;
+    vector<string> vect_temp2;
+    vector<string> vect_temp3;
+    char ch;
+    temp1=str;
+	vect_temp2=split(temp1, "\n");
+	int j=0;
+	for(int j=0;j<vect_temp2.size();){
+		material mater ;
+		int z=j;
+		for(int i=z;i<9+z && j<vect_temp2.size();i++)
+		{	
+			vect_temp3=split(vect_temp2[i], " ", 1);
+   			string h=vect_temp3[0];
+			if(i==z){
+				mater.name=vect_temp3[0]+" "+vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			if(h=="E")
+			{
+				mater.E=vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			if(h=="POISSON")
+			{
+				istringstream(vect_temp3[1])>>mater.poison;
+				j++;   
+ 				continue;
+			}
+			if(h=="DENSITY")
+			{
+				istringstream(vect_temp3[1])>>mater.density;
+				j++;   
+ 				continue;
+			}
+			if(h=="ALPHA")
+			{
+				mater.alpha=vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			if(h=="DAMP")
+			{
+				istringstream(vect_temp3[1])>>mater.damp;
+				j++;   
+				 continue;
+			}
+			if(h=="TYPE")
+			{	
+				mater.type=vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			if(h=="STRENGTH")
+			{
+				mater.strength=vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			if(h=="G")
+			{
+				mater.G=vect_temp3[1];;
+				j++;   
+ 				continue;
+			}
+			
+			break;
+			
+		}
+		job_material.push_back(mater);
+   }
+}
+	
+	
