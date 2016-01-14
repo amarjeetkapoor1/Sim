@@ -140,6 +140,8 @@ structure::structure(fstream &file)
         
         }
     }
+    str=temp;
+    
     temp=split(temp, "END JOB INFORMATION")[1];
 	
     width=split(split(temp, "UNIT")[0], "INPUT WIDTH")[1];
@@ -199,46 +201,51 @@ structure::structure(fstream &file)
     
     temp=split(str, "DEFINE MATERIAL START")[1];
     temp1=split(temp, "END DEFINE MATERIAL")[0];
+    
     vect_temp2=split(temp1, "\n");
     material3(temp1);
-    return;
     
+     vect_temp2.clear();
     //gettin member properties
+	temp=str;
     temp=split(temp, "END DEFINE MATERIAL")[1];
-    temp1=split(temp, "MEMBER PROPERTY INDIAN  ")[1];
+    temp1=split(temp, "MEMBER PROPERTY INDIAN")[1];
+    temp1=split(temp1, "CONSTANTS")[0];
     vect_temp2=split(temp1," ");
     mem_pro *me;
     me=new mem_pro;
     for(int i=0; i<vect_temp2.size();i++){
+    	
     	float l=0,l1=0;
     	if(isdigit(vect_temp2[i][0])){
     		istringstream(vect_temp2[i])>>l;
     		(*me).joint_id.push_back(l);
     		continue;
     	}
-    	if(vect_temp2[i]=="TO"){
-    		istringstream(vect_temp2[i-1])>>l;
-    		istringstream(vect_temp2[i+1])>>l1;
-    		for( int j=l+1;j<l1;j++){
-    			(*me).joint_id.push_back(j);
+    		if(vect_temp2[i]=="TO"){
+    			istringstream(vect_temp2[i-1])>>l;
+    			istringstream(vect_temp2[i+1])>>l1;
+    			for( int j=l+1;j<l1;j++){
+    				
+    				(*me).joint_id.push_back(j);
+    			}
     		}
-    	}
-		else{
-			if(isalpha(vect_temp2[i][0])){
-				istringstream(vect_temp2[i+2])>>l;
-				istringstream(vect_temp2[i+4])>>l1;
-				(*me).type=vect_temp2[i];
-				(*me).YD=l;
-				(*me).ZD=l1;
-				member_pr.push_back(*me);
-				me=new mem_pro;
-				i=i+4;
-				if(!isdigit(vect_temp2[i+1][0]))
-					break;
-			}
-		}
-	}
-    
+    		if(vect_temp2[i]=="PRIS"){
+    			istringstream(vect_temp2[i+2])>>l;
+    			istringstream(vect_temp2[i+4])>>l1;
+    			(*me).type=vect_temp2[i];
+    			(*me).YD=l;
+    			(*me).ZD=l1;
+    			member_pr.push_back(*me);
+    			delete me;
+    			mem_pro *me;
+    			me=new mem_pro;
+    			i=i+3;
+    			
+    		}
+    	
+    }
+    vect_temp2.clear();
     
     //getting concrete info 
     temp1=split(temp,"START CONCRETE DESIGN")[1];
@@ -265,7 +272,10 @@ structure::structure(fstream &file)
 			if(isalpha(vect_temp2[i][0])){
 				if(i>5){
 				  	con_des.cty.push_back(*cd);
+				  	
 				}
+				delete cd;
+				code_type *cd;
 				cd=new code_type;
 				cd->code=vect_temp2[i];
 				cd->section=vect_temp2[i+1];
@@ -274,27 +284,32 @@ structure::structure(fstream &file)
 		}
 	}
    con_des.cty.push_back(*cd);
-    
+   
+   
+    vect_temp2.clear();
    
    	//getting design beam 
 	temp1=split(temp,"DESIGN BEAM")[1];
 	temp1=split(temp1,"DESIGN COLUMN")[0];
-	vect_temp2=split(temp1," ");
-	for(int i=0; i<vect_temp2.size();i++){
-		float l=0,l1=0;
-		if(isdigit(vect_temp2[i][0])){
-			istringstream(vect_temp2[i])>>l;
-			beam.push_back(l);
-			continue;
-		}
-		if(vect_temp2[i]=="TO"){
-			istringstream(vect_temp2[i-1])>>l;
-			istringstream(vect_temp2[i+1])>>l1;
-			for( int j=l+1;j<l1;j++){
-				beam.push_back(j);
-			}
-		}
-	}
+    vect_temp2=split(temp1," ");
+     for(int i=0; i<vect_temp2.size();i++){
+    	float l=0,l1=0;
+    	if(isdigit(vect_temp2[i][0])){
+    		istringstream(vect_temp2[i])>>l;
+    		beam.push_back(l);
+    		continue;
+    	}
+    	if(vect_temp2[i]=="TO"){
+    		istringstream(vect_temp2[i-1])>>l;
+    		istringstream(vect_temp2[i+1])>>l1;
+    		for( int j=l+1;j<l1;j++){
+    				beam.push_back(j);
+    			}
+    		}
+    	
+    }
+    
+     vect_temp2.clear();
 	
 	//getting design column
     temp1=split(temp,"DESIGN COLUMN")[1];
@@ -302,7 +317,7 @@ structure::structure(fstream &file)
     for(int i=0; i<vect_temp2.size();i++){
 		float l=0,l1=0;
 		if(isdigit(vect_temp2[i][0])){
-			l;
+			istringstream(vect_temp2[i])>>l;
 			column.push_back(l);
 			continue;
 		}
@@ -314,6 +329,8 @@ structure::structure(fstream &file)
 			}
 		}
 	}
+	
+	
 }
 
 

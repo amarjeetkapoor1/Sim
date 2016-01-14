@@ -5,6 +5,11 @@ the the given structure by extracting info from .std file made by
 staad.pro
 
 
+## Requirement 
+	
+	g++
+	libmysqlcppconn-dev
+	
 ##Installation 
 
 	cd Path/to/This/	
