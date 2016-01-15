@@ -17,3 +17,5 @@
 
 using namespace std;
 using namespace sql;
+
+vector<string> split(string str, string del,int);

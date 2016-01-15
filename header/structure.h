@@ -96,6 +96,9 @@ class structure{
 		structure(fstream &file);
 		void print();	
 		void material3(string);
+		void get_member_pro(string);
+		void get_design(string);
+		void get_joint(string str);
 		
 };
 
