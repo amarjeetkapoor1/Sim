@@ -1,6 +1,6 @@
 #include "header/header.h"
 
-vector<string> split(string str, string del,int cut=0){
+vector<string> split(string str, string del,int cut){
     vector<string> arr;
     while(str!=del && str!="")
     {

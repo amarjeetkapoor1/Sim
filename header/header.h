@@ -18,4 +18,4 @@
 using namespace std;
 using namespace sql;
 
-vector<string> split(string str, string del,int);
+vector<string> split(string, string ,int cut=0);

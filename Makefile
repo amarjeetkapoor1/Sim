@@ -1,4 +1,16 @@
 CFLAGS=-I/header -L/usr/lib -lmysqlcppconn
 
-Main: main.cpp structure.cpp header.cpp header/structure.h
-	g++  main.cpp structure.cpp -o Main $(CFLAGS)
+all: Main
+
+Main: main.cpp structure.o header.o 
+	g++  main.cpp structure.o header.o -o Main $(CFLAGS)
+
+structure.o: header.o 
+	g++ structure.cpp -c 
+
+header.o: header.cpp
+	g++ header.cpp -c
+	
+clear:
+	rm -r *.o 
+	rm Main
