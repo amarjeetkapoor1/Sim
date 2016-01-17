@@ -17,11 +17,40 @@ void job::print(){
     cout<<"APPROVED DATE,"<<approved_date<<endl;
 
 }
+
+void structure::insert(){
+	string query;
+	int j;
+	j=job1.insert();
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE SIM");
+	//istringstream(jobid)>>i;
+	
+	for(int i=0;i<job_joints.size();i++){
+	prep_stmt = con->prepareStatement("INSERT INTO JOINT(jobid,id,x,y,z) VALUES (?,?,?,?,?)");
+	prep_stmt->setInt(1,j);
+	prep_stmt->setInt(2,job_joints[i].id);
+	prep_stmt->setInt(3,job_joints[i].x);
+	prep_stmt->setInt(4,job_joints[i].y);
+	prep_stmt->setInt(5,job_joints[i].z);
+	prep_stmt->execute();
+	}
+	delete stmt;
+	delete con;
+	
+}
+
 void structure::print(){
 	
 	//printing job info
 	job1.print();
-	job1.insert();
     cout<<"width,"<<width<<endl;
     cout<<"unit,"<<unit<<endl;
     //cout<<"group:\t"<<group<<endl;
@@ -113,7 +142,7 @@ structure::structure(fstream &file)
         
         }
     }
-    
+   
     temp=split(temp, "END JOB INFORMATION")[1];
 	width=split(split(temp, "UNIT")[0], "INPUT WIDTH")[1];
    
@@ -131,7 +160,7 @@ structure::structure(fstream &file)
     //getting material info
     temp=split(temp, "END GROUP DEFINITION")[1];
    	material3(str);
-    
+     return;
     
      
     //gettin member properties
@@ -144,7 +173,7 @@ structure::structure(fstream &file)
 
 
 
-void job::insert(){
+int job::insert(){
     sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
@@ -158,12 +187,13 @@ void job::insert(){
 	string query;
 	int i;
 	istringstream(jobid)>>i;
-	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid) VALUES (?)");
+	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid,jobname) VALUES (?,?)");
 	prep_stmt->setInt(1,i);
+	prep_stmt->setString(2,name);
 	prep_stmt->execute();
 	delete stmt;
 	delete con;
-	return;	
+	return i;	
 	
 }
 

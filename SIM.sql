@@ -45,9 +45,13 @@ INSERT INTO `JOB` (`jobid`) VALUES
 -- Table structure for table `JOB1`
 --
 
-CREATE TABLE IF NOT EXISTS `JOB1` (
+CREATE TABLE IF NOT EXISTS `JOINT` (
   `jobid` varchar(100) NOT NULL,
-  PRIMARY KEY (`jobid`)
+  `id` varchar(100) NOT NULL,
+  `x`  varchar(100) NOT NULL,
+  `y`  varchar(100) NOT NULL,
+  `z`  varchar(100),
+  PRIMARY KEY (`id`,`jobid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
