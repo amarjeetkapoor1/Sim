@@ -21,7 +21,9 @@ void job::print(){
 void structure::insert(){
 	string query;
 	int j;
-	j=job1.insert();
+	int z;
+	j=job1.insert(z);
+	insert_member(j,z);	
 	sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
@@ -32,16 +34,18 @@ void structure::insert(){
 	stmt = con->createStatement();
 	stmt->execute("USE SIM");
 	//istringstream(jobid)>>i;
-	
 	for(int i=0;i<job_joints.size();i++){
-	prep_stmt = con->prepareStatement("INSERT INTO JOINT(jobid,id,x,y,z) VALUES (?,?,?,?,?)");
-	prep_stmt->setInt(1,j);
-	prep_stmt->setInt(2,job_joints[i].id);
-	prep_stmt->setInt(3,job_joints[i].x);
-	prep_stmt->setInt(4,job_joints[i].y);
-	prep_stmt->setInt(5,job_joints[i].z);
-	prep_stmt->execute();
+		prep_stmt = con->prepareStatement("INSERT INTO JOINT(jobid,id,x,y,z,serial) VALUES (?,?,?,?,?,?)");
+		prep_stmt->setInt(1,j);
+		prep_stmt->setInt(2,job_joints[i].id);
+		prep_stmt->setInt(3,job_joints[i].x);
+		prep_stmt->setInt(4,job_joints[i].y);
+		prep_stmt->setInt(5,job_joints[i].z);
+		prep_stmt->setInt(6,z);
+		prep_stmt->execute();
 	}
+	
+	
 	delete stmt;
 	delete con;
 	
@@ -173,11 +177,12 @@ structure::structure(fstream &file)
 
 
 
-int job::insert(){
+int job::insert(int &r){
     sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
 	sql::PreparedStatement  *prep_stmt;
+	sql::ResultSet *result;
 	//create a database connection using the Driver 
 	driver =get_driver_instance();
 	con = driver->connect("localhost","root","hashtagme");
@@ -202,10 +207,42 @@ int job::insert(){
 	prep_stmt->setString(12,rev);
 	prep_stmt->setString(13,approved_date);
 	prep_stmt->execute();
+	result=stmt->executeQuery("select max(serial) from JOB");
+	result->next();
+	r=result->getInt(1);
 	delete stmt;
 	delete con;
 	return i;	
 	
+}
+
+void structure::insert_member(int j,int z){
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE SIM");
+	//istringstream(jobid)>>i;
+	for(int i=0;i<job_members.size();i++){
+	prep_stmt = con->prepareStatement("INSERT INTO MEMBER(serial,member_id) VALUES (?,?)");
+	prep_stmt->setInt(1,z);
+	prep_stmt->setInt(2,job_members[i].id);
+	prep_stmt->execute();
+	for(int k=0;k<job_members[i].joint_id.size();k++){
+        prep_stmt = con->prepareStatement("INSERT INTO JOINTMEMBER(serial,member_id,jointid) VALUES (?,?,?)");
+		prep_stmt->setInt(1,z);
+		prep_stmt->setInt(2,job_members[i].id);
+		prep_stmt->setInt(3,job_members[i].joint_id[k]);
+		prep_stmt->execute();
+        }
+        
+	}
+	delete stmt;
+	delete con;
 }
 
 
@@ -216,7 +253,7 @@ string job:: get( fstream &file){
     vector<string> vect_temp3;
     char ch;
     
-    //replacing newline with space
+    //replacing newline wiht space
     while(file.get(ch))
     {
         if(ch=='\r')
@@ -235,7 +272,6 @@ string job:: get( fstream &file){
 		if( h=="ENGINEERDATE")
 		{
 			date=vect_temp3[2];
-			continue;
 		}
 		if( h=="JOBNAME")
 		{

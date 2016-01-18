@@ -55,7 +55,7 @@ class job{
 	public:
 		string get(fstream &file);
 		void print();
-		int insert();
+		int insert(int &);
 
 };
 	
@@ -82,6 +82,7 @@ class structure{
 		void get_design(string);
 		void get_joint(string str);
 		void insert();
+		void insert_member(int j,int z);
 		
 };
 

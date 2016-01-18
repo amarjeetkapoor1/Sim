@@ -52,14 +52,12 @@ CREATE TABLE IF NOT EXISTS `MEMBER`
 	PRIMARY KEY(`member_id`, `serial`)
 );
 
-CREATE TABLE IF NOT EXISTS `JOINT_MEMBER`
+CREATE TABLE IF NOT EXISTS `JOINTMEMBER`
 (
 	`serial` int(10) NOT NULL,
 	`member_id` int(10),
-	`jobid` int(10),
-	PRIMARY KEY(`serial`, `member_id`, `jobid`),
-	FOREIGN KEY(`member_id`,`serial`) REFERENCES `MEMBER`(`member_id`,`serial`),
-	FOREIGN KEY(`jobid`,`serial`) REFERENCES `JOINT`(`jobid`,`serial`)
+	`jointid` int(10),
+	PRIMARY KEY(`serial`, `member_id`, `jointid`)
 );
 --
 -- Dumping data for table `JOB`
