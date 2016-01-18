@@ -187,9 +187,20 @@ int job::insert(){
 	string query;
 	int i;
 	istringstream(jobid)>>i;
-	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid,jobname) VALUES (?,?)");
+	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid, jobname, date, client, comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	prep_stmt->setInt(1,i);
 	prep_stmt->setString(2,name);
+	prep_stmt->setString(3,date);
+	prep_stmt->setString(4,client);
+	prep_stmt->setString(5,comment);
+	prep_stmt->setString(6,checker_name);
+	prep_stmt->setString(7,engineer_name);
+	prep_stmt->setString(8,approved_name);
+	prep_stmt->setString(9,checker_date);
+	prep_stmt->setString(10,ref);
+	prep_stmt->setString(11,part);
+	prep_stmt->setString(12,rev);
+	prep_stmt->setString(13,approved_date);
 	prep_stmt->execute();
 	delete stmt;
 	delete con;
@@ -205,7 +216,7 @@ string job:: get( fstream &file){
     vector<string> vect_temp3;
     char ch;
     
-    //replacing newline wiht space
+    //replacing newline with space
     while(file.get(ch))
     {
         if(ch=='\r')
@@ -224,6 +235,7 @@ string job:: get( fstream &file){
 		if( h=="ENGINEERDATE")
 		{
 			date=vect_temp3[2];
+			continue;
 		}
 		if( h=="JOBNAME")
 		{

@@ -27,17 +27,43 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `JOB` (
-  `jobid` int(100) NOT NULL,
-  `jobname` varchar(100),
-  PRIMARY KEY (`jobid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `serial` int(10) AUTO_INCREMENT, 
+  `jobid` int(10) ,
+  `jobname` varchar(10),
+  `date` date,
+  `client` varchar(100),
+  `comment` TEXT,
+  `checker_name` varchar(100),
+  `engineer_name` varchar(100),
+  `approved_name` varchar(100),
+  `checker_date` date,
+  `ref` varchar(100),
+  `part` varchar(100),
+  `rev` varchar(100),
+  `approved_date` date,
+  PRIMARY KEY (`serial`)
+);
 
+
+CREATE TABLE IF NOT EXISTS `MEMBER`
+(
+	`serial` int(10) NOT NULL,
+	`member_id` int(10),
+	PRIMARY KEY(`member_id`, `serial`)
+);
+
+CREATE TABLE IF NOT EXISTS `JOINT_MEMBER`
+(
+	`serial` int(10) NOT NULL,
+	`member_id` int(10),
+	`jobid` int(10),
+	PRIMARY KEY(`serial`, `member_id`, `jobid`),
+	FOREIGN KEY(`member_id`,`serial`) REFERENCES `MEMBER`(`member_id`,`serial`),
+	FOREIGN KEY(`jobid`,`serial`) REFERENCES `JOINT`(`jobid`,`serial`)
+);
 --
 -- Dumping data for table `JOB`
 --
-
-INSERT INTO `JOB` (`jobid`) VALUES
-('');
 
 -- --------------------------------------------------------
 
@@ -46,13 +72,14 @@ INSERT INTO `JOB` (`jobid`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `JOINT` (
-  `jobid` varchar(100) NOT NULL,
-  `id` varchar(100) NOT NULL,
+  `serial` int(10) NOT NULL,
+  `jobid` int(100) NOT NULL,
+  `id` int(10) NOT NULL,
   `x`  varchar(100) NOT NULL,
   `y`  varchar(100) NOT NULL,
   `z`  varchar(100),
-  PRIMARY KEY (`id`,`jobid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`jobid`,`serial`)
+);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
