@@ -1,60 +1,8 @@
 #include"header/job.h"
 
-void job::print(){
-    cout<<"date,"<<date<<endl;
-    cout<<"JOB NAME,"<<name<<endl;
-    cout<<"JOB CLIENT,"<<client<<endl;
-    cout<<"JOB NO,"<<job_id<<endl;
-    cout<<"JOB COMMENT,"<<comment<<endl;
-    cout<<"CHECKER NAME,"<<checker_name<<endl;
-    cout<<"ENGINEER NAME,"<<engineer_name<<endl;
-    cout<<"APPROVED NAME,"<<approved_name<<endl;
-    cout<<"CHECKER DATE,"<<checker_date<<endl;
-    cout<<"JOB REF,"<<ref<<endl;
-    cout<<"JOB PART,"<<part<<endl;
-    cout<<"JOB REV,"<<rev<<endl;
-    cout<<"APPROVED DATE,"<<approved_date<<endl;
-
-}
-
-int job::insert(int &r){
-    sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	sql::ResultSet *result;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-
-	stmt->execute("USE SIM");
-	string query;
-	prep_stmt = con->prepareStatement("INSERT INTO Job(id,name, date, client, comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-	prep_stmt->setString(1,job_id);
-	prep_stmt->setString(2,name);
-	prep_stmt->setString(3,date);
-	prep_stmt->setString(4,client);
-	prep_stmt->setString(5,comment);
-	prep_stmt->setString(6,checker_name);
-	prep_stmt->setString(7,engineer_name);
-	prep_stmt->setString(8,approved_name);
-	prep_stmt->setString(9,checker_date);
-	prep_stmt->setString(10,ref);
-	prep_stmt->setString(11,part);
-	prep_stmt->setString(12,rev);
-	prep_stmt->setString(13,approved_date);
-	prep_stmt->execute();
-	result=stmt->executeQuery("select max(job_id) from Job");
-	result->next();
-	r=result->getInt(1);
-	delete stmt;
-	delete con;	
-	
-}
 
 string job:: get( fstream &file){
-	string str="", temp, temp1;
+	string str="", temp;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
     char ch;
@@ -69,8 +17,8 @@ string job:: get( fstream &file){
     
 	//get enginner name 
     temp=split(str, "START JOB INFORMATION")[1];
-    temp1=split(temp, "END JOB INFORMATION")[0];
-   	vect_temp2=split(temp1, "\n");
+    temp=split(temp, "END JOB INFORMATION")[0];
+   	vect_temp2=split(temp, "\n");
    	for(int i=0;i<vect_temp2.size();i++)
    	{
    		vect_temp3=split(vect_temp2[i], " ", 2);
@@ -141,4 +89,57 @@ string job:: get( fstream &file){
    	vect_temp2.clear();
    	
    	return str;
+}
+
+void job::print(){
+    cout<<"date,"<<date<<endl;
+    cout<<"JOB NAME,"<<name<<endl;
+    cout<<"JOB CLIENT,"<<client<<endl;
+    cout<<"JOB NO,"<<job_id<<endl;
+    cout<<"JOB COMMENT,"<<comment<<endl;
+    cout<<"CHECKER NAME,"<<checker_name<<endl;
+    cout<<"ENGINEER NAME,"<<engineer_name<<endl;
+    cout<<"APPROVED NAME,"<<approved_name<<endl;
+    cout<<"CHECKER DATE,"<<checker_date<<endl;
+    cout<<"JOB REF,"<<ref<<endl;
+    cout<<"JOB PART,"<<part<<endl;
+    cout<<"JOB REV,"<<rev<<endl;
+    cout<<"APPROVED DATE,"<<approved_date<<endl;
+
+}
+
+
+
+void job::insert(int &r){
+    sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	sql::ResultSet *result;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+
+	stmt->execute("USE Sim");
+	prep_stmt = con->prepareStatement("INSERT INTO Job(id, name, date,client ,comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	prep_stmt->setString(1,job_id);
+	prep_stmt->setString(2,name);
+	prep_stmt->setString(3,date);
+	prep_stmt->setString(4,client);
+	prep_stmt->setString(5,comment);
+	prep_stmt->setString(6,checker_name);
+	prep_stmt->setString(7,engineer_name);
+	prep_stmt->setString(8,approved_name);
+	prep_stmt->setString(9,checker_date);
+	prep_stmt->setString(10,ref);
+	prep_stmt->setString(11,part);
+	prep_stmt->setString(12,rev);
+	prep_stmt->setString(13,approved_date);
+	prep_stmt->execute();
+	result=stmt->executeQuery("select max(job_id) from Job");
+	result->next();
+	r=result->getInt(1);
+	delete stmt;
+	delete con;
 }

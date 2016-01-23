@@ -11,8 +11,12 @@
  *      
  */
 
+#ifndef _STRUCTURE_H
+#define _STRUCTURE_H
 
 #include"header.h"
+#include"job.h"
+
 
 
 struct joint{
@@ -48,17 +52,6 @@ struct concrete_design{
 	vector<code_type> cty;
 };
 
-class job{
-	string date,name,client,job_id,comment;
-	string checker_name,engineer_name,approved_name,checker_date;
-	string ref,part,rev,approved_date;
-	public:
-		string get(fstream &file);
-		void print();
-		void insert(int &);
-
-};
-	
 class structure{
 
 	job job1;
@@ -86,6 +79,6 @@ class structure{
 		
 };
 
-
+#endif
 
 

@@ -1,159 +1,13 @@
 #include "header/structure.h"
 
-
-string job:: get( fstream &file){
-	string str="", temp, temp1;
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
-    char ch;
-    
-    //replacing newline wiht space
-    while(file.get(ch))
-    {
-        if(ch=='\r')
-        	continue;
-        str+=ch;
-    }
-    
-	//get enginner name 
-    temp=split(str, "START JOB INFORMATION")[1];
-    temp1=split(temp, "END JOB INFORMATION")[0];
-   	vect_temp2=split(temp1, "\n");
-   	for(int i=0;i<vect_temp2.size();i++)
-   	{
-   		vect_temp3=split(vect_temp2[i], " ", 2);
-   		string h=vect_temp3[0]+vect_temp3[1];
-		if( h=="ENGINEERDATE")
-		{
-			date=vect_temp3[2];
-		}
-		if( h=="JOBNAME")
-		{
-			name=vect_temp3[2];
-		}
-		if( h=="JOBCLIENT")
-		{
-			client=vect_temp3[2];
-		}
-		if( h=="JOBNO")
-		{
-			job_id=vect_temp3[2];
-
-		}
-		if( h=="JOBREV")
-		{
-			rev=vect_temp3[2];
-		}
-		if( h=="JOBPART")
-		{
-			part=vect_temp3[2];
-			
-		}
-		if( h=="JOBREF")
-		{
-			ref=vect_temp3[2];
-			
-		}
-		if( h=="JOBCOMMENT")
-		{
-			comment=vect_temp3[2];
-			
-		}
-		if( h=="ENGINEERNAME")
-		{
-			engineer_name=vect_temp3[2];
-			
-		}
-		if( h=="CHECKERNAME")
-		{
-			checker_name=vect_temp3[2];
-			
-		}
-		if( h=="APPROVEDNAME")
-		{
-			approved_name=vect_temp3[2];
-			
-		}
-		if( h=="CHECKERDATE")
-		{
-			checker_date=vect_temp3[2];
-			
-		}
-		if( h=="APPROVEDDATE")
-		{
-			approved_date=vect_temp3[2];
-			
-		}
-   		vect_temp3.clear();
-   	}
-   	vect_temp2.clear();
-   	
-   	return str;
-}
-
-void job::print(){
-    cout<<"date,"<<date<<endl;
-    cout<<"JOB NAME,"<<name<<endl;
-    cout<<"JOB CLIENT,"<<client<<endl;
-    cout<<"JOB NO,"<<job_id<<endl;
-    cout<<"JOB COMMENT,"<<comment<<endl;
-    cout<<"CHECKER NAME,"<<checker_name<<endl;
-    cout<<"ENGINEER NAME,"<<engineer_name<<endl;
-    cout<<"APPROVED NAME,"<<approved_name<<endl;
-    cout<<"CHECKER DATE,"<<checker_date<<endl;
-    cout<<"JOB REF,"<<ref<<endl;
-    cout<<"JOB PART,"<<part<<endl;
-    cout<<"JOB REV,"<<rev<<endl;
-    cout<<"APPROVED DATE,"<<approved_date<<endl;
-
-}
-
-
-
-void job::insert(int &r){
-    sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	sql::ResultSet *result;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-
-	stmt->execute("USE Sim");
-	string query;
-	prep_stmt = con->prepareStatement("INSERT INTO Job(id, name, date, client, comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-	prep_stmt->setString(1,job_id);
-	prep_stmt->setString(2,name);
-	prep_stmt->setString(3,date);
-	prep_stmt->setString(4,client);
-	prep_stmt->setString(5,comment);
-	prep_stmt->setString(6,checker_name);
-	prep_stmt->setString(7,engineer_name);
-	prep_stmt->setString(8,approved_name);
-	prep_stmt->setString(9,checker_date);
-	prep_stmt->setString(10,ref);
-	prep_stmt->setString(11,part);
-	prep_stmt->setString(12,rev);
-	prep_stmt->setString(13,approved_date);
-	prep_stmt->execute();
-	result=stmt->executeQuery("select max(job_id) from Job");
-	result->next();
-	r=result->getInt(1);
-	delete stmt;
-	delete con;
-}
-
 void structure::insert(){
-	string query;
-	int j;
 	int z;
 	job1.insert(z);	
 	sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
 	sql::PreparedStatement  *prep_stmt;
+	
 	//create a database connection using the Driver 
 	driver =get_driver_instance();
 	con = driver->connect("localhost","root","hashtagme");
@@ -256,13 +110,10 @@ void structure::print(){
     
 structure::structure(fstream &file)   
 {
-    string str="", temp, temp1;
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
-    char ch;
+    string str="", temp;
     
     str=job1.get(file);
-    temp=str;
+	temp=str;
     for(int i=0 ; i<temp.length();i++)
     {
         if(temp[i]=='\n' || temp[i]=='\r'){
@@ -288,7 +139,6 @@ structure::structure(fstream &file)
     //getting material info
     temp=split(temp, "END GROUP DEFINITION")[1];
    	get_material(str);
-     return;
     
      
     //gettin member properties
@@ -333,15 +183,12 @@ void structure::insert_member(int z){
 
 
 	
-void structure::get_material(string str){
-	string temp, temp1;
+void structure::get_material(string temp){
     vector<string> vect_temp2;
     vector<string> vect_temp3;
-    char ch;
-    temp=split(str, "DEFINE MATERIAL START")[1];
-    temp1=split(temp, "END DEFINE MATERIAL")[0];
-	vect_temp2=split(temp1, "\n");
-	int j=0;
+    temp=split(temp, "DEFINE MATERIAL START")[1];
+    temp=split(temp, "END DEFINE MATERIAL")[0];
+	vect_temp2=split(temp, "\n");
 	for(int j=0;j<vect_temp2.size();){
 		material mater ;
 		int z=j;
@@ -410,12 +257,10 @@ void structure::get_material(string str){
    }
 }
 	
-void structure::get_joint(string str){
-	string temp, temp1;
+void structure::get_joint(string temp){
+	string temp1;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
-    char ch;
-    temp=str;
 	temp=split(temp, "JOINT COORDINATES")[1];
     temp1=split(temp, "MEMBER INCIDENCES")[0];
     vect_temp2=split(temp1, "; ");
@@ -456,17 +301,14 @@ void structure::get_joint(string str){
     vect_temp2.clear();
 }
 	
-void structure::get_member_pro(string str){
+void structure::get_member_pro(string temp){
 
-	string temp, temp1;
     vector<string> vect_temp2;
-    vector<string> vect_temp3;
-    char ch;
-	
-	temp=split(str, "END DEFINE MATERIAL")[1];
-    temp1=split(temp, "MEMBER PROPERTY INDIAN")[1];
-    temp1=split(temp1, "CONSTANTS")[0];
-    vect_temp2=split(temp1," ");
+
+	temp=split(temp, "END DEFINE MATERIAL")[1];
+    temp=split(temp, "MEMBER PROPERTY INDIAN")[1];
+    temp=split(temp, "CONSTANTS")[0];
+    vect_temp2=split(temp," ");
     mem_pro *me;
     me=new mem_pro;
     for(int i=0; i<vect_temp2.size();i++){
@@ -503,17 +345,16 @@ void structure::get_member_pro(string str){
     vect_temp2.clear();
 
 }
-void structure::get_design(string str){
-	string temp, temp1;
+
+
+void structure::get_design(string temp){
+	string temp1;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
-    char ch;
 	
 	//getting concrete info 
-    temp1=split(str,"START CONCRETE DESIGN")[1];
-    
+    temp1=split(temp,"START CONCRETE DESIGN")[1];
     temp1=split(temp1,"DESIGN BEAM")[0];
-    
     
     vect_temp2=split(temp1," ");
     
@@ -555,7 +396,7 @@ void structure::get_design(string str){
     vect_temp2.clear();
 	  
    	//getting design beam 
-	temp1=split(str,"DESIGN BEAM")[1];
+	temp1=split(temp,"DESIGN BEAM")[1];
 	temp1=split(temp1,"DESIGN COLUMN")[0];
     vect_temp2=split(temp1," ");
      for(int i=0; i<vect_temp2.size();i++){
@@ -578,7 +419,7 @@ void structure::get_design(string str){
      vect_temp2.clear();
 	
 	//getting design column
-    temp1=split(str,"DESIGN COLUMN")[1];
+    temp1=split(temp,"DESIGN COLUMN")[1];
     vect_temp2=split(temp1," ");
     for(int i=0; i<vect_temp2.size();i++){
 		float l=0,l1=0;

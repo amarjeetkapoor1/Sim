@@ -10,7 +10,7 @@ class job{
 	public:
 		string get(fstream &file);
 		void print();
-		int insert(int &);
+		void insert(int &);
 
 };
 

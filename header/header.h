@@ -1,3 +1,6 @@
+#ifndef _HEADER_H_
+#define _HEADER_H_
+
 #include<iostream>
 #include<fstream>
 #include<cstring>
@@ -19,3 +22,6 @@ using namespace std;
 using namespace sql;
 
 vector<string> split(string, string ,int cut=0);
+
+
+#endif
