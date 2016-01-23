@@ -26,10 +26,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `JOB`
 --
 
-CREATE TABLE IF NOT EXISTS `JOB` (
-  `serial` int(10) AUTO_INCREMENT, 
-  `jobid` int(10) ,
-  `jobname` varchar(10),
+CREATE TABLE IF NOT EXISTS `Job` (
+  `job_id` int(10) AUTO_INCREMENT, 
+  `id` varchar(100) ,
+  `name` varchar(10),
   `date` date,
   `client` varchar(100),
   `comment` TEXT,
@@ -41,23 +41,23 @@ CREATE TABLE IF NOT EXISTS `JOB` (
   `part` varchar(100),
   `rev` varchar(100),
   `approved_date` date,
-  PRIMARY KEY (`serial`)
+  PRIMARY KEY (`job_id`)
 );
 
 
-CREATE TABLE IF NOT EXISTS `MEMBER`
+CREATE TABLE IF NOT EXISTS `Member`
 (
-	`serial` int(10) NOT NULL,
+	`job_id` int(10) NOT NULL,
 	`member_id` int(10),
-	PRIMARY KEY(`member_id`, `serial`)
+	PRIMARY KEY(`member_id`, `job_id`)
 );
 
-CREATE TABLE IF NOT EXISTS `JOINTMEMBER`
+CREATE TABLE IF NOT EXISTS `Member_incidence`
 (
-	`serial` int(10) NOT NULL,
+	`job_id` int(10) NOT NULL,
 	`member_id` int(10),
-	`jointid` int(10),
-	PRIMARY KEY(`serial`, `member_id`, `jointid`)
+	`joint_id` int(10),
+	PRIMARY KEY(`job_id`, `member_id`, `joint_id`)
 );
 --
 -- Dumping data for table `JOB`
@@ -69,14 +69,13 @@ CREATE TABLE IF NOT EXISTS `JOINTMEMBER`
 -- Table structure for table `JOB1`
 --
 
-CREATE TABLE IF NOT EXISTS `JOINT` (
-  `serial` int(10) NOT NULL,
-  `jobid` int(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS `Joint` (
+  `job_id` int(100) NOT NULL,
   `id` int(10) NOT NULL,
-  `x`  varchar(100) NOT NULL,
-  `y`  varchar(100) NOT NULL,
-  `z`  varchar(100),
-  PRIMARY KEY (`id`,`jobid`,`serial`)
+  `x`  double NOT NULL,
+  `y`  double NOT NULL,
+  `z`  double,
+  PRIMARY KEY (`id`,`job_id`)
 );
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -49,13 +49,13 @@ struct concrete_design{
 };
 
 class job{
-	string engineer, date,name,client,jobid,comment;
+	string date,name,client,job_id,comment;
 	string checker_name,engineer_name,approved_name,checker_date;
 	string ref,part,rev,approved_date;
 	public:
 		string get(fstream &file);
 		void print();
-		int insert(int &);
+		void insert(int &);
 
 };
 	
@@ -77,12 +77,12 @@ class structure{
 	public:
 		structure(fstream &file);
 		void print();	
-		void material3(string);
+		void get_material(string);
 		void get_member_pro(string);
 		void get_design(string);
 		void get_joint(string str);
 		void insert();
-		void insert_member(int j,int z);
+		void insert_member(int z);
 		
 };
 

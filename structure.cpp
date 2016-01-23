@@ -1,11 +1,101 @@
 #include "header/structure.h"
 
 
+string job:: get( fstream &file){
+	string str="", temp, temp1;
+    vector<string> vect_temp2;
+    vector<string> vect_temp3;
+    char ch;
+    
+    //replacing newline wiht space
+    while(file.get(ch))
+    {
+        if(ch=='\r')
+        	continue;
+        str+=ch;
+    }
+    
+	//get enginner name 
+    temp=split(str, "START JOB INFORMATION")[1];
+    temp1=split(temp, "END JOB INFORMATION")[0];
+   	vect_temp2=split(temp1, "\n");
+   	for(int i=0;i<vect_temp2.size();i++)
+   	{
+   		vect_temp3=split(vect_temp2[i], " ", 2);
+   		string h=vect_temp3[0]+vect_temp3[1];
+		if( h=="ENGINEERDATE")
+		{
+			date=vect_temp3[2];
+		}
+		if( h=="JOBNAME")
+		{
+			name=vect_temp3[2];
+		}
+		if( h=="JOBCLIENT")
+		{
+			client=vect_temp3[2];
+		}
+		if( h=="JOBNO")
+		{
+			job_id=vect_temp3[2];
+
+		}
+		if( h=="JOBREV")
+		{
+			rev=vect_temp3[2];
+		}
+		if( h=="JOBPART")
+		{
+			part=vect_temp3[2];
+			
+		}
+		if( h=="JOBREF")
+		{
+			ref=vect_temp3[2];
+			
+		}
+		if( h=="JOBCOMMENT")
+		{
+			comment=vect_temp3[2];
+			
+		}
+		if( h=="ENGINEERNAME")
+		{
+			engineer_name=vect_temp3[2];
+			
+		}
+		if( h=="CHECKERNAME")
+		{
+			checker_name=vect_temp3[2];
+			
+		}
+		if( h=="APPROVEDNAME")
+		{
+			approved_name=vect_temp3[2];
+			
+		}
+		if( h=="CHECKERDATE")
+		{
+			checker_date=vect_temp3[2];
+			
+		}
+		if( h=="APPROVEDDATE")
+		{
+			approved_date=vect_temp3[2];
+			
+		}
+   		vect_temp3.clear();
+   	}
+   	vect_temp2.clear();
+   	
+   	return str;
+}
+
 void job::print(){
     cout<<"date,"<<date<<endl;
     cout<<"JOB NAME,"<<name<<endl;
     cout<<"JOB CLIENT,"<<client<<endl;
-    cout<<"JOB NO,"<<jobid<<endl;
+    cout<<"JOB NO,"<<job_id<<endl;
     cout<<"JOB COMMENT,"<<comment<<endl;
     cout<<"CHECKER NAME,"<<checker_name<<endl;
     cout<<"ENGINEER NAME,"<<engineer_name<<endl;
@@ -18,12 +108,48 @@ void job::print(){
 
 }
 
+
+
+void job::insert(int &r){
+    sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	sql::ResultSet *result;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+
+	stmt->execute("USE Sim");
+	string query;
+	prep_stmt = con->prepareStatement("INSERT INTO Job(id, name, date, client, comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	prep_stmt->setString(1,job_id);
+	prep_stmt->setString(2,name);
+	prep_stmt->setString(3,date);
+	prep_stmt->setString(4,client);
+	prep_stmt->setString(5,comment);
+	prep_stmt->setString(6,checker_name);
+	prep_stmt->setString(7,engineer_name);
+	prep_stmt->setString(8,approved_name);
+	prep_stmt->setString(9,checker_date);
+	prep_stmt->setString(10,ref);
+	prep_stmt->setString(11,part);
+	prep_stmt->setString(12,rev);
+	prep_stmt->setString(13,approved_date);
+	prep_stmt->execute();
+	result=stmt->executeQuery("select max(job_id) from Job");
+	result->next();
+	r=result->getInt(1);
+	delete stmt;
+	delete con;
+}
+
 void structure::insert(){
 	string query;
 	int j;
 	int z;
-	j=job1.insert(z);
-	insert_member(j,z);	
+	job1.insert(z);	
 	sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
@@ -32,19 +158,17 @@ void structure::insert(){
 	driver =get_driver_instance();
 	con = driver->connect("localhost","root","hashtagme");
 	stmt = con->createStatement();
-	stmt->execute("USE SIM");
-	//istringstream(jobid)>>i;
+	stmt->execute("USE Sim");
 	for(int i=0;i<job_joints.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO JOINT(jobid,id,x,y,z,serial) VALUES (?,?,?,?,?,?)");
-		prep_stmt->setInt(1,j);
+		prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
+		prep_stmt->setInt(1,z);
 		prep_stmt->setInt(2,job_joints[i].id);
-		prep_stmt->setInt(3,job_joints[i].x);
-		prep_stmt->setInt(4,job_joints[i].y);
-		prep_stmt->setInt(5,job_joints[i].z);
-		prep_stmt->setInt(6,z);
+		prep_stmt->setDouble(3,job_joints[i].x);
+		prep_stmt->setDouble(4,job_joints[i].y);
+		prep_stmt->setDouble(5,job_joints[i].z);
 		prep_stmt->execute();
 	}
-	
+	insert_member(z);
 	
 	delete stmt;
 	delete con;
@@ -163,7 +287,7 @@ structure::structure(fstream &file)
     
     //getting material info
     temp=split(temp, "END GROUP DEFINITION")[1];
-   	material3(str);
+   	get_material(str);
      return;
     
      
@@ -177,46 +301,8 @@ structure::structure(fstream &file)
 
 
 
-int job::insert(int &r){
-    sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	sql::ResultSet *result;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
 
-	stmt->execute("USE SIM");
-	string query;
-	int i;
-	istringstream(jobid)>>i;
-	prep_stmt = con->prepareStatement("INSERT INTO JOB(jobid, jobname, date, client, comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-	prep_stmt->setInt(1,i);
-	prep_stmt->setString(2,name);
-	prep_stmt->setString(3,date);
-	prep_stmt->setString(4,client);
-	prep_stmt->setString(5,comment);
-	prep_stmt->setString(6,checker_name);
-	prep_stmt->setString(7,engineer_name);
-	prep_stmt->setString(8,approved_name);
-	prep_stmt->setString(9,checker_date);
-	prep_stmt->setString(10,ref);
-	prep_stmt->setString(11,part);
-	prep_stmt->setString(12,rev);
-	prep_stmt->setString(13,approved_date);
-	prep_stmt->execute();
-	result=stmt->executeQuery("select max(serial) from JOB");
-	result->next();
-	r=result->getInt(1);
-	delete stmt;
-	delete con;
-	return i;	
-	
-}
-
-void structure::insert_member(int j,int z){
+void structure::insert_member(int z){
 	sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
@@ -225,15 +311,14 @@ void structure::insert_member(int j,int z){
 	driver =get_driver_instance();
 	con = driver->connect("localhost","root","hashtagme");
 	stmt = con->createStatement();
-	stmt->execute("USE SIM");
-	//istringstream(jobid)>>i;
+	stmt->execute("USE Sim");
 	for(int i=0;i<job_members.size();i++){
-	prep_stmt = con->prepareStatement("INSERT INTO MEMBER(serial,member_id) VALUES (?,?)");
+	prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
 	prep_stmt->setInt(1,z);
 	prep_stmt->setInt(2,job_members[i].id);
 	prep_stmt->execute();
 	for(int k=0;k<job_members[i].joint_id.size();k++){
-        prep_stmt = con->prepareStatement("INSERT INTO JOINTMEMBER(serial,member_id,jointid) VALUES (?,?,?)");
+        prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
 		prep_stmt->setInt(1,z);
 		prep_stmt->setInt(2,job_members[i].id);
 		prep_stmt->setInt(3,job_members[i].joint_id[k]);
@@ -247,97 +332,8 @@ void structure::insert_member(int j,int z){
 
 
 
-string job:: get( fstream &file){
-	string str="", temp, temp1;
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
-    char ch;
-    
-    //replacing newline wiht space
-    while(file.get(ch))
-    {
-        if(ch=='\r')
-        	continue;
-        str+=ch;
-    }
-    
-	//get enginner name 
-    temp=split(str, "START JOB INFORMATION")[1];
-    temp1=split(temp, "END JOB INFORMATION")[0];
-   	vect_temp2=split(temp1, "\n");
-   	for(int i=0;i<vect_temp2.size();i++)
-   	{
-   		vect_temp3=split(vect_temp2[i], " ", 2);
-   		string h=vect_temp3[0]+vect_temp3[1];
-		if( h=="ENGINEERDATE")
-		{
-			date=vect_temp3[2];
-		}
-		if( h=="JOBNAME")
-		{
-			name=vect_temp3[2];
-		}
-		if( h=="JOBCLIENT")
-		{
-			client=vect_temp3[2];
-		}
-		if( h=="JOBNO")
-		{
-			jobid=vect_temp3[2];
-
-		}
-		if( h=="JOBREV")
-		{
-			rev=vect_temp3[2];
-		}
-		if( h=="JOBPART")
-		{
-			part=vect_temp3[2];
-			
-		}
-		if( h=="JOBREF")
-		{
-			ref=vect_temp3[2];
-			
-		}
-		if( h=="JOBCOMMENT")
-		{
-			comment=vect_temp3[2];
-			
-		}
-		if( h=="ENGINEERNAME")
-		{
-			engineer_name=vect_temp3[2];
-			
-		}
-		if( h=="CHECKERNAME")
-		{
-			checker_name=vect_temp3[2];
-			
-		}
-		if( h=="APPROVEDNAME")
-		{
-			approved_name=vect_temp3[2];
-			
-		}
-		if( h=="CHECKERDATE")
-		{
-			checker_date=vect_temp3[2];
-			
-		}
-		if( h=="APPROVEDDATE")
-		{
-			approved_date=vect_temp3[2];
-			
-		}
-   		vect_temp3.clear();
-   	}
-   	vect_temp2.clear();
-   	
-   	return str;
-}
 	
-void structure::material3(string str){
+void structure::get_material(string str){
 	string temp, temp1;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
