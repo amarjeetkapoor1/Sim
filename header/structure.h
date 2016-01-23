@@ -30,15 +30,15 @@ struct member{
 };
 
 struct material{
-    string name, E, alpha, type, strength, G;
-    double poison, density, damp;
+    string name, type, strength;
+    double E,poisson, alpha, density, damp , G=NULL;
 };
 
 struct mem_pro{
 	vector<int> joint_id;
 	string type;
-	float YD;
-	float ZD;
+	double YD;
+	double ZD;
 };
 
 struct code_type{
@@ -75,7 +75,9 @@ class structure{
 		void get_design(string);
 		void get_joint(string str);
 		void insert();
-		void insert_member(int z);
+		void insert_member(int );
+		void insert_material(int);
+		void insert_member_pro(int);
 		
 };
 

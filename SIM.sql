@@ -17,14 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `SIM`
+-- Database: `Sim`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `JOB`
---
 
 CREATE TABLE IF NOT EXISTS `Job` (
   `job_id` int(10) AUTO_INCREMENT, 
@@ -59,15 +54,6 @@ CREATE TABLE IF NOT EXISTS `Member_incidence`
 	`joint_id` int(10),
 	PRIMARY KEY(`job_id`, `member_id`, `joint_id`)
 );
---
--- Dumping data for table `JOB`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `JOB1`
---
 
 CREATE TABLE IF NOT EXISTS `Joint` (
   `job_id` int(100) NOT NULL,
@@ -77,6 +63,28 @@ CREATE TABLE IF NOT EXISTS `Joint` (
   `z`  double,
   PRIMARY KEY (`id`,`job_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `Job_material` (
+  `job_id` int(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `E`  double ,
+  `poisson`  double,
+  `density`  double,
+  `damp`  double,
+  `alpha`  double,
+  `G`  double,
+  `strength`  varchar(100),
+  `type` varchar(100),
+  PRIMARY KEY (`name`,`job_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `Member_property` (
+  `job_id` int(100) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `YD`  float,
+  `ZD`  float
+);
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

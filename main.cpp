@@ -30,7 +30,7 @@ int main(int argc ,char *argv[]){
 	// printing the structure information 
 	file.close();
 	s.print();
-	//s.insert();
+	s.insert();
 
 	return 0;	
 }

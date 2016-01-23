@@ -23,10 +23,95 @@ void structure::insert(){
 		prep_stmt->execute();
 	}
 	insert_member(z);
+	insert_material(z);
+	insert_member_pro(z);
+	
 	
 	delete stmt;
 	delete con;
 	
+}
+
+void structure::insert_material(int z){
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE Sim");
+	for(int i=0;i<job_material.size();i++){
+		prep_stmt = con->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		prep_stmt->setInt(1,z);
+		prep_stmt->setString(2,job_material[i].name);
+		prep_stmt->setDouble(3,job_material[i].E);
+		prep_stmt->setDouble(4,job_material[i].poisson);
+		prep_stmt->setDouble(5,job_material[i].alpha);
+		prep_stmt->setDouble(6,job_material[i].density);
+		prep_stmt->setDouble(7,job_material[i].damp);
+		prep_stmt->setDouble(8,job_material[i].G);
+		prep_stmt->setString(9,job_material[i].strength);
+		prep_stmt->setString(10,job_material[i].type);
+		prep_stmt->execute();
+	}
+	
+	delete stmt;
+	delete con;
+	
+}
+
+void structure::insert_member(int z){
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE Sim");
+	for(int i=0;i<job_members.size();i++){
+		prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
+		prep_stmt->setInt(1,z);
+		prep_stmt->setInt(2,job_members[i].id);
+		prep_stmt->execute();
+		for(int k=0;k<job_members[i].joint_id.size();k++){
+        	prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+			prep_stmt->setInt(1,z);
+			prep_stmt->setInt(2,job_members[i].id);
+			prep_stmt->setInt(3,job_members[i].joint_id[k]);
+			prep_stmt->execute();
+        }
+        
+	}
+	delete stmt;
+	delete con;
+}
+
+void structure::insert_member_pro(int z){
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
+	//create a database connection using the Driver 
+	driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE Sim");
+	for(int i=0;i<member_pr.size();i++){
+		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,type,YD,ZD) VALUES (?,?,?,?)");
+		prep_stmt->setInt(1,z);
+		prep_stmt->setString(2,member_pr[i].type);
+		prep_stmt->setDouble(3,member_pr[i].YD);
+		prep_stmt->setDouble(4,member_pr[i].ZD);
+		prep_stmt->execute();
+        
+	}
+	delete stmt;
+	delete con;
 }
 
 void structure::print(){
@@ -64,7 +149,7 @@ void structure::print(){
     cout<<"material definition:\n";
     cout<<"name,"<<job_material[i].name<<endl;
     cout<<"E,"<<job_material[i].E<<endl;
-    cout<<"poison,"<<job_material[i].poison<<endl;
+    cout<<"poisson,"<<job_material[i].poisson<<endl;
     cout<<"density,"<<job_material[i].density<<endl;
     cout<<"alpha,"<<job_material[i].alpha<<endl;
     cout<<"damp,"<<job_material[i].damp<<endl;
@@ -140,46 +225,15 @@ structure::structure(fstream &file)
     temp=split(temp, "END GROUP DEFINITION")[1];
    	get_material(str);
     
-     
     //gettin member properties
     get_member_pro(temp);
+    
+    return;
     //getting concerete design
     get_design(temp);
     
 
 }
-
-
-
-
-void structure::insert_member(int z){
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-	stmt->execute("USE Sim");
-	for(int i=0;i<job_members.size();i++){
-	prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
-	prep_stmt->setInt(1,z);
-	prep_stmt->setInt(2,job_members[i].id);
-	prep_stmt->execute();
-	for(int k=0;k<job_members[i].joint_id.size();k++){
-        prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
-		prep_stmt->setInt(1,z);
-		prep_stmt->setInt(2,job_members[i].id);
-		prep_stmt->setInt(3,job_members[i].joint_id[k]);
-		prep_stmt->execute();
-        }
-        
-	}
-	delete stmt;
-	delete con;
-}
-
 
 
 	
@@ -197,19 +251,19 @@ void structure::get_material(string temp){
 			vect_temp3=split(vect_temp2[i], " ", 1);
    			string h=vect_temp3[0];
 			if(i==z){
-				mater.name=vect_temp3[0]+" "+vect_temp3[1];;
+				mater.name=vect_temp3[0]+" "+vect_temp3[1];
 				j++;   
  				continue;
 			}
 			if(h=="E")
 			{
-				mater.E=vect_temp3[1];;
+				istringstream(vect_temp3[1])>>mater.E;
 				j++;   
  				continue;
 			}
 			if(h=="POISSON")
 			{
-				istringstream(vect_temp3[1])>>mater.poison;
+				istringstream(vect_temp3[1])>>mater.poisson;
 				j++;   
  				continue;
 			}
@@ -221,7 +275,7 @@ void structure::get_material(string temp){
 			}
 			if(h=="ALPHA")
 			{
-				mater.alpha=vect_temp3[1];;
+				istringstream(vect_temp3[1])>>mater.alpha;
 				j++;   
  				continue;
 			}
@@ -233,19 +287,19 @@ void structure::get_material(string temp){
 			}
 			if(h=="TYPE")
 			{	
-				mater.type=vect_temp3[1];;
+				mater.type=vect_temp3[1];
 				j++;   
  				continue;
 			}
 			if(h=="STRENGTH")
 			{
-				mater.strength=vect_temp3[1];;
+				mater.strength=vect_temp3[1];
 				j++;   
  				continue;
 			}
 			if(h=="G")
 			{
-				mater.G=vect_temp3[1];;
+				istringstream(vect_temp3[1])>>mater.G;
 				j++;   
  				continue;
 			}
