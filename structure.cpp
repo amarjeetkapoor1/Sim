@@ -102,13 +102,20 @@ void structure::insert_member_pro(int z){
 	stmt = con->createStatement();
 	stmt->execute("USE Sim");
 	for(int i=0;i<member_pr.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,type,YD,ZD) VALUES (?,?,?,?)");
+		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
-		prep_stmt->setString(2,member_pr[i].type);
-		prep_stmt->setDouble(3,member_pr[i].YD);
-		prep_stmt->setDouble(4,member_pr[i].ZD);
+		prep_stmt->setInt(2,i);
+		prep_stmt->setString(3,member_pr[i].type);
+		prep_stmt->setDouble(4,member_pr[i].YD);
+		prep_stmt->setDouble(5,member_pr[i].ZD);
 		prep_stmt->execute();
-        
+		for(int j=0; j<member_pr[i].joint_id.size();j++){
+			prep_stmt = con->prepareStatement("UPDATE Member SET member_property = ? where job_id = ? and member_id= ?");
+			prep_stmt->setDouble(1,i);
+			prep_stmt->setDouble(2,z);
+			prep_stmt->setInt(3,member_pr[i].joint_id[j]);
+			prep_stmt->execute();
+		}
 	}
 	delete stmt;
 	delete con;

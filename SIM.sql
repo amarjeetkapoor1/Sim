@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `Member`
 (
 	`job_id` int(10) NOT NULL,
 	`member_id` int(10),
+	`member_property` int(10),
 	PRIMARY KEY(`member_id`, `job_id`)
 );
 
@@ -79,10 +80,12 @@ CREATE TABLE IF NOT EXISTS `Job_material` (
 );
 
 CREATE TABLE IF NOT EXISTS `Member_property` (
-  `job_id` int(100) NOT NULL,
+  `job_id` int(10) NOT NULL,
+   `id` int(10) NOT NULL,
   `type` varchar(100) NOT NULL,
   `YD`  float,
-  `ZD`  float
+  `ZD`  float,
+  PRIMARY KEY (`id`,`job_id`)
 );
 
 
