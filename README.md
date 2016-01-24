@@ -16,7 +16,9 @@ staad.pro
 
 	cd Path/to/This/	
 	make
-	mysql -u root -p Sim <SIM.sql 
+	mysql -u root -p Sim <Sim.sql 
 	
 # Running
 	./main.sh Name_of_std_file Name_of_destionation_file
+	
+	

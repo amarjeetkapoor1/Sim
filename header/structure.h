@@ -35,7 +35,7 @@ struct material{
 };
 
 struct mem_pro{
-	vector<int> joint_id;
+	vector<int> member_id;
 	string type;
 	double YD;
 	double ZD;
@@ -55,6 +55,10 @@ struct concrete_design{
 class structure{
 
 	job job1;
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *con;
+	sql::PreparedStatement  *prep_stmt;
 	string width, unit, group;
     vector<joint> job_joints;
     vector<member> job_members;
@@ -78,6 +82,7 @@ class structure{
 		void insert_member(int );
 		void insert_material(int);
 		void insert_member_pro(int);
+		~structure();
 		
 };
 

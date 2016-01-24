@@ -3,16 +3,6 @@
 void structure::insert(){
 	int z;
 	job1.insert(z);	
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-	stmt->execute("USE Sim");
 	for(int i=0;i<job_joints.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -26,23 +16,9 @@ void structure::insert(){
 	insert_material(z);
 	insert_member_pro(z);
 	
-	
-	delete stmt;
-	delete con;
-	
 }
 
 void structure::insert_material(int z){
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-	stmt->execute("USE Sim");
 	for(int i=0;i<job_material.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -58,21 +34,11 @@ void structure::insert_material(int z){
 		prep_stmt->execute();
 	}
 	
-	delete stmt;
-	delete con;
 	
 }
 
 void structure::insert_member(int z){
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-	stmt->execute("USE Sim");
+	 
 	for(int i=0;i<job_members.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
 		prep_stmt->setInt(1,z);
@@ -87,20 +53,11 @@ void structure::insert_member(int z){
         }
         
 	}
-	delete stmt;
-	delete con;
+
 }
 
 void structure::insert_member_pro(int z){
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
-	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
-	stmt = con->createStatement();
-	stmt->execute("USE Sim");
+	
 	for(int i=0;i<member_pr.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -109,18 +66,22 @@ void structure::insert_member_pro(int z){
 		prep_stmt->setDouble(4,member_pr[i].YD);
 		prep_stmt->setDouble(5,member_pr[i].ZD);
 		prep_stmt->execute();
-		for(int j=0; j<member_pr[i].joint_id.size();j++){
+		for(int j=0; j<member_pr[i].member_id.size();j++){
 			prep_stmt = con->prepareStatement("UPDATE Member SET member_property = ? where job_id = ? and member_id= ?");
 			prep_stmt->setDouble(1,i);
 			prep_stmt->setDouble(2,z);
-			prep_stmt->setInt(3,member_pr[i].joint_id[j]);
+			prep_stmt->setInt(3,member_pr[i].member_id[j]);
 			prep_stmt->execute();
 		}
 	}
+	
+}
+
+structure::~structure(){
 	delete stmt;
 	delete con;
 }
-
+	
 void structure::print(){
 	
 	//printing job info
@@ -170,8 +131,8 @@ void structure::print(){
     for(int i=0;i<member_pr.size();i++){
     	cout<<member_pr[i].type<<","<<member_pr[i].YD<<",";
     	cout<<member_pr[i].ZD;
-    	for(int j=0;j<member_pr[i].joint_id.size();j++)
-    		cout<<","<<member_pr[i].joint_id[j];
+    	for(int j=0;j<member_pr[i].member_id.size();j++)
+    		cout<<","<<member_pr[i].member_id[j];
     	cout<<endl;
     }
     
@@ -203,6 +164,11 @@ void structure::print(){
 structure::structure(fstream &file)   
 {
     string str="", temp;
+    
+    driver =get_driver_instance();
+	con = driver->connect("localhost","root","hashtagme");
+	stmt = con->createStatement();
+	stmt->execute("USE Sim");
     
     str=job1.get(file);
 	temp=str;
@@ -377,7 +343,7 @@ void structure::get_member_pro(string temp){
     	float l=0,l1=0;
     	if(isdigit(vect_temp2[i][0])){
     		istringstream(vect_temp2[i])>>l;
-    		(*me).joint_id.push_back(l);
+    		(*me).member_id.push_back(l);
     		continue;
     	}
     		if(vect_temp2[i]=="TO"){
@@ -385,7 +351,7 @@ void structure::get_member_pro(string temp){
     			istringstream(vect_temp2[i+1])>>l1;
     			for( int j=l+1;j<l1;j++){
     				
-    				(*me).joint_id.push_back(j);
+    				(*me).member_id.push_back(j);
     			}
     		}
     		if(vect_temp2[i]=="PRIS"){
