@@ -1,3 +1,15 @@
+/*!
+ *	\file header.cpp
+ *
+ *  \brief It contain defination of function split used to parse.    
+ *
+ *      
+ *	compiler g++
+ *
+ *  \author amarjeet singh kapoor
+ *      
+ */
+
 #include "header/header.h"
 
 vector<string> split(string str, string del,int cut){

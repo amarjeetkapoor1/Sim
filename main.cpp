@@ -1,10 +1,11 @@
-/*
- * This file contain main program for 
+/*!
+ * \file main.cpp 
+ * \brief This file contain main program for 
  * extracting information from .std
  * file regarding full structure
  * 
- * author -:
- * Amarjeet Singh Kapoor
+ * \author
+ * Amarjeet Singh Kapoor,
  * Govind Sharma
  */
 

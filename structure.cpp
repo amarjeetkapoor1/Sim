@@ -1,3 +1,15 @@
+/*!
+ *	\file structure.cpp 
+ *
+ *	\brief  It contain definitions for member functions of class structure
+ *
+ *      
+ *  Compiler  g++
+ *
+ *  \author amarjeet singh kapoor
+ *      
+ */
+
 #include "header/structure.h"
 
 void structure::insert(){
@@ -17,6 +29,7 @@ void structure::insert(){
 	insert_member_pro(z);
 	
 }
+
 
 void structure::insert_material(int z){
 	for(int i=0;i<job_material.size();i++){
@@ -45,14 +58,13 @@ void structure::insert_member(int z){
 		prep_stmt->setInt(2,job_members[i].id);
 		prep_stmt->execute();
 		for(int k=0;k<job_members[i].joint_id.size();k++){
-        	prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+      prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
 			prep_stmt->setInt(1,z);
 			prep_stmt->setInt(2,job_members[i].id);
 			prep_stmt->setInt(3,job_members[i].joint_id[k]);
 			prep_stmt->execute();
-        }
-        
-	}
+    }
+  }
 
 }
 

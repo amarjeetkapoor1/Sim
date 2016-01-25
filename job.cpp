@@ -1,7 +1,20 @@
+/*!
+ *	\file job.cpp
+ *
+ *	\brief  It contain definitions for member functions of class job
+ *
+ *      
+ *  Compiler  g++
+ *
+ *  \author amarjeet singh kapoor
+ *      
+ */
+
 #include"header/job.h"
 
 
-string job:: get( fstream &file){
+string job:: get( fstream &file)
+{
 	string str="", temp;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -91,7 +104,8 @@ string job:: get( fstream &file){
    	return str;
 }
 
-void job::print(){
+void job::print()
+{
     cout<<"date,"<<date<<endl;
     cout<<"JOB NAME,"<<name<<endl;
     cout<<"JOB CLIENT,"<<client<<endl;
@@ -110,7 +124,8 @@ void job::print(){
 
 
 
-void job::insert(int &r){
+void job::insert(int &r)
+{
     sql::Driver *driver;
 	sql::Statement *stmt;
 	sql::Connection *con;
