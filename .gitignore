@@ -31,4 +31,4 @@ Main
 *.std
 
 html/*
-latx/*
+latex/*

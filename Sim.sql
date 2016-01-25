@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2016 at 05:54 PM
+-- Generation Time: Jan 24, 2016 at 06:17 PM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -42,8 +42,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
   `rev` varchar(100) DEFAULT NULL,
   `approved_date` date DEFAULT NULL,
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -65,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `Job_material` (
   PRIMARY KEY (`name`,`job_id`),
   KEY `fk_job_id` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -99,7 +97,6 @@ CREATE TABLE IF NOT EXISTS `Member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `Member_incidence`
@@ -110,9 +107,9 @@ CREATE TABLE IF NOT EXISTS `Member_incidence` (
   `member_id` int(10) NOT NULL DEFAULT '0',
   `joint_id` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`job_id`,`member_id`,`joint_id`),
-  KEY `fk_member_id` (`member_id`)
+  KEY `fk_member_id` (`member_id`),
+  KEY `fk_joint_id` (`joint_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -130,6 +127,9 @@ CREATE TABLE IF NOT EXISTS `Member_property` (
   KEY `fk_job_id4` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Constraints for dumped tables
+--
 
 --
 -- Constraints for table `Job_material`
@@ -153,6 +153,7 @@ ALTER TABLE `Member`
 -- Constraints for table `Member_incidence`
 --
 ALTER TABLE `Member_incidence`
+  ADD CONSTRAINT `fk_joint_id` FOREIGN KEY (`joint_id`) REFERENCES `Joint` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_job_id3` FOREIGN KEY (`job_id`) REFERENCES `Joint` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_member_id` FOREIGN KEY (`member_id`) REFERENCES `Member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

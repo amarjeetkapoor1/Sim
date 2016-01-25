@@ -291,7 +291,7 @@ void structure::get_joint(string temp){
 	temp=split(temp, "JOINT COORDINATES")[1];
     temp1=split(temp, "MEMBER INCIDENCES")[0];
     vect_temp2=split(temp1, "; ");
-    for(int i=0;i<vect_temp2.size()-1;i++)
+    for(int i=0;i<vect_temp2.size();i++)
     {
         vect_temp3=split(vect_temp2[i], " ");
         joint j;
@@ -324,6 +324,7 @@ void structure::get_joint(string temp){
         }
         job_members.push_back(m);
         vect_temp3.clear();
+        
     }
     vect_temp2.clear();
 }
