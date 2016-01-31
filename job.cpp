@@ -12,6 +12,8 @@
 
 #include"header/job.h"
 
+using namespace std;
+using namespace sql;
 
 string job:: get( fstream &file)
 {
@@ -133,7 +135,7 @@ void job::insert(int &r)
 	sql::ResultSet *result;
 	//create a database connection using the Driver 
 	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
+	con = driver->connect("localhost",USER,PASSWORD);
 	stmt = con->createStatement();
 
 	stmt->execute("USE Sim");

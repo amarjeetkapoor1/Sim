@@ -12,6 +12,9 @@
 
 #include "header/structure.h"
 
+using namespace std;
+using namespace sql;
+
 void structure::insert(){
 	int z;
 	job1.insert(z);	
@@ -178,7 +181,7 @@ structure::structure(fstream &file)
     string str="", temp;
     
     driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
+	con = driver->connect("localhost",USER,PASSWORD);
 	stmt = con->createStatement();
 	stmt->execute("USE Sim");
     

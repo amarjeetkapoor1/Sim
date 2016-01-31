@@ -29,10 +29,10 @@
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
 
+#define USER "root"
+#define PASSWORD "hashtagme"
 
 using namespace std;
-using namespace sql;
-
 /*!
 	\brief This function is used to split string bases on given delimiter 
 	and for given no. of times. By default cut is 0 which means it will
@@ -41,6 +41,7 @@ using namespace sql;
 	\param del delimiter to be used
 	\param cut no. of splits to be performed
 */
+
 vector<string> split(string, string ,int cut=0);
 
 
