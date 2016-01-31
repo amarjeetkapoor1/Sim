@@ -1,6 +1,6 @@
 # Sim
 
-Stucture informatian model is software used to form database model for 
+Structure information model is software used to form database model for 
 the the given structure by extracting info from .std file made by 
 staad.pro
 
@@ -21,4 +21,6 @@ staad.pro
 # Running
 	./main.sh Name_of_std_file Name_of_destionation_file
 	
-	
+#For Documentation-:
+	cd Path/to/This/
+	doxygen Doxyfile
