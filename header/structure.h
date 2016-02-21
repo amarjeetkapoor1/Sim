@@ -76,8 +76,10 @@ class structure{
 			\brief This is constructor that is used initialize all member
 			variables.
     	*/
-		structure(fstream &file);
-		
+    	
+    	
+		structure(fstream &);
+		void get_units(string);
 		/*!
 			\brief This member function is used to print all properties 
 			of job and calls job::print() 
@@ -104,14 +106,16 @@ class structure{
 			\param temp string to be parsed
     	*/
 		void get_design(string);
-		
+		void get_design_column(string);
+		void get_design_beam(string);
+
 		/*!
 			\brief This member function is used to initialize joints 
 			and is called in structure()
 			\param temp string to be parsed
     	*/
 		void get_joint(string str);
-		
+		void get_member(string);
 		/*!
 			\brief This member function is used to insert data into DB.
     	*/

@@ -11,7 +11,7 @@ structure.o: job.o
 job.o: header.o 
 	g++ job.cpp -c 
 header.o: header.cpp
-	g++ header.cpp -c
+	g++ header.cpp -D USER=$(user) -D PASSWORD=$(password) -c
 	
 clear:
 	rm -r *.o 

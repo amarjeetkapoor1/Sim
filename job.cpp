@@ -12,6 +12,8 @@
 
 #include"header/job.h"
 
+using namespace std;
+using namespace sql;
 
 string job:: get( fstream &file)
 {
@@ -29,9 +31,15 @@ string job:: get( fstream &file)
     }
     
 	//get enginner name 
-    temp=split(str, "START JOB INFORMATION")[1];
-    temp=split(temp, "END JOB INFORMATION")[0];
+    vect_temp2=split(str, "START JOB INFORMATION");
+    if(vect_temp2.size()==1){
+    	cerr<<"NO Start job Information \n";
+    	return str;
+	}    	
+    temp=split(vect_temp2[1], "END JOB INFORMATION")[0];
+    vect_temp2.clear();
    	vect_temp2=split(temp, "\n");
+   	
    	for(int i=0;i<vect_temp2.size();i++)
    	{
    		vect_temp3=split(vect_temp2[i], " ", 2);
@@ -133,7 +141,7 @@ void job::insert(int &r)
 	sql::ResultSet *result;
 	//create a database connection using the Driver 
 	driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
+	con = driver->connect("localhost",USER,PASSWORD);
 	stmt = con->createStatement();
 
 	stmt->execute("USE Sim");

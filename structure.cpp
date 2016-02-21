@@ -12,6 +12,9 @@
 
 #include "header/structure.h"
 
+using namespace std;
+using namespace sql;
+
 void structure::insert(){
 	int z;
 	job1.insert(z);	
@@ -178,7 +181,7 @@ structure::structure(fstream &file)
     string str="", temp;
     
     driver =get_driver_instance();
-	con = driver->connect("localhost","root","hashtagme");
+	con = driver->connect("localhost",USER,PASSWORD);
 	stmt = con->createStatement();
 	stmt->execute("USE Sim");
     
@@ -192,32 +195,48 @@ structure::structure(fstream &file)
         }
     }
    
-    temp=split(temp, "END JOB INFORMATION")[1];
-	width=split(split(temp, "UNIT")[0], "INPUT WIDTH")[1];
-   
-    //get units
-    temp=split(temp, "UNIT")[1];
-    unit=split(temp, "JOINT COORDINATES")[0];
+    get_units(str);
     
     //get joint coordinates
     get_joint(temp);
+    get_member(temp);
     
     //getting group information 
     temp=split(temp, "START GROUP DEFINITION")[1];
     group=split(temp, "END GROUP DEFINITION")[0];
     
     //getting material info
-    temp=split(temp, "END GROUP DEFINITION")[1];
+    
    	get_material(str);
     
     //gettin member properties
     get_member_pro(temp);
     
-    return;
     //getting concerete design
     get_design(temp);
+    get_design_beam(temp);
+    get_design_beam(temp);
     
 
+}
+
+void structure::get_units(string temp){
+	
+	vector <string> w;
+	w=split(split(temp, "UNIT")[0], "INPUT WIDTH");
+   	
+   	if(w.size()==1){
+    	cerr<<"NO Input width \n";
+    	return ;
+	}
+	width=w[1];
+    //get units
+    w=split(temp, "UNIT");
+    if(w.size()==1){
+    	cerr<<"NO Units \n";
+    	return ;
+	}
+    unit=split(w[1], "\n")[0];
 }
 
 
@@ -225,8 +244,12 @@ structure::structure(fstream &file)
 void structure::get_material(string temp){
     vector<string> vect_temp2;
     vector<string> vect_temp3;
-    temp=split(temp, "DEFINE MATERIAL START")[1];
-    temp=split(temp, "END DEFINE MATERIAL")[0];
+    vect_temp2=split(temp, "DEFINE MATERIAL START");
+    if(vect_temp2.size()==1){
+    	cerr<<"NO Material \n";
+    	return ;
+	}
+    temp=split(vect_temp2[1], "END DEFINE MATERIAL")[0];
 	vect_temp2=split(temp, "\n");
 	for(int j=0;j<vect_temp2.size();){
 		material mater ;
@@ -297,12 +320,16 @@ void structure::get_material(string temp){
 }
 	
 void structure::get_joint(string temp){
-	string temp1;
+
     vector<string> vect_temp2;
     vector<string> vect_temp3;
-	temp=split(temp, "JOINT COORDINATES")[1];
-    temp1=split(temp, "MEMBER INCIDENCES")[0];
-    vect_temp2=split(temp1, "; ");
+	vect_temp2=split(temp, "JOINT COORDINATES");
+	if(vect_temp2.size()==1){
+    	cerr<<"NO Joint Coordinates \n";
+    	return ;
+	}
+    temp=split(vect_temp2[1], "MEMBER INCIDENCES")[0];
+    vect_temp2=split(temp, "; ");
     for(int i=0;i<vect_temp2.size();i++)
     {
         vect_temp3=split(vect_temp2[i], " ");
@@ -315,14 +342,20 @@ void structure::get_joint(string temp){
         vect_temp3.clear();
     }
     
+}
+
+void structure::get_member(string temp){
     
-    
-    vect_temp2.clear();
-    
+    vector<string> vect_temp2;
+    vector<string> vect_temp3;
     //get MEMBER INCIDENCES
-    temp=split(temp, "MEMBER INCIDENCES")[1];
-    temp1=split(temp, "START GROUP DEFINITION")[0];
-    vect_temp2=split(temp1, ";");
+    vect_temp2=split(temp, "MEMBER INCIDENCES");
+    if(vect_temp2.size()==1){
+    	cerr<<"NO Member Incidences \n";
+    	return ;
+	}
+    temp=split(vect_temp2[1], "START GROUP DEFINITION")[0];
+    vect_temp2=split(temp, ";");
     for(int i=0;i<vect_temp2.size()-1;i++)
     {	
         vect_temp3=split(vect_temp2[i], " ");
@@ -344,10 +377,12 @@ void structure::get_joint(string temp){
 void structure::get_member_pro(string temp){
 
     vector<string> vect_temp2;
-
-	temp=split(temp, "END DEFINE MATERIAL")[1];
-    temp=split(temp, "MEMBER PROPERTY INDIAN")[1];
-    temp=split(temp, "CONSTANTS")[0];
+    vect_temp2=split(temp, "MEMBER PROPERTY INDIAN");
+     if(vect_temp2.size()==1){
+    	cerr<<"NO Member Property \n";
+    	return ;
+	}
+    temp=split(vect_temp2[1], "CONSTANTS")[0];
     vect_temp2=split(temp," ");
     mem_pro *me;
     me=new mem_pro;
@@ -388,15 +423,18 @@ void structure::get_member_pro(string temp){
 
 
 void structure::get_design(string temp){
-	string temp1;
+
     vector<string> vect_temp2;
     vector<string> vect_temp3;
 	
 	//getting concrete info 
-    temp1=split(temp,"START CONCRETE DESIGN")[1];
-    temp1=split(temp1,"DESIGN BEAM")[0];
-    
-    vect_temp2=split(temp1," ");
+    vect_temp2=split(temp,"START CONCRETE DESIGN");
+     if(vect_temp2.size()==1){
+    	cerr<<"NO Concrete design \n";
+    	return ;
+	}
+    temp=split(vect_temp2[1],"DESIGN BEAM")[0];
+    vect_temp2=split(temp," ");
     
     con_des.code=vect_temp2[1];
     code_type *cd;
@@ -433,12 +471,20 @@ void structure::get_design(string temp){
    con_des.cty.push_back(*cd);
    
    
-    vect_temp2.clear();
+}
 	  
+void structure::get_design_beam(string temp){
    	//getting design beam 
-	temp1=split(temp,"DESIGN BEAM")[1];
-	temp1=split(temp1,"DESIGN COLUMN")[0];
-    vect_temp2=split(temp1," ");
+   	vector<string> vect_temp2;
+    vector<string> vect_temp3;
+    
+	vect_temp2=split(temp,"DESIGN BEAM");
+	 if(vect_temp2.size()==1){
+    	cerr<<"NO Design Beam \n";
+    	return ;
+	}
+	temp=split(vect_temp2[1],"DESIGN COLUMN")[0];
+    vect_temp2=split(temp," ");
      for(int i=0; i<vect_temp2.size();i++){
     	float l=0,l1=0;
     	if(isdigit(vect_temp2[i][0])){
@@ -456,11 +502,19 @@ void structure::get_design(string temp){
     	
     }
     
-     vect_temp2.clear();
-	
+}
+
+void structure::get_design_column(string temp){
+   	//getting design beam 
+   	vector<string> vect_temp2;
+    vector<string> vect_temp3;
 	//getting design column
-    temp1=split(temp,"DESIGN COLUMN")[1];
-    vect_temp2=split(temp1," ");
+    vect_temp2=split(temp,"DESIGN COLUMN");
+     if(vect_temp2.size()==1){
+    	cerr<<"NO Member Incidences \n";
+    	return ;
+	}
+    vect_temp2=split(vect_temp2[1]," ");
     for(int i=0; i<vect_temp2.size();i++){
 		float l=0,l1=0;
 		if(isdigit(vect_temp2[i][0])){

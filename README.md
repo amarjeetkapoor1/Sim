@@ -15,8 +15,8 @@ staad.pro
 	
 
 	cd Path/to/This/	
-	make
-	mysql -u root -p Sim <Sim.sql 
+	make user= Your_sql_username password= Your_sql_password
+	mysql -u Your_sql_username -p Sim <Sim.sql 
 	
 # Running
 	./main.sh Name_of_std_file Name_of_destionation_file
