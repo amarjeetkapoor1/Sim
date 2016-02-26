@@ -16,7 +16,7 @@
 #include "header.h"
 
 
-class job{
+class Job{
 
 	string date,name,client,job_id,comment;
 	string checker_name,engineer_name,approved_name,checker_date;

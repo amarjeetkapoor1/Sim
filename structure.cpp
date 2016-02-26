@@ -15,9 +15,9 @@
 using namespace std;
 using namespace sql;
 
-void structure::insert(){
+void Structure::insert(){
 	int z;
-	job1.insert(z);	
+	job.insert(z);	
 	for(int i=0;i<job_joints.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -27,14 +27,14 @@ void structure::insert(){
 		prep_stmt->setDouble(5,job_joints[i].z);
 		prep_stmt->execute();
 	}
-	insert_member(z);
-	insert_material(z);
-	insert_member_pro(z);
+	insertMember(z);
+	insertMaterial(z);
+	insertMemberPro(z);
 	
 }
 
 
-void structure::insert_material(int z){
+void Structure::insertMaterial(int z){
 	for(int i=0;i<job_material.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -53,7 +53,7 @@ void structure::insert_material(int z){
 	
 }
 
-void structure::insert_member(int z){
+void Structure::insertMember(int z){
 	 
 	for(int i=0;i<job_members.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
@@ -71,7 +71,7 @@ void structure::insert_member(int z){
 
 }
 
-void structure::insert_member_pro(int z){
+void Structure::insertMemberPro(int z){
 	
 	for(int i=0;i<member_pr.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
@@ -92,15 +92,15 @@ void structure::insert_member_pro(int z){
 	
 }
 
-structure::~structure(){
+Structure::~Structure(){
 	delete stmt;
 	delete con;
 }
 	
-void structure::print(){
+void Structure::print(){
 	
 	//printing job info
-	job1.print();
+	job.print();
     cout<<"width,"<<width<<endl;
     cout<<"unit,"<<unit<<endl;
     //cout<<"group:\t"<<group<<endl;
@@ -177,7 +177,7 @@ void structure::print(){
 }
 
     
-structure::structure(fstream &file)   
+Structure::Structure(fstream &file)   
 {
     string str="", temp;
     
@@ -186,7 +186,7 @@ structure::structure(fstream &file)
 	stmt = con->createStatement();
 	stmt->execute("USE Sim");
     
-    str=job1.get(file);
+    str=job.get(file);
     
     
 	temp=str;
@@ -204,14 +204,14 @@ structure::structure(fstream &file)
     }
    
    
-    get_units(str);
+    getUnits(str);
     
     
     //get joint coordinates
-    get_joint(temp);
+    getJoint(temp);
     
     
-    get_member(temp);
+    getMember(temp);
     
     
     //getting group information 
@@ -220,23 +220,23 @@ structure::structure(fstream &file)
     
     //getting material info
     
-   	get_material(str);
+   	getMaterial(str);
     
 
     //gettin member properties
-    get_member_pro(temp);
+    getMemberPro(temp);
     
-        return;
+        
     
     //getting concerete design
-    get_design(temp);
-    get_design_beam(temp);
-    get_design_beam(temp);
+    getDesign(temp);
+    getDesignBeam(temp);
+    
     
 
 }
 
-void structure::get_units(string temp){
+void Structure::getUnits(string temp){
 	
 	vector <string> w;
 	w=split(split(temp, "UNIT")[0], "INPUT WIDTH");
@@ -257,7 +257,7 @@ void structure::get_units(string temp){
 
 
 	
-void structure::get_material(string temp){
+void Structure::getMaterial(string temp){
     vector<string> vect_temp2;
     vector<string> vect_temp3;
     vect_temp2=split(temp, "DEFINE MATERIAL START");
@@ -272,7 +272,7 @@ void structure::get_material(string temp){
 	
 	
 	for(int j=0;j<vect_temp2.size();){
-		material mater ;
+		Material mater ;
 		int z=j;
 		for(int i=z;i<9+z && j<vect_temp2.size();i++)
 		{	
@@ -339,7 +339,7 @@ void structure::get_material(string temp){
    }
 }
 	
-void structure::get_joint(string temp){
+void Structure::getJoint(string temp){
 
     vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -358,7 +358,7 @@ void structure::get_joint(string temp){
     for(int i=0;i<vect_temp2.size();i++)
     {
         vect_temp3=split(vect_temp2[i], " ");
-        joint j;
+        Joint j;
         istringstream(vect_temp3[0])>>j.id;
         istringstream(vect_temp3[1])>>j.x;
         istringstream(vect_temp3[2])>>j.y;
@@ -369,7 +369,7 @@ void structure::get_joint(string temp){
     
 }
 
-void structure::get_member(string temp){
+void Structure::getMember(string temp){
     
     vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -386,7 +386,7 @@ void structure::get_member(string temp){
     for(int i=0;i<vect_temp2.size()-1;i++)
     {	
         vect_temp3=split(vect_temp2[i], " ");
-        member m;
+        Member m;
         istringstream(vect_temp3[0])>>m.id;
         for(int j=1;j<vect_temp3.size();j++)
         {
@@ -401,7 +401,7 @@ void structure::get_member(string temp){
     vect_temp2.clear();
 }
 	
-void structure::get_member_pro(string temp){
+void Structure::getMemberPro(string temp){
 
     vector<string> vect_temp3;
     vector<string> vect_temp2;
@@ -411,14 +411,14 @@ void structure::get_member_pro(string temp){
     	return ;
 	}
 	
-	cout<<vect_temp3.size();
+	
 	for(int ii=1; ii<vect_temp3.size();ii++){
 		temp=split(vect_temp3[ii], "CONSTANTS")[0];
-		cout<<temp<<endl<<ii<<endl;
+		
 		vect_temp2=split(temp," ");
 		
-		mem_pro *me;
-		me=new mem_pro;
+		MemPro *me;
+		me=new MemPro;
 		if(!isdigit(vect_temp2[0][0])){
 			string x=vect_temp2[0];
 			me->country=x;
@@ -448,22 +448,9 @@ void structure::get_member_pro(string temp){
 					(*me).ZD=l1;
 					member_pr.push_back(*me);
 					delete me;
-					mem_pro *me;
-					me=new mem_pro;
+					MemPro *me;
+					me=new MemPro;
 					me->country=x;
-					i=i+4;
-					
-				}
-				if(vect_temp2[i]=="PRIS"){
-					istringstream(vect_temp2[i+2])>>l;
-					istringstream(vect_temp2[i+4])>>l1;
-					(*me).type=vect_temp2[i];
-					(*me).YD=l;
-					(*me).ZD=l1;
-					member_pr.push_back(*me);
-					delete me;
-					mem_pro *me;
-					me=new mem_pro;
 					i=i+4;
 					
 				}
@@ -475,7 +462,7 @@ void structure::get_member_pro(string temp){
 }
 
 
-void structure::get_design(string temp){
+void Structure::getDesign(string temp){
 
     vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -490,8 +477,8 @@ void structure::get_design(string temp){
     vect_temp2=split(temp," ");
     
     con_des.code=vect_temp2[1];
-    code_type *cd;
-    cd=new code_type;
+    CodeType *cd;
+    cd=new CodeType;
 	for(int i=2; i<vect_temp2.size();i++){
 		float l=0,l1=0;
 		if(isdigit(vect_temp2[i][0])){
@@ -515,8 +502,8 @@ void structure::get_design(string temp){
 				 	 	
 				}
 				delete cd;
-				code_type *cd;
-				cd=new code_type;
+				CodeType *cd;
+				cd=new CodeType;
 				cd->code=vect_temp2[i];
 				cd->section=vect_temp2[i+1];
 				i=i+2;
@@ -535,7 +522,7 @@ void structure::get_design(string temp){
    
 }
 	  
-void structure::get_design_beam(string temp){
+void Structure::getDesignBeam(string temp){
    	//getting design beam 
    	vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -566,7 +553,7 @@ void structure::get_design_beam(string temp){
     
 }
 
-void structure::get_design_column(string temp){
+void Structure::getDesignColumn(string temp){
    	//getting design beam 
    	vector<string> vect_temp2;
     vector<string> vect_temp3;
@@ -593,3 +580,4 @@ void structure::get_design_column(string temp){
 		}
 	}
 }
+

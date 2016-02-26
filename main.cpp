@@ -26,7 +26,7 @@ int main(int argc ,char *argv[]){
 		return 1;
 	}
 	// calling the structure 
-	structure s(file);
+	Structure s(file);
 	
 	// printing the structure information 
 	file.close();

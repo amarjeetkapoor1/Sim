@@ -30,19 +30,19 @@ CREATE TABLE IF NOT EXISTS `Job` (
   `job_id` int(10) NOT NULL AUTO_INCREMENT,
   `id` varchar(100) DEFAULT NULL,
   `name` varchar(10) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` varchar(10) DEFAULT NULL,
   `client` varchar(100) DEFAULT NULL,
   `comment` text,
   `checker_name` varchar(100) DEFAULT NULL,
   `engineer_name` varchar(100) DEFAULT NULL,
   `approved_name` varchar(100) DEFAULT NULL,
-  `checker_date` date DEFAULT NULL,
+  `checker_date` varchar(10) DEFAULT NULL,
   `ref` varchar(100) DEFAULT NULL,
   `part` varchar(100) DEFAULT NULL,
   `rev` varchar(100) DEFAULT NULL,
-  `approved_date` date DEFAULT NULL,
+  `approved_date` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

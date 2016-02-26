@@ -15,7 +15,7 @@
 using namespace std;
 using namespace sql;
 
-string job:: get( fstream &file)
+string Job:: get( fstream &file)
 {
 	string str="", temp;
     vector<string> vect_temp2;
@@ -125,7 +125,7 @@ string job:: get( fstream &file)
    	return str;
 }
 
-void job::print()
+void Job::print()
 {
     cout<<"date,"<<date<<endl;
     cout<<"JOB NAME,"<<name<<endl;
@@ -145,7 +145,7 @@ void job::print()
 
 
 
-void job::insert(int &r)
+void Job::insert(int &r)
 {
     sql::Driver *driver;
 	sql::Statement *stmt;
