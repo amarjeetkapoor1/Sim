@@ -30,7 +30,7 @@ struct member{
 
 struct material{
     string name, type, strength;
-    double E,poisson, alpha, density, damp , G=NULL;
+    double E,poisson, alpha, density, damp , G=9.8;
 };
 
 struct mem_pro{
@@ -38,7 +38,9 @@ struct mem_pro{
 	string type;
 	double YD;
 	double ZD;
+	double ZB;
 };
+
 
 struct code_type{
 	string code;
@@ -79,6 +81,12 @@ class structure{
     	
     	
 		structure(fstream &);
+		
+		/*!
+			\brief This member function is used to get units nad input widht
+			 and is called in structure()
+			\param temp string to be parsed
+    	*/
 		void get_units(string);
 		/*!
 			\brief This member function is used to print all properties 
@@ -106,7 +114,19 @@ class structure{
 			\param temp string to be parsed
     	*/
 		void get_design(string);
+		
+		/*!
+			\brief This member function is used to initialize design column 
+			and is called in structure() 
+			\param temp string to be parsed
+    	*/
 		void get_design_column(string);
+		
+		/*!
+			\brief This member function is used to initialize design beam 
+			and is called in structure() 
+			\param temp string to be parsed
+    	*/
 		void get_design_beam(string);
 
 		/*!
@@ -115,7 +135,14 @@ class structure{
 			\param temp string to be parsed
     	*/
 		void get_joint(string str);
+		
+		/*!
+			\brief This member function is used to initialize members 
+			and is called in structure()
+			\param temp string to be parsed
+    	*/
 		void get_member(string);
+		
 		/*!
 			\brief This member function is used to insert data into DB.
     	*/

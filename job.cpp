@@ -25,10 +25,22 @@ string job:: get( fstream &file)
     //replacing newline wiht space
     while(file.get(ch))
     {
+    	if(ch=='*'){
+    		while(ch!='\n' ){
+    			file.get(ch);
+    			continue;
+    		}
+    		if(ch=='\n')
+    			continue;
+    	}
         if(ch=='\r')
         	continue;
         str+=ch;
     }
+    
+    
+    
+    
     
 	//get enginner name 
     vect_temp2=split(str, "START JOB INFORMATION");
@@ -43,6 +55,7 @@ string job:: get( fstream &file)
    	for(int i=0;i<vect_temp2.size();i++)
    	{
    		vect_temp3=split(vect_temp2[i], " ", 2);
+   		
    		string h=vect_temp3[0]+vect_temp3[1];
 		if( h=="ENGINEERDATE")
 		{

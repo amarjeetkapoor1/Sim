@@ -142,8 +142,9 @@ void structure::print(){
     }
     //printing member property
     cout<<"MEMBER PROPERTY \n";
-    cout<<"TYPE, YD, ZD, Member,  Member, Member, ...... \n";
+    cout<<"country,TYPE, YD, ZD, Member,  Member, Member, ...... \n";
     for(int i=0;i<member_pr.size();i++){
+    cout<<member_pr[i].country<<",";
     	cout<<member_pr[i].type<<","<<member_pr[i].YD<<",";
     	cout<<member_pr[i].ZD;
     	for(int j=0;j<member_pr[i].member_id.size();j++)
@@ -186,31 +187,46 @@ structure::structure(fstream &file)
 	stmt->execute("USE Sim");
     
     str=job1.get(file);
+    
+    
 	temp=str;
-    for(int i=0 ; i<temp.length();i++)
+	
+	for(int i=0 ; i<temp.length();i++)
     {
+    	if(temp[i]=='*'){
+    		while(temp[i]!='\n')
+    			i++;
+    	}
         if(temp[i]=='\n' || temp[i]=='\r'){
         	temp[i]=' ';
         
         }
     }
    
+   
     get_units(str);
+    
     
     //get joint coordinates
     get_joint(temp);
+    
+    
     get_member(temp);
     
+    
     //getting group information 
-    temp=split(temp, "START GROUP DEFINITION")[1];
-    group=split(temp, "END GROUP DEFINITION")[0];
+    //temp=split(temp, "START GROUP DEFINITION")[1];
+    //group=split(temp, "END GROUP DEFINITION")[0];
     
     //getting material info
     
    	get_material(str);
     
+
     //gettin member properties
     get_member_pro(temp);
+    
+        return;
     
     //getting concerete design
     get_design(temp);
@@ -249,8 +265,12 @@ void structure::get_material(string temp){
     	cerr<<"NO Material \n";
     	return ;
 	}
+	
+	
     temp=split(vect_temp2[1], "END DEFINE MATERIAL")[0];
 	vect_temp2=split(temp, "\n");
+	
+	
 	for(int j=0;j<vect_temp2.size();){
 		material mater ;
 		int z=j;
@@ -328,8 +348,13 @@ void structure::get_joint(string temp){
     	cerr<<"NO Joint Coordinates \n";
     	return ;
 	}
+	
+	
+	
     temp=split(vect_temp2[1], "MEMBER INCIDENCES")[0];
     vect_temp2=split(temp, "; ");
+    
+    
     for(int i=0;i<vect_temp2.size();i++)
     {
         vect_temp3=split(vect_temp2[i], " ");
@@ -354,6 +379,8 @@ void structure::get_member(string temp){
     	cerr<<"NO Member Incidences \n";
     	return ;
 	}
+	
+	
     temp=split(vect_temp2[1], "START GROUP DEFINITION")[0];
     vect_temp2=split(temp, ";");
     for(int i=0;i<vect_temp2.size()-1;i++)
@@ -376,48 +403,74 @@ void structure::get_member(string temp){
 	
 void structure::get_member_pro(string temp){
 
+    vector<string> vect_temp3;
     vector<string> vect_temp2;
-    vect_temp2=split(temp, "MEMBER PROPERTY INDIAN");
-     if(vect_temp2.size()==1){
+    vect_temp3=split(temp, "MEMBER PROPERTY");
+     if(vect_temp3.size()==1){
     	cerr<<"NO Member Property \n";
     	return ;
 	}
-    temp=split(vect_temp2[1], "CONSTANTS")[0];
-    vect_temp2=split(temp," ");
-    mem_pro *me;
-    me=new mem_pro;
-    for(int i=0; i<vect_temp2.size();i++){
-    	
-    	float l=0,l1=0;
-    	if(isdigit(vect_temp2[i][0])){
-    		istringstream(vect_temp2[i])>>l;
-    		(*me).member_id.push_back(l);
-    		continue;
-    	}
-    		if(vect_temp2[i]=="TO"){
-    			istringstream(vect_temp2[i-1])>>l;
-    			istringstream(vect_temp2[i+1])>>l1;
-    			for( int j=l+1;j<l1;j++){
-    				
-    				(*me).member_id.push_back(j);
-    			}
-    		}
-    		if(vect_temp2[i]=="PRIS"){
-    			istringstream(vect_temp2[i+2])>>l;
-    			istringstream(vect_temp2[i+4])>>l1;
-    			(*me).type=vect_temp2[i];
-    			(*me).YD=l;
-    			(*me).ZD=l1;
-    			member_pr.push_back(*me);
-    			delete me;
-    			mem_pro *me;
-    			me=new mem_pro;
-    			i=i+4;
-    			
-    		}
-    	
-    }
-    vect_temp2.clear();
+	
+	cout<<vect_temp3.size();
+	for(int ii=1; ii<vect_temp3.size();ii++){
+		temp=split(vect_temp3[ii], "CONSTANTS")[0];
+		cout<<temp<<endl<<ii<<endl;
+		vect_temp2=split(temp," ");
+		
+		mem_pro *me;
+		me=new mem_pro;
+		if(!isdigit(vect_temp2[0][0])){
+			string x=vect_temp2[0];
+			me->country=x;
+		}
+		for(int i=1; i<vect_temp2.size();i++){
+			
+			float l=0,l1=0;
+			if(isdigit(vect_temp2[i][0])){
+				istringstream(vect_temp2[i])>>l;
+				(*me).member_id.push_back(l);
+				continue;
+			}
+				if(vect_temp2[i]=="TO"){
+					istringstream(vect_temp2[i-1])>>l;
+					istringstream(vect_temp2[i+1])>>l1;
+					for( int j=l+1;j<l1;j++){
+						
+						(*me).member_id.push_back(j);
+					}
+				}
+				
+				if(vect_temp2[i]=="PRIS"){
+					istringstream(vect_temp2[i+2])>>l;
+					istringstream(vect_temp2[i+4])>>l1;
+					(*me).type=vect_temp2[i];
+					(*me).YD=l;
+					(*me).ZD=l1;
+					member_pr.push_back(*me);
+					delete me;
+					mem_pro *me;
+					me=new mem_pro;
+					me->country=x;
+					i=i+4;
+					
+				}
+				if(vect_temp2[i]=="PRIS"){
+					istringstream(vect_temp2[i+2])>>l;
+					istringstream(vect_temp2[i+4])>>l1;
+					(*me).type=vect_temp2[i];
+					(*me).YD=l;
+					(*me).ZD=l1;
+					member_pr.push_back(*me);
+					delete me;
+					mem_pro *me;
+					me=new mem_pro;
+					i=i+4;
+					
+				}
+			
+		}
+	}
+    
 
 }
 
@@ -446,6 +499,8 @@ void structure::get_design(string temp){
 			cd->member_id.push_back(l);
 			continue;
 		}
+		
+		
 		if(vect_temp2[i]=="TO"){
 			istringstream(vect_temp2[i-1])>>l;
 			istringstream(vect_temp2[i+1])>>l1;
@@ -457,7 +512,7 @@ void structure::get_design(string temp){
 			if(isalpha(vect_temp2[i][0])){
 				if(i>5){
 				  	con_des.cty.push_back(*cd);
-				  	
+				 	 	
 				}
 				delete cd;
 				code_type *cd;
@@ -465,6 +520,13 @@ void structure::get_design(string temp){
 				cd->code=vect_temp2[i];
 				cd->section=vect_temp2[i+1];
 				i=i+2;
+				if(vect_temp2[i]=="ALL"){
+    			
+    			for(int ii=0;ii<job_joints.size();ii++)
+    				(*cd).member_id.push_back(job_joints[ii].id);
+    				continue;
+    		}
+				
 			}
 		}
 	}
