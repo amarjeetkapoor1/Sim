@@ -19,6 +19,7 @@
 #include <vector>
 #include <sstream>
 #include<cctype>
+#include<string>
 
 
 #include <mysql_connection.h>

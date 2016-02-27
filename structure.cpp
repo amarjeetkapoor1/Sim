@@ -16,21 +16,37 @@ using namespace std;
 using namespace sql;
 
 void Structure::insert(){
-	int z;
-	job.insert(z);	
-	for(int i=0;i<job_joints.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
-		prep_stmt->setInt(1,z);
-		prep_stmt->setInt(2,job_joints[i].id);
-		prep_stmt->setDouble(3,job_joints[i].x);
-		prep_stmt->setDouble(4,job_joints[i].y);
-		prep_stmt->setDouble(5,job_joints[i].z);
-		prep_stmt->execute();
+	try{
+		string message;
+		stmt->execute("start transaction");
+		int z;
+		job.insert(z);	
+		for(int i=0;i<job_joints.size();i++){
+			message="Job not Present";
+			prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
+			prep_stmt->setInt(1,z);
+			message="duplicate entry of Joint id ="+job_joints[i].id;
+			prep_stmt->setInt(2,job_joints[i].id);
+			
+			prep_stmt->setDouble(3,job_joints[i].x);
+			message="No value of x in Joint id ="+job_joints[i].id;
+			prep_stmt->setDouble(4,job_joints[i].y);
+			message="No value of y in Joint id ="+job_joints[i].id;
+			prep_stmt->setDouble(5,job_joints[i].z);
+			prep_stmt->execute();
+		}
+		insertMember(z);
+		insertMaterial(z);
+		insertMemberPro(z);
+		
+		message="ok";
+		stmt->execute("commit");
 	}
-	insertMember(z);
-	insertMaterial(z);
-	insertMemberPro(z);
-	
+	catch (sql::SQLException &e) {
+		stmt->execute("Rollback");
+		cerr<<message;
+		cerr<<" \n so transaction terminated \n";
+	}
 }
 
 
@@ -38,7 +54,9 @@ void Structure::insertMaterial(int z){
 	for(int i=0;i<job_material.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
+		message="No name of material";
 		prep_stmt->setString(2,job_material[i].name);
+		
 		prep_stmt->setDouble(3,job_material[i].E);
 		prep_stmt->setDouble(4,job_material[i].poisson);
 		prep_stmt->setDouble(5,job_material[i].alpha);
@@ -54,25 +72,29 @@ void Structure::insertMaterial(int z){
 }
 
 void Structure::insertMember(int z){
-	 
-	for(int i=0;i<job_members.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
-		prep_stmt->setInt(1,z);
-		prep_stmt->setInt(2,job_members[i].id);
-		prep_stmt->execute();
-		for(int k=0;k<job_members[i].joint_id.size();k++){
-      prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+		for(int i=0;i<job_members.size();i++){
+			prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
 			prep_stmt->setInt(1,z);
+			stringstream sstm;
+			sstm<<"Duplicate Member id = "<<job_members[i].id;
+			message = sstm.str();
 			prep_stmt->setInt(2,job_members[i].id);
-			prep_stmt->setInt(3,job_members[i].joint_id[k]);
 			prep_stmt->execute();
-    }
-  }
-
+			for(int k=0;k<job_members[i].joint_id.size();k++){
+		  prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+				prep_stmt->setInt(1,z);
+				prep_stmt->setInt(2,job_members[i].id);
+				stringstream sstm1;
+				sstm1<<" wrong JOINT id "<<job_members[i].joint_id[k]<<" in member ="<<job_members[i].id;
+				message = sstm1.str();
+				prep_stmt->setInt(3,job_members[i].joint_id[k]);
+				prep_stmt->execute();
+		}
+	  }
 }
 
 void Structure::insertMemberPro(int z){
-	
+
 	for(int i=0;i<member_pr.size();i++){
 		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
@@ -89,7 +111,6 @@ void Structure::insertMemberPro(int z){
 			prep_stmt->execute();
 		}
 	}
-	
 }
 
 Structure::~Structure(){
