@@ -16,11 +16,14 @@
 #include"header.h"
 #include"job.h"
 
-
-
+//add an attribute to the joints struct:
 struct Joint{
+
     int id;
     double x, y, z;
+    //default value is free, and those 
+    //who are fixed will be modified in the function.
+    string support="FREE";
 };
 
 struct Member{
@@ -76,6 +79,8 @@ class Structure{
 	vector<MemPro> member_pr;
 	ConcreteDesign con_des;
 	string message;
+	
+	void getSupportsTypes(string temp1,string type);
 	public:
 		
 		/*!
@@ -146,6 +151,9 @@ class Structure{
 			\param temp string to be parsed
     	*/
 		void getMember(string);
+		
+		
+		void getSupports(string temp);
 		
 		/*!
 			\brief This member function is used to insert data into DB.

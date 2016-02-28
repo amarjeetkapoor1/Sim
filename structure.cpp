@@ -23,7 +23,7 @@ void Structure::insert(){
 		job.insert(z);	
 		for(int i=0;i<job_joints.size();i++){
 			message="Job not Present";
-			prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z) VALUES (?,?,?,?,?)");
+			prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z,support) VALUES (?,?,?,?,?,?)");
 			prep_stmt->setInt(1,z);
 			message="duplicate entry of Joint id ="+job_joints[i].id;
 			prep_stmt->setInt(2,job_joints[i].id);
@@ -33,6 +33,7 @@ void Structure::insert(){
 			prep_stmt->setDouble(4,job_joints[i].y);
 			message="No value of y in Joint id ="+job_joints[i].id;
 			prep_stmt->setDouble(5,job_joints[i].z);
+			prep_stmt->setString(6,job_joints[i].support);
 			prep_stmt->execute();
 		}
 		insertMember(z);
@@ -128,11 +129,11 @@ void Structure::print(){
     
     //printing joint coordinates
     cout<<"JOINT COORDINATES:\n";
-    cout<<"joint id , x cooordinates, y coordinates, z coordinates \n";
+    cout<<"joint id , x cooordinates, y coordinates, z coordinates  support\n";
     for(int i=0;i<job_joints.size();i++)
     {
         cout<<job_joints[i].id<<","<<job_joints[i].x<<",";
-        cout<<job_joints[i].y<<","<<job_joints[i].z<<endl;
+        cout<<job_joints[i].y<<","<<job_joints[i].z<<","<<job_joints[i].support<< endl;
     }
     
     //printing member incidences
@@ -227,7 +228,7 @@ Structure::Structure(fstream &file)
    
     getUnits(str);
     
-    
+  
     //get joint coordinates
     getJoint(temp);
     
@@ -252,7 +253,7 @@ Structure::Structure(fstream &file)
     //getting concerete design
     getDesign(temp);
     getDesignBeam(temp);
-    
+    getSupports(temp);
     
 
 }
@@ -279,76 +280,76 @@ void Structure::getUnits(string temp){
 
 	
 void Structure::getMaterial(string temp){
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
-    vect_temp2=split(temp, "DEFINE MATERIAL START");
-    if(vect_temp2.size()==1){
+    vector<string> vect_temp;
+    vector<string> vect_temp1;
+    vect_temp=split(temp, "DEFINE MATERIAL START");
+    if(vect_temp.size()==1){
     	cerr<<"NO Material \n";
     	return ;
 	}
 	
 	
-    temp=split(vect_temp2[1], "END DEFINE MATERIAL")[0];
-	vect_temp2=split(temp, "\n");
+    temp=split(vect_temp[1], "END DEFINE MATERIAL")[0];
+	vect_temp=split(temp, "\n");
 	
 	
-	for(int j=0;j<vect_temp2.size();){
+	for(int j=0;j<vect_temp.size();){
 		Material mater ;
 		int z=j;
-		for(int i=z;i<9+z && j<vect_temp2.size();i++)
+		for(int i=z;i<9+z && j<vect_temp.size();i++)
 		{	
-			vect_temp3=split(vect_temp2[i], " ", 1);
-   			string h=vect_temp3[0];
+			vect_temp1=split(vect_temp[i], " ", 1);
+   			string h=vect_temp1[0];
 			if(i==z){
-				mater.name=vect_temp3[0]+" "+vect_temp3[1];
+				mater.name=vect_temp1[0]+" "+vect_temp1[1];
 				j++;   
  				continue;
 			}
 			if(h=="E")
 			{
-				istringstream(vect_temp3[1])>>mater.E;
+				istringstream(vect_temp1[1])>>mater.E;
 				j++;   
  				continue;
 			}
 			if(h=="POISSON")
 			{
-				istringstream(vect_temp3[1])>>mater.poisson;
+				istringstream(vect_temp1[1])>>mater.poisson;
 				j++;   
  				continue;
 			}
 			if(h=="DENSITY")
 			{
-				istringstream(vect_temp3[1])>>mater.density;
+				istringstream(vect_temp1[1])>>mater.density;
 				j++;   
  				continue;
 			}
 			if(h=="ALPHA")
 			{
-				istringstream(vect_temp3[1])>>mater.alpha;
+				istringstream(vect_temp1[1])>>mater.alpha;
 				j++;   
  				continue;
 			}
 			if(h=="DAMP")
 			{
-				istringstream(vect_temp3[1])>>mater.damp;
+				istringstream(vect_temp1[1])>>mater.damp;
 				j++;   
 				 continue;
 			}
 			if(h=="TYPE")
 			{	
-				mater.type=vect_temp3[1];
+				mater.type=vect_temp1[1];
 				j++;   
  				continue;
 			}
 			if(h=="STRENGTH")
 			{
-				mater.strength=vect_temp3[1];
+				mater.strength=vect_temp1[1];
 				j++;   
  				continue;
 			}
 			if(h=="G")
 			{
-				istringstream(vect_temp3[1])>>mater.G;
+				istringstream(vect_temp1[1])>>mater.G;
 				j++;   
  				continue;
 			}
@@ -362,109 +363,107 @@ void Structure::getMaterial(string temp){
 	
 void Structure::getJoint(string temp){
 
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
-	vect_temp2=split(temp, "JOINT COORDINATES");
-	if(vect_temp2.size()==1){
+    vector<string> vect_temp;
+    vector<string> vect_temp1;
+	vect_temp=split(temp, "JOINT COORDINATES");
+	if(vect_temp.size()==1){
     	cerr<<"NO Joint Coordinates \n";
     	return ;
 	}
 	
-	
-	
-    temp=split(vect_temp2[1], "MEMBER INCIDENCES")[0];
-    vect_temp2=split(temp, "; ");
+    temp=split(vect_temp[1], "MEMBER INCIDENCES")[0];
+    vect_temp=split(temp, "; ");
     
     
-    for(int i=0;i<vect_temp2.size();i++)
+    for(int i=0;i<vect_temp.size();i++)
     {
-        vect_temp3=split(vect_temp2[i], " ");
+        vect_temp1=split(vect_temp[i], " ");
         Joint j;
-        istringstream(vect_temp3[0])>>j.id;
-        istringstream(vect_temp3[1])>>j.x;
-        istringstream(vect_temp3[2])>>j.y;
-        istringstream(vect_temp3[3])>>j.z;
+        istringstream(vect_temp1[0])>>j.id;
+        istringstream(vect_temp1[1])>>j.x;
+        istringstream(vect_temp1[2])>>j.y;
+        istringstream(vect_temp1[3])>>j.z;
         job_joints.push_back(j);
-        vect_temp3.clear();
+        vect_temp1.clear();
     }
     
 }
 
 void Structure::getMember(string temp){
     
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
+    vector<string> vect_temp;
+    vector<string> vect_temp1;
     //get MEMBER INCIDENCES
-    vect_temp2=split(temp, "MEMBER INCIDENCES");
-    if(vect_temp2.size()==1){
+    vect_temp=split(temp, "MEMBER INCIDENCES");
+    if(vect_temp.size()==1){
     	cerr<<"NO Member Incidences \n";
     	return ;
 	}
 	
 	
-    temp=split(vect_temp2[1], "START GROUP DEFINITION")[0];
-    vect_temp2=split(temp, ";");
-    for(int i=0;i<vect_temp2.size()-1;i++)
+    temp=split(vect_temp[1], "START GROUP DEFINITION")[0];
+    vect_temp=split(temp, ";");
+    for(int i=0;i<vect_temp.size()-1;i++)
     {	
-        vect_temp3=split(vect_temp2[i], " ");
+        vect_temp1=split(vect_temp[i], " ");
         Member m;
-        istringstream(vect_temp3[0])>>m.id;
-        for(int j=1;j<vect_temp3.size();j++)
+        istringstream(vect_temp1[0])>>m.id;
+        for(int j=1;j<vect_temp1.size();j++)
         {
             int l;
-            istringstream(vect_temp3[j])>>l;
+            istringstream(vect_temp1[j])>>l;
             m.joint_id.push_back(l);
         }
         job_members.push_back(m);
-        vect_temp3.clear();
+        vect_temp1.clear();
         
     }
-    vect_temp2.clear();
+    vect_temp.clear();
 }
 	
 void Structure::getMemberPro(string temp){
 
-    vector<string> vect_temp3;
-    vector<string> vect_temp2;
-    vect_temp3=split(temp, "MEMBER PROPERTY");
-     if(vect_temp3.size()==1){
+    vector<string> vect_temp1;
+    vector<string> vect_temp;
+    vect_temp1=split(temp, "MEMBER PROPERTY");
+     if(vect_temp1.size()==1){
     	cerr<<"NO Member Property \n";
     	return ;
 	}
 	
 	
-	for(int ii=1; ii<vect_temp3.size();ii++){
-		temp=split(vect_temp3[ii], "CONSTANTS")[0];
+	for(int ii=1; ii<vect_temp1.size();ii++){
+		temp=split(vect_temp1[ii], "CONSTANTS")[0];
 		
-		vect_temp2=split(temp," ");
+		vect_temp=split(temp," ");
 		
 		MemPro *me;
 		me=new MemPro;
-		if(!isdigit(vect_temp2[0][0])){
-			string x=vect_temp2[0];
+		if(!isdigit(vect_temp[0][0])){
+			string x=vect_temp[0];
 			me->country=x;
 		}
-		for(int i=1; i<vect_temp2.size();i++){
+		for(int i=1; i<vect_temp.size();i++){
 			
 			float l=0,l1=0;
-			if(isdigit(vect_temp2[i][0])){
-				istringstream(vect_temp2[i])>>l;
+			if(isdigit(vect_temp[i][0])){
+				istringstream(vect_temp[i])>>l;
 				(*me).member_id.push_back(l);
 				continue;
 			}
-				if(vect_temp2[i]=="TO"){
-					istringstream(vect_temp2[i-1])>>l;
-					istringstream(vect_temp2[i+1])>>l1;
+				if(vect_temp[i]=="TO"){
+					istringstream(vect_temp[i-1])>>l;
+					istringstream(vect_temp[i+1])>>l1;
 					for( int j=l+1;j<l1;j++){
 						
 						(*me).member_id.push_back(j);
 					}
 				}
 				
-				if(vect_temp2[i]=="PRIS"){
-					istringstream(vect_temp2[i+2])>>l;
-					istringstream(vect_temp2[i+4])>>l1;
-					(*me).type=vect_temp2[i];
+				if(vect_temp[i]=="PRIS"){
+					istringstream(vect_temp[i+2])>>l;
+					istringstream(vect_temp[i+4])>>l1;
+					(*me).type=vect_temp[i];
 					(*me).YD=l;
 					(*me).ZD=l1;
 					member_pr.push_back(*me);
@@ -485,39 +484,39 @@ void Structure::getMemberPro(string temp){
 
 void Structure::getDesign(string temp){
 
-    vector<string> vect_temp2;
-    vector<string> vect_temp3;
+    vector<string> vect_temp;
+    vector<string> vect_temp1;
 	
 	//getting concrete info 
-    vect_temp2=split(temp,"START CONCRETE DESIGN");
-     if(vect_temp2.size()==1){
+    vect_temp=split(temp,"START CONCRETE DESIGN");
+     if(vect_temp.size()==1){
     	cerr<<"NO Concrete design \n";
     	return ;
 	}
-    temp=split(vect_temp2[1],"DESIGN BEAM")[0];
-    vect_temp2=split(temp," ");
+    temp=split(vect_temp[1],"DESIGN BEAM")[0];
+    vect_temp=split(temp," ");
     
-    con_des.code=vect_temp2[1];
+    con_des.code=vect_temp[1];
     CodeType *cd;
     cd=new CodeType;
-	for(int i=2; i<vect_temp2.size();i++){
+	for(int i=2; i<vect_temp.size();i++){
 		float l=0,l1=0;
-		if(isdigit(vect_temp2[i][0])){
-			istringstream(vect_temp2[i])>>l;
+		if(isdigit(vect_temp[i][0])){
+			istringstream(vect_temp[i])>>l;
 			cd->member_id.push_back(l);
 			continue;
 		}
 		
 		
-		if(vect_temp2[i]=="TO"){
-			istringstream(vect_temp2[i-1])>>l;
-			istringstream(vect_temp2[i+1])>>l1;
+		if(vect_temp[i]=="TO"){
+			istringstream(vect_temp[i-1])>>l;
+			istringstream(vect_temp[i+1])>>l1;
 			for( int j=l+1;j<l1;j++){
 					cd->member_id.push_back(j);
 				}
 		}
 		else{
-			if(isalpha(vect_temp2[i][0])){
+			if(isalpha(vect_temp[i][0])){
 				if(i>5){
 				  	con_des.cty.push_back(*cd);
 				 	 	
@@ -525,46 +524,44 @@ void Structure::getDesign(string temp){
 				delete cd;
 				CodeType *cd;
 				cd=new CodeType;
-				cd->code=vect_temp2[i];
-				cd->section=vect_temp2[i+1];
+				cd->code=vect_temp[i];
+				cd->section=vect_temp[i+1];
 				i=i+2;
-				if(vect_temp2[i]=="ALL"){
+				if(vect_temp[i]=="ALL"){
     			
-    			for(int ii=0;ii<job_joints.size();ii++)
-    				(*cd).member_id.push_back(job_joints[ii].id);
+    			for(int ii=0;ii<job_members.size();ii++)
+    				(*cd).member_id.push_back(job_members[ii].id);
     				continue;
     		}
 				
 			}
 		}
 	}
-   con_des.cty.push_back(*cd);
-   
-   
+   con_des.cty.push_back(*cd);  
 }
 	  
 void Structure::getDesignBeam(string temp){
    	//getting design beam 
-   	vector<string> vect_temp2;
-    vector<string> vect_temp3;
+   	vector<string> vect_temp;
+    vector<string> vect_temp1;
     
-	vect_temp2=split(temp,"DESIGN BEAM");
-	 if(vect_temp2.size()==1){
+	vect_temp=split(temp,"DESIGN BEAM");
+	 if(vect_temp.size()==1){
     	cerr<<"NO Design Beam \n";
     	return ;
 	}
-	temp=split(vect_temp2[1],"DESIGN COLUMN")[0];
-    vect_temp2=split(temp," ");
-     for(int i=0; i<vect_temp2.size();i++){
+	temp=split(vect_temp[1],"DESIGN COLUMN")[0];
+    vect_temp=split(temp," ");
+     for(int i=0; i<vect_temp.size();i++){
     	float l=0,l1=0;
-    	if(isdigit(vect_temp2[i][0])){
-    		istringstream(vect_temp2[i])>>l;
+    	if(isdigit(vect_temp[i][0])){
+    		istringstream(vect_temp[i])>>l;
     		beam.push_back(l);
     		continue;
     	}
-    	if(vect_temp2[i]=="TO"){
-    		istringstream(vect_temp2[i-1])>>l;
-    		istringstream(vect_temp2[i+1])>>l1;
+    	if(vect_temp[i]=="TO"){
+    		istringstream(vect_temp[i-1])>>l;
+    		istringstream(vect_temp[i+1])>>l1;
     		for( int j=l+1;j<l1;j++){
     				beam.push_back(j);
     			}
@@ -576,29 +573,97 @@ void Structure::getDesignBeam(string temp){
 
 void Structure::getDesignColumn(string temp){
    	//getting design beam 
-   	vector<string> vect_temp2;
-    vector<string> vect_temp3;
+   	vector<string> vect_temp;
+    vector<string> vect_temp1;
 	//getting design column
-    vect_temp2=split(temp,"DESIGN COLUMN");
-     if(vect_temp2.size()==1){
+    vect_temp=split(temp,"DESIGN COLUMN");
+     if(vect_temp.size()==1){
     	cerr<<"NO Member Incidences \n";
     	return ;
 	}
-    vect_temp2=split(vect_temp2[1]," ");
-    for(int i=0; i<vect_temp2.size();i++){
+    vect_temp=split(vect_temp[1]," ");
+    for(int i=0; i<vect_temp.size();i++){
 		float l=0,l1=0;
-		if(isdigit(vect_temp2[i][0])){
-			istringstream(vect_temp2[i])>>l;
+		if(isdigit(vect_temp[i][0])){
+			istringstream(vect_temp[i])>>l;
 			column.push_back(l);
 			continue;
 		}
-		if(vect_temp2[i]=="TO"){
-			istringstream(vect_temp2[i-1])>>l;
-			istringstream(vect_temp2[i+1])>>l1;
+		if(vect_temp[i]=="TO"){
+			istringstream(vect_temp[i-1])>>l;
+			istringstream(vect_temp[i+1])>>l1;
 			for( int j=l+1;j<l1;j++){
 				column.push_back(j);
 			}
 		}
 	}
+}
+
+void Structure::getSupports(string temp)
+{
+    temp=split(temp, "SUPPORTS")[1];
+    if(split(temp1, type).size()==1)     //check
+    {
+    	cerr<<" No Supports defined";
+        return;
+    }
+    getSupportsTypes(temp,"FIXED");
+    getSupportsTypes(temp,"HINGED");
+    getSupportsTypes(temp,"ROLLED");
+    getSupportsTypes(temp,"PINNED");
+	//add others as well
+}
+
+void Structure::getSupportsTypes(string temp1,string type)
+{
+    vector<string> vect_temp, vect_temp1; 
+    if(split(temp1, type).size()==1)     //check
+    {
+        return;
+    }
+    temp1=split(temp1, type)[0];
+    //cout<<temp1;
+    vect_temp=split(temp1, "TO");
+    temp1="";
+    for(int i=0;i<vect_temp.size();i++)
+    {
+        vect_temp1.clear();
+        vect_temp1=split(vect_temp[i], " ");
+        if(temp1!="")
+        {
+           int ii, iii;
+           istringstream(temp1)>>ii;
+           istringstream(vect_temp1[0])>>iii;
+           for(int j=ii+1;j<iii;j++)
+           {
+               //cout<<j<<endl;
+               for(int k=0;k<job_joints.size();k++)
+                {
+                    if(job_joints[k].id==j)
+                    {
+                        job_joints[k].support=type;
+                        break;
+                    }
+                }
+           }
+        }
+        for(int j=0;j<vect_temp1.size();j++)
+        {
+            if(isdigit(vect_temp1[j][0]))
+            {
+                temp1=vect_temp1[j];
+                for(int k=0;k<job_joints.size();k++)
+                {
+                    int kk;
+                    istringstream(vect_temp1[j])>>kk;
+                    if(job_joints[k].id==kk)
+                    {
+                        job_joints[k].support=type;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 

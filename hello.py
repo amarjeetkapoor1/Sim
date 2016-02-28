@@ -36,14 +36,19 @@ if(m):
 	pass
 else:
 	m="succesfull"
+
+print "Content-Type:application/octet-stream; name=\"file\"\r\n";
+print "Content-Disposition: attachment; filename=\"file\"\r\n\n";
+
 	
+
 print("""
 <h1>Message</h1>
-<a href=index.html > Main page</a> 
+<a href=index.html > Main page</a><br>
+<a href=file>see csv output file</a>  
 <p>%s</p>
 </body></html>
 """ % (m))
 
 f.close()
-os.system('rm file*')
 os.system('rm new.std')

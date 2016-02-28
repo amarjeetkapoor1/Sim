@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `Joint` (
   `x` double NOT NULL,
   `y` double NOT NULL,
   `z` double DEFAULT NULL,
+  `support` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`job_id`),
   KEY `fk_job_id2` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -128,10 +129,6 @@ CREATE TABLE IF NOT EXISTS `Member_property` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
---
-
---
 -- Constraints for table `Job_material`
 --
 ALTER TABLE `Job_material`
@@ -162,6 +159,8 @@ ALTER TABLE `Member_incidence`
 --
 ALTER TABLE `Member_property`
   ADD CONSTRAINT `fk_job_id4` FOREIGN KEY (`job_id`) REFERENCES `Job` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

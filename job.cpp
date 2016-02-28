@@ -21,10 +21,10 @@ string Job:: get( fstream &file)
     vector<string> vect_temp2;
     vector<string> vect_temp3;
     char ch;
-    
+   
     //replacing newline wiht space
     while(file.get(ch))
-    {
+    {	
     	if(ch=='*'){
     		while(ch!='\n' ){
     			file.get(ch);
