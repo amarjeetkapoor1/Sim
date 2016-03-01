@@ -16,15 +16,7 @@
 #include"header.h"
 #include"job.h"
 
-//add an attribute to the joints struct:
-struct Joint{
 
-    int id;
-    double x, y, z;
-    //default value is free, and those 
-    //who are fixed will be modified in the function.
-    string support="FREE";
-};
 
 struct Member{
     vector<int> joint_id;
@@ -65,6 +57,20 @@ struct Load{
 	bool reduce;
 };	
 
+struct JointLoad{
+    int FX=0,FY=0,FZ=0, MX=0, MY=0, MZ=0;
+};
+    
+//add an attribute to the joints struct:
+struct Joint{
+
+    int id;
+    double x, y, z;
+    //default value is free, and those 
+    //who are fixed will be modified in the function.
+    string support="FREE";
+    JointLoad jointload;
+};    
 class Structure{
 
 	Job job;
@@ -162,6 +168,7 @@ class Structure{
 		void getSupports(string);
 		void getBeta(string);
 		void getLoad(string);
+		void getJointLoad(string temp);
 		
 		/*!
 			\brief This member function is used to insert data into DB.

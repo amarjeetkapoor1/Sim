@@ -133,7 +133,7 @@ void Structure::print(){
     for(int i=0;i<job_joints.size();i++)
     {
         cout<<job_joints[i].id<<","<<job_joints[i].x<<",";
-        cout<<job_joints[i].y<<","<<job_joints[i].z<<","<<job_joints[i].support<< endl;
+        cout<<job_joints[i].y<<","<<job_joints[i].z<<","<<job_joints[i].support<<","<<job_joints[i].jointload.FX<<endl;
     }
     
     //printing member incidences
@@ -187,7 +187,7 @@ void Structure::print(){
     
     cout<<"LOAD"<<endl;
     for(int i=0;i<load.size();i++){
-    	cout<<load[i].id<<","<<load[i].type<<","<<load[i].title<<",";
+    	cout<<load[i].id<<","<<load[i].type<<","<<load[i].reduce<<","<<load[i].title<<","<<endl;
     }
     
     //printing design column
@@ -255,6 +255,7 @@ Structure::Structure(fstream &file)
     getSupports(temp);
     getBeta(str);
     getLoad(str);
+    getJointLoad(str);
     
 
 }
@@ -705,6 +706,8 @@ void Structure::getLoad(string temp){
 			ld->type=vect_temp1[0];			
 			if(vect_temp1.size()>1 && vect_temp1[1]=="REDUCIBLE")
 				ld->reduce=true;
+			else
+				ld->reduce=false;
 		}
 		
 		vect_temp1.clear();
@@ -712,5 +715,94 @@ void Structure::getLoad(string temp){
 		load.push_back(*ld);
 		 delete ld;
 	}
+}
+
+
+	
+/*JOINT LOAD
+joint-list *{ FX f 7 | FY f 8 | FZ f 9 | MX f 10 | MY f 11 | MZ f 12
+}
+
+*/
+	
+void Structure::getJointLoad(string temp){
+	string temp1;
+    vector<string> vect_temp,vect_temp1;
+    vect_temp=split(temp, "\nJOINT LOAD");
+    if(vect_temp.size()==1)
+        return;
+       
+    vect_temp=split(vect_temp[1],"\n");
+    JointLoad *jl;
+    for(int i=0;i<vect_temp.size();i++){
+    	jl= new JointLoad;
+    	vect_temp1=split(vect_temp[i]," ");
+    	if(isdigit(vect_temp1[i][0])){
+	    	for(int j=vect_temp1.size()-2;j>-1;j=j-2){
+	    		
+	    		if(isdigit(vect_temp1[j][0]) )
+	    			continue;
+				else{
+					
+					if(vect_temp1[j]=="FX"){
+						istringstream(vect_temp1[j+1])>>jl->FX;
+                        vect_temp1.pop_back();
+                        vect_temp1.pop_back();
+						continue;
+					}
+					if(vect_temp1[j]=="FY"){
+						istringstream(vect_temp1[j+1])>>jl->FY;
+                        vect_temp1.pop_back();
+                        vect_temp1.pop_back();
+						continue;
+					}
+					if(vect_temp1[j]=="FZ"){
+						istringstream(vect_temp1[j+1])>>jl->FZ;
+                        vect_temp1.pop_back();
+                        vect_temp1.pop_back();
+						continue;
+					}
+					if(vect_temp1[j]=="MX"){
+						istringstream(vect_temp1[j+1])>>jl->MX;
+                        vect_temp1.pop_back();
+                        vect_temp1.pop_back();
+						continue;
+					}
+					if(vect_temp1[j]=="MY"){
+						istringstream(vect_temp1[j+1])>>jl->MY;
+                        vect_temp1.pop_back();
+                        vect_temp1.pop_back();
+						continue;
+					}
+					if(vect_temp1[j]=="MZ"){
+						istringstream(vect_temp1[j+1])>>jl->MZ;
+                        vect_temp1.pop_back();
+						vect_temp1.pop_back();
+						continue;
+					}
+				}
+             }
+            
+            
+	    	for(int jj=0;jj<vect_temp1.size();jj++){
+	    		temp1=temp1+vect_temp1[jj]+" ";
+	    	}
+	    	vector <int>vect_temp2=toList(temp1);
+	    	for(int k=0;k<vect_temp2.size();k++){
+	    		for(int j=0;j<job_joints.size();j++){
+		            if(job_joints[j].id==vect_temp2[k]){
+		                job_joints[j].jointload=*jl;
+		                
+		            }
+            	}
+	    	}
+	    	
+          }
+          else{
+          	break;
+          	}
+	    	jl=new JointLoad;
+	 }
+	    delete jl;
 }
     

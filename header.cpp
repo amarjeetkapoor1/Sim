@@ -56,13 +56,14 @@ vector<int> toList(string temp) //this function a list of integers parsing from 
         if(retVec.size()!=0)
         {
         	in=1;
-            int x, y,z;
+            int x, y,z=1;
             x=retVec[retVec.size()-1];
             istringstream(temp3[0])>>y;
             if(temp3[1]=="BY"){
             	in=3;
             	istringstream(temp3[2])>>z;
             }
+          
             for(int i=x+z;i<=y;i=i+z)
             {
                 retVec.push_back(i);
@@ -81,3 +82,4 @@ vector<int> toList(string temp) //this function a list of integers parsing from 
     }
     return retVec;
 }
+
