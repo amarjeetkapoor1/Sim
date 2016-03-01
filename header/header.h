@@ -19,6 +19,7 @@
 #include <vector>
 #include <sstream>
 #include<cctype>
+#include<string>
 
 
 #include <mysql_connection.h>
@@ -43,6 +44,8 @@ using namespace std;
 */
 
 vector<string> split(string, string ,int cut=0);
+
+vector<int> toList(string temp);
 
 
 #endif

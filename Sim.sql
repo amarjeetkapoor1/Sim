@@ -30,19 +30,19 @@ CREATE TABLE IF NOT EXISTS `Job` (
   `job_id` int(10) NOT NULL AUTO_INCREMENT,
   `id` varchar(100) DEFAULT NULL,
   `name` varchar(10) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` varchar(10) DEFAULT NULL,
   `client` varchar(100) DEFAULT NULL,
   `comment` text,
   `checker_name` varchar(100) DEFAULT NULL,
   `engineer_name` varchar(100) DEFAULT NULL,
   `approved_name` varchar(100) DEFAULT NULL,
-  `checker_date` date DEFAULT NULL,
+  `checker_date` varchar(10) DEFAULT NULL,
   `ref` varchar(100) DEFAULT NULL,
   `part` varchar(100) DEFAULT NULL,
   `rev` varchar(100) DEFAULT NULL,
-  `approved_date` date DEFAULT NULL,
+  `approved_date` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `Joint` (
   `x` double NOT NULL,
   `y` double NOT NULL,
   `z` double DEFAULT NULL,
+  `support` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`job_id`),
   KEY `fk_job_id2` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -128,10 +129,6 @@ CREATE TABLE IF NOT EXISTS `Member_property` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
---
-
---
 -- Constraints for table `Job_material`
 --
 ALTER TABLE `Job_material`
@@ -162,6 +159,8 @@ ALTER TABLE `Member_incidence`
 --
 ALTER TABLE `Member_property`
   ADD CONSTRAINT `fk_job_id4` FOREIGN KEY (`job_id`) REFERENCES `Job` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

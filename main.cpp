@@ -22,11 +22,15 @@ int main(int argc ,char *argv[]){
 	fstream file;
 	file.open(argv[1]);
 	if(!file){
-		cout<<"cannot open file";
+		cerr<<"cannot open file";
+		return 1;
+	}
+	if ( file.peek() == std::ifstream::traits_type::eof() ){
+   		cerr<<"empty file";
 		return 1;
 	}
 	// calling the structure 
-	structure s(file);
+	Structure s(file);
 	
 	// printing the structure information 
 	file.close();

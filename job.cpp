@@ -15,21 +15,45 @@
 using namespace std;
 using namespace sql;
 
-string job:: get( fstream &file)
+string Job:: get( fstream &file)
 {
 	string str="", temp;
     vector<string> vect_temp2;
     vector<string> vect_temp3;
     char ch;
-    
+   
     //replacing newline wiht space
     while(file.get(ch))
-    {
+    {	
+    	if(ch=='*'){
+    		while(ch!='\n' ){
+    			file.get(ch);
+    			continue;
+    		}
+    		if(ch=='\n')
+    			continue;
+    	}
         if(ch=='\r')
         	continue;
         str+=ch;
     }
     
+    vect_temp2=split(str,"\n",1);
+   
+ 	if(vect_temp2.size()==1){
+ 		return str;
+ 	}
+ 	vect_temp2=split(vect_temp2[0]," ");
+ 	if(vect_temp2[0]=="STAAD" && vect_temp2.size()>1){
+ 		type=vect_temp2[1];   
+    	for(int i=2;i<vect_temp2.size();i++){
+    		title=title+vect_temp2[i];
+    	}
+    }
+    else{
+    	cerr<<"wrong std file,type structure not select \n";	
+    	return str;
+    }
 	//get enginner name 
     vect_temp2=split(str, "START JOB INFORMATION");
     if(vect_temp2.size()==1){
@@ -43,6 +67,7 @@ string job:: get( fstream &file)
    	for(int i=0;i<vect_temp2.size();i++)
    	{
    		vect_temp3=split(vect_temp2[i], " ", 2);
+   		
    		string h=vect_temp3[0]+vect_temp3[1];
 		if( h=="ENGINEERDATE")
 		{
@@ -112,8 +137,10 @@ string job:: get( fstream &file)
    	return str;
 }
 
-void job::print()
+void Job::print()
 {
+	cout<<"STAAD,"<<type<<endl;
+	cout<<"TITLE,"<<title<<endl;
     cout<<"date,"<<date<<endl;
     cout<<"JOB NAME,"<<name<<endl;
     cout<<"JOB CLIENT,"<<client<<endl;
@@ -132,7 +159,7 @@ void job::print()
 
 
 
-void job::insert(int &r)
+void Job::insert(int &r)
 {
     sql::Driver *driver;
 	sql::Statement *stmt;
