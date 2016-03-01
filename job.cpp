@@ -38,10 +38,22 @@ string Job:: get( fstream &file)
         str+=ch;
     }
     
-    
-    
-    
-    
+    vect_temp2=split(str,"\n",1);
+   
+ 	if(vect_temp2.size()==1){
+ 		return str;
+ 	}
+ 	vect_temp2=split(vect_temp2[0]," ");
+ 	if(vect_temp2[0]=="STAAD" && vect_temp2.size()>1){
+ 		type=vect_temp2[1];   
+    	for(int i=2;i<vect_temp2.size();i++){
+    		title=title+vect_temp2[i];
+    	}
+    }
+    else{
+    	cerr<<"wrong std file,type structure not select \n";	
+    	return str;
+    }
 	//get enginner name 
     vect_temp2=split(str, "START JOB INFORMATION");
     if(vect_temp2.size()==1){
@@ -127,6 +139,8 @@ string Job:: get( fstream &file)
 
 void Job::print()
 {
+	cout<<"STAAD,"<<type<<endl;
+	cout<<"TITLE,"<<title<<endl;
     cout<<"date,"<<date<<endl;
     cout<<"JOB NAME,"<<name<<endl;
     cout<<"JOB CLIENT,"<<client<<endl;

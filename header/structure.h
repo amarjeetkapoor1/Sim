@@ -30,7 +30,7 @@ struct Member{
     vector<int> joint_id;
     int id;
     string material;
-    int beta;
+    string beta="0";
 };
 
 struct Material{
@@ -59,6 +59,12 @@ struct ConcreteDesign{
 	vector<CodeType> cty;
 };
 
+struct Load{
+	int id;
+	string type,title;
+	bool reduce;
+};	
+
 class Structure{
 
 	Job job;
@@ -79,7 +85,7 @@ class Structure{
 	vector<MemPro> member_pr;
 	ConcreteDesign con_des;
 	string message;
-	
+	vector <Load> load;
 	void getSupportsTypes(string temp1,string type);
 	public:
 		
@@ -153,7 +159,9 @@ class Structure{
 		void getMember(string);
 		
 		
-		void getSupports(string temp);
+		void getSupports(string);
+		void getBeta(string);
+		void getLoad(string);
 		
 		/*!
 			\brief This member function is used to insert data into DB.

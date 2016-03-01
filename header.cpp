@@ -40,3 +40,44 @@ vector<string> split(string str, string del,int cut){
     }
     return arr;
 }
+
+vector<int> toList(string temp) //this function a list of integers parsing from a list which contains TO, can be used anywhere
+{
+	//temp is the string containg only the list of numbers separated by spaces and the occasional TO
+    vector<string> temp2, temp3;
+    vector<int> retVec;  //the vector that will returned at the end
+	//logic
+    temp2=split(temp, "TO");
+    for(int i=0;i<temp2.size();i++)
+    {
+    	int in=0;
+        temp3.clear();
+        temp3=split(temp2[i], " ");
+        if(retVec.size()!=0)
+        {
+        	in=1;
+            int x, y,z;
+            x=retVec[retVec.size()-1];
+            istringstream(temp3[0])>>y;
+            if(temp3[1]=="BY"){
+            	in=3;
+            	istringstream(temp3[2])>>z;
+            }
+            for(int i=x+z;i<=y;i=i+z)
+            {
+                retVec.push_back(i);
+            }
+        }
+        for(int j=in;j<temp3.size();j++)
+        {
+			if(!isdigit(temp3[j][0]))
+            {
+                continue;
+            }
+            int x;
+            istringstream(temp3[j])>>x;
+            retVec.push_back(x);
+        }
+    }
+    return retVec;
+}

@@ -45,5 +45,7 @@ using namespace std;
 
 vector<string> split(string, string ,int cut=0);
 
+vector<int> toList(string temp);
+
 
 #endif

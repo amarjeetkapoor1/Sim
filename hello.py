@@ -8,7 +8,7 @@ cgitb.enable()
 
 form = cgi.FieldStorage()
 
-message="meow"
+message=""
 
 #get the fileitem
 fileitem=form['userfile']
@@ -37,8 +37,8 @@ if(m):
 else:
 	m="succesfull"
 
-print "Content-Type:application/octet-stream; name=\"file\"\r\n";
-print "Content-Disposition: attachment; filename=\"file\"\r\n\n";
+#print "Content-Type:application/octet-stream; name=\"file\"\r\n";
+#print "Content-Disposition: attachment; filename=\"file\"\r\n\n";
 
 	
 

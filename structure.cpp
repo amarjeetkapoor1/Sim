@@ -138,10 +138,10 @@ void Structure::print(){
     
     //printing member incidences
     cout<<"MEMBER INCIDENCES:\n";
-    cout<<"member id , joint id ,joint id , .... \n";
+    cout<<"member id , beta ,joint id ,joint id , .... \n";
     for(int i=0;i<job_members.size();i++)
     {
-        cout<<job_members[i].id<<",";
+        cout<<job_members[i].id<<","<<job_members[i].beta<<",";
         for(int j=0;j<job_members[i].joint_id.size();j++)
         {
             cout<<job_members[i].joint_id[j]<<",";
@@ -185,10 +185,9 @@ void Structure::print(){
     	cout<<endl;
     }
     
-    //printing Design Beam
-    cout<<"Design Beam"<<endl;
-    for(int i=0;i<beam.size();i++){
-    	cout<<beam[i]<<",";
+    cout<<"LOAD"<<endl;
+    for(int i=0;i<load.size();i++){
+    	cout<<load[i].id<<","<<load[i].type<<","<<load[i].title<<",";
     }
     
     //printing design column
@@ -254,6 +253,8 @@ Structure::Structure(fstream &file)
     getDesign(temp);
     getDesignBeam(temp);
     getSupports(temp);
+    getBeta(str);
+    getLoad(str);
     
 
 }
@@ -602,11 +603,7 @@ void Structure::getDesignColumn(string temp){
 void Structure::getSupports(string temp)
 {
     temp=split(temp, "SUPPORTS")[1];
-    if(split(temp1, type).size()==1)     //check
-    {
-    	cerr<<" No Supports defined";
-        return;
-    }
+    
     getSupportsTypes(temp,"FIXED");
     getSupportsTypes(temp,"HINGED");
     getSupportsTypes(temp,"ROLLED");
@@ -614,56 +611,106 @@ void Structure::getSupports(string temp)
 	//add others as well
 }
 
-void Structure::getSupportsTypes(string temp1,string type)
+void Structure::getSupportsTypes(string temp,string type)
 {
-    vector<string> vect_temp, vect_temp1; 
-    if(split(temp1, type).size()==1)     //check
+	vector<string> temp2, temp3;
+	
+	
+    if(split(temp, type).size()==1)
     {
         return;
     }
-    temp1=split(temp1, type)[0];
-    //cout<<temp1;
-    vect_temp=split(temp1, "TO");
-    temp1="";
-    for(int i=0;i<vect_temp.size();i++)
+    temp=split(temp, type)[0];
+    vector<int> lst=toList(temp);
+    for(int i=0;i<lst.size();i++)
     {
-        vect_temp1.clear();
-        vect_temp1=split(vect_temp[i], " ");
-        if(temp1!="")
+        for(int j=0;j<job_joints.size();j++)
         {
-           int ii, iii;
-           istringstream(temp1)>>ii;
-           istringstream(vect_temp1[0])>>iii;
-           for(int j=ii+1;j<iii;j++)
-           {
-               //cout<<j<<endl;
-               for(int k=0;k<job_joints.size();k++)
-                {
-                    if(job_joints[k].id==j)
-                    {
-                        job_joints[k].support=type;
-                        break;
-                    }
-                }
-           }
-        }
-        for(int j=0;j<vect_temp1.size();j++)
-        {
-            if(isdigit(vect_temp1[j][0]))
+            if(job_joints[j].id==lst[i])
             {
-                temp1=vect_temp1[j];
-                for(int k=0;k<job_joints.size();k++)
+                job_joints[j].support=type;
+                break;
+            }
+        }
+    }
+}
+
+
+
+//temp is the big string, IT MUST NOT HAVE ITS \n REPLACED BY SPACES, USE THE \n VERSION OF THE BIG
+void Structure::getBeta(string temp){
+    
+    //temp contains the big string with \n's and not the spaces
+    string temp1;
+    vector<string> temp2;
+    vector<string> temp3;
+    temp2=split(temp, "BETA");
+    
+    temp1=split(temp2.back(), "\n")[0];
+    temp2.pop_back();
+    temp2.push_back(temp1+"\n");
+    if(temp2.size()==1)
+        return;
+    temp3=split(temp2[1], "ALL");
+    if(temp3.size()!=1)
+    {
+        for(int i=0;i<job_members.size();i++)
+        {
+            job_members[i].beta=temp3[0];
+        }
+        //return;
+    }
+    temp3.clear();
+    for(int i=1; i<temp2.size();i++)
+    {
+        temp1=split(temp2[i], "MEMB")[1];
+        vector<int> lst=toList(temp1);  //this function's definition is in the support.txt file
+        for(int k=0;k<lst.size();k++)
+        {
+            //cout<<lst[k]<<endl;
+            for(int j=0;j<job_members.size();j++)
+            {
+                if(job_members[j].id==lst[k])
                 {
-                    int kk;
-                    istringstream(vect_temp1[j])>>kk;
-                    if(job_joints[k].id==kk)
-                    {
-                        job_joints[k].support=type;
-                        break;
-                    }
+                    job_members[j].beta=split(temp2[i], "MEMB")[0];
+                    break;
                 }
             }
         }
     }
 }
 
+void Structure::getLoad(string temp){
+	string temp1;
+    vector<string> vect_temp,vect_temp1;
+    vect_temp=split(temp, "\nLOAD ");
+    if(vect_temp.size()==1)
+        return; 
+    for(int i=1 ;i<vect_temp.size();i++){
+		Load *ld;
+		ld=new Load;
+		
+		temp=split(vect_temp[i], "\n",1)[0];
+		vect_temp1=split(temp, "TITLE");
+		if(vect_temp1.size()>1){
+			
+			ld->title=vect_temp1[1];
+		}
+		temp=vect_temp1[0];
+		vect_temp1.clear();
+		vect_temp1=split(temp, "LOADTYPE");
+		if(vect_temp1.size()>1){
+			temp=vect_temp1[0];
+			vect_temp1=split(vect_temp1[1]," ");
+			ld->type=vect_temp1[0];			
+			if(vect_temp1.size()>1 && vect_temp1[1]=="REDUCIBLE")
+				ld->reduce=true;
+		}
+		
+		vect_temp1.clear();
+		istringstream(vect_temp1[0])>>ld->id;
+		load.push_back(*ld);
+		 delete ld;
+	}
+}
+    
