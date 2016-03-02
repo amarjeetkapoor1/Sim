@@ -141,7 +141,7 @@ void Structure::print(){
     cout<<"member id , beta ,joint id ,joint id , .... \n";
     for(int i=0;i<job_members.size();i++)
     {
-        cout<<job_members[i].id<<","<<job_members[i].beta<<",";
+        cout<<job_members[i].id<<","<<job_members[i].beta<<","<<job_members[i].memberload.code<<",";
         for(int j=0;j<job_members[i].joint_id.size();j++)
         {
             cout<<job_members[i].joint_id[j]<<",";
@@ -256,6 +256,7 @@ Structure::Structure(fstream &file)
     getBeta(str);
     getLoad(str);
     getJointLoad(str);
+    getMemberLoad(str);
     
 
 }
@@ -601,6 +602,17 @@ void Structure::getDesignColumn(string temp){
 	}
 }
 
+
+/*
+SUPPORTS
+{ joint-list | ni TO nj GENERATE } { PINNED | FIXED ( BUT
+release-spec (spring-spec) ) | ENFORCED ( BUT release-spec)
+}
+release-sepc = { FX | FY | FZ | MX | MY | MZ }
+spring-spec = *{KFX f1 | KFY f2 | KFZ f3 | KMX f4 | KMY f5
+| KMZ f6 }
+*/
+
 void Structure::getSupports(string temp)
 {
     temp=split(temp, "SUPPORTS")[1];
@@ -639,6 +651,23 @@ void Structure::getSupportsTypes(string temp,string type)
 
 
 //temp is the big string, IT MUST NOT HAVE ITS \n REPLACED BY SPACES, USE THE \n VERSION OF THE BIG
+/*
+CONSTANTS
+MATERIAL name { MEMBER member/element-list | (ALL) }
+\n
+Where:
+name = material name as specified in the DEFINE MATERIAL
+command (See "Define Material" on page 386 ).
+or
+\n
+{ E f 1 | G f 2 | POISSON f 3 | DENSITY f 4 | BETA { f 5  | ANGLE
+| RANGLE } | ALPHA f 6 | CDAMP f 7 } { MEMBER memb/elem-list |
+BEAM | PLATE | SOLID | (ALL) }
+{ REF f8 , f9 , f10 | REFJT f 11 | REFVECTOR f 12 f 13 f 14 } MEMBER
+memb/elem-list
+
+*/	
+
 void Structure::getBeta(string temp){
     
     //temp contains the big string with \n's and not the spaces
@@ -784,10 +813,7 @@ void Structure::getJointLoad(string temp){
              }
             
             
-	    	for(int jj=0;jj<vect_temp1.size();jj++){
-	    		temp1=temp1+vect_temp1[jj]+" ";
-	    	}
-	    	vector <int>vect_temp2=toList(temp1);
+	    	vector <int>vect_temp2=toListVector(vect_temp1);
 	    	for(int k=0;k<vect_temp2.size();k++){
 	    		for(int j=0;j<job_joints.size();j++){
 		            if(job_joints[j].id==vect_temp2[k]){
@@ -805,4 +831,54 @@ void Structure::getJointLoad(string temp){
 	 }
 	    delete jl;
 }
+
+/*
+MEMBER LOAD
+member-list { { UNI | UMOM } dir-spec f 1 f 2 f 3 f 4 | { CON |
+CMOM } dir-spec f 5 f 6 f 4 | LIN dir-spec f 7 f 8 f 9 | TRAP dir-
+spec f 10 f 11 f 12 f 13 }
+
+*/
+void Structure::getMemberLoad(string temp){
+	string temp1,cut="UNI,UMOM,CON,CMOM,LIN,TRAP",ans;
+    vector<string>vect_temp,vect_temp1;
+    vect_temp=split(temp, "\nMEMBER LOAD");
+    if(vect_temp.size()==1)
+        return;
+    vect_temp=split(vect_temp[1], "\n");
+    
+    for(int i=0;i<vect_temp.size();i++){
+    	MemberLoad *ml;
+    	ml=new MemberLoad;
+    	if(isdigit(vect_temp[i][0])){
+			vect_temp1=splitOr(vect_temp[i],cut,ml->code);
+			vector <int>vect_temp2=toList(vect_temp1[0]);
+			vect_temp1=split(vect_temp1[1]," ");
+			ml->specCode=vect_temp1[0];
+			istringstream(vect_temp1[1])>>ml->spec;
+		   	for(int j=2;j<vect_temp1.size();j++){
+		   		float a;
+		   		istringstream(vect_temp1[1])>>a;
+		   		ml->f.push_back(a);
+			}
+		   	for(int k=0;k<vect_temp2.size();k++){
+					for(int j=0;j<job_members.size();j++){
+				        if(job_members[j].id==vect_temp2[k]){
+				            job_members[j].memberload=*ml;
+				            
+				        }
+		        	}
+				}
+			ml=new MemberLoad;
+		}
+		else{
+			
+			delete ml;
+			break;
+		}
+	}		
+
+}
+
+
     

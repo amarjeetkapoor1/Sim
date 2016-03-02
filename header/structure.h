@@ -16,14 +16,20 @@
 #include"header.h"
 #include"job.h"
 
-
+struct MemberLoad{
+	string code,specCode;
+	float spec;
+	vector<int>f;
+};
 
 struct Member{
     vector<int> joint_id;
     int id;
     string material;
     string beta="0";
+    MemberLoad memberload;
 };
+
 
 struct Material{
     string name, type, strength;
@@ -160,15 +166,87 @@ class Structure{
 		/*!
 			\brief This member function is used to initialize members 
 			and is called in structure()
+			
+			JOINT  COORDINATES  (CYLINDRICAL  (REVERSE))
+			(NOCHECK)band-spec
+			i 1 , x 1 , y 1 , z 1 , ( i 2 , x 2 , y 2 , z 2 , i 3 )
+
+			REPEAT   n, xi 1 , yi 1 , zi 1 , (xi 2 , yi 2 , zi 2 ,..., xi n , yi n , zi n )
+			REPEAT  ALL   n, xi 1 , yi 1 , zi 1 , (xi 2 , yi 2 , zi 2 ,..., xi n , yi n ,
+			zi n )
 			\param temp string to be parsed
     	*/
 		void getMember(string);
-		
-		
+		/*!
+			\brief This member function is to add BETA to joint
+			
+		SUPPORTS
+		{ joint-list | ni TO nj GENERATE } { PINNED | FIXED ( BUT
+		release-spec (spring-spec) ) | ENFORCED ( BUT release-spec)
+		}
+		release-sepc = { FX | FY | FZ | MX | MY | MZ }
+		spring-spec = *{KFX f1 | KFY f2 | KFZ f3 | KMX f4 | KMY f5
+		| KMZ f6 }
+
+
+		Where:
+		ni, nj = Start and end node numbers, respectively, for generating
+		supports along a SURFACE element edge.
+		f ... f = Spring constants corresponding to support spring directions
+		1
+		6
+		X, Y, and Z and rotations about X, Y, and Z, repsectively.
+		\param temp string to be parsed
+		*/
 		void getSupports(string);
+		
+		
+		/*!
+			\brief This member function is to add BETA to joint
+			
+		CONSTANTS
+		MATERIAL name { MEMBER member/element-list | (ALL) }
+		\n
+		Where:
+		name = material name as specified in the DEFINE MATERIAL
+		command (See "Define Material" on page 386 ).
+		or
+		\n
+		{ E f 1 | G f 2 | POISSON f 3 | DENSITY f 4 | BETA { f 5  | ANGLE
+		| RANGLE } | ALPHA f 6 | CDAMP f 7 } { MEMBER memb/elem-list |
+		BEAM | PLATE | SOLID | (ALL) }
+		{ REF f8 , f9 , f10 | REFJT f 11 | REFVECTOR f 12 f 13 f 14 } MEMBER
+		memb/elem-list
+			and is called in structure()
+			\param temp string to be parsed
+    	*/
 		void getBeta(string);
+		
+		
+		/*!
+			\brief This member function is to add load
+			
+			LOADING i 1 ( LOADTYPE a 1 ) ( REDUCIBLE ) ( TITLE any_load_
+			title ) \n
+			and is called in structure()
+			\param temp string to be parsed
+    	*/
 		void getLoad(string);
+		
+		
+		/*!
+			\brief This member function is to add load to
+			joint
+			
+			JOINT LOAD
+			joint-list *{ FX f7 | FY f8 | FZ f9 | MX f10 | MY f11 | MZ f12
+}
+			and is called in structure()
+			\param temp string to be parsed
+    	*/	
 		void getJointLoad(string temp);
+		
+		void getMemberLoad(string temp);
 		
 		/*!
 			\brief This member function is used to insert data into DB.
