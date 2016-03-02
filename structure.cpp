@@ -20,7 +20,7 @@ void Structure::insert(){
 		string message;
 		stmt->execute("start transaction");
 		int z;
-		job.insert(z);	
+		job.insert(z,*con);	
 		for(int i=0;i<job_joints.size();i++){
 			message="Job not Present";
 			prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z,support) VALUES (?,?,?,?,?,?)");

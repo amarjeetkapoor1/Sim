@@ -16,6 +16,8 @@
 #include"header.h"
 #include"job.h"
 
+
+
 struct MemberLoad{
 	string code,specCode;
 	float spec;
@@ -77,6 +79,7 @@ struct Joint{
     string support="FREE";
     JointLoad jointload;
 };    
+
 class Structure{
 
 	Job job;
@@ -240,11 +243,24 @@ class Structure{
 			
 			JOINT LOAD
 			joint-list *{ FX f7 | FY f8 | FZ f9 | MX f10 | MY f11 | MZ f12
-}
+
 			and is called in structure()
 			\param temp string to be parsed
     	*/	
 		void getJointLoad(string temp);
+		
+		/*!
+			\brief This member function is to add load to
+			member
+			MEMBER LOAD
+			member-list { { UNI | UMOM } dir-spec f 1 f 2 f 3 f 4 | { CON |
+			CMOM } dir-spec f 5 f 6 f 4 | LIN dir-spec f 7 f 8 f 9 | TRAP dir-
+			spec f 10 f 11 f 12 f 13 }
+			Where:
+			dir-spec = { X | Y | Z | GX | GY | GZ | PX | PY | PZ }
+			and is called in structure()
+			\param temp string to be parsed
+    	*/
 		
 		void getMemberLoad(string temp);
 		

@@ -159,20 +159,16 @@ void Job::print()
 
 
 
-void Job::insert(int &r)
+void Job::insert(int &r,sql::Connection &con )
 {
-    sql::Driver *driver;
 	sql::Statement *stmt;
-	sql::Connection *con;
 	sql::PreparedStatement  *prep_stmt;
 	sql::ResultSet *result;
 	//create a database connection using the Driver 
-	driver =get_driver_instance();
-	con = driver->connect("localhost",USER,PASSWORD);
-	stmt = con->createStatement();
-
+	
+	stmt = con.createStatement();
 	stmt->execute("USE Sim");
-	prep_stmt = con->prepareStatement("INSERT INTO Job(id, name, date,client ,comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	prep_stmt = con.prepareStatement("INSERT INTO Job(id, name, date,client ,comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	prep_stmt->setString(1,job_id);
 	prep_stmt->setString(2,name);
 	prep_stmt->setString(3,date);
@@ -191,5 +187,4 @@ void Job::insert(int &r)
 	result->next();
 	r=result->getInt(1);
 	delete stmt;
-	delete con;
 }

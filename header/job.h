@@ -39,7 +39,7 @@ class Job{
 			property
 			\param z value of jobid
     	*/
-		void insert(int &);
+		void insert(int &,sql::Connection&);
 
 };
 
