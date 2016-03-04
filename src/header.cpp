@@ -83,3 +83,42 @@ vector<int> toList(string temp) //this function a list of integers parsing from 
     return retVec;
 }
 
+
+vector<string> splitOr(string main, string cut,string &ans ){
+	vector<string> temp,temp1;
+	temp=split(cut,",");
+	for(int i=0; i<temp.size();i++){
+		temp1=split(main,temp[i]);
+			if(temp1.size()>1){
+				ans=temp[i];
+				break;
+			}
+		}
+	return temp1;	
+}
+
+vector<string> splitOrStar(string main, string cut,vector<string> &ans ){
+	vector<string> temp,temp1,retemp;
+	temp=split(cut,",");
+	for(int i=0; i<temp.size();i++){
+		temp1=split(main,temp[i],1);
+			if(temp1.size()>1){
+				ans.push_back(temp[i]);
+				retemp.push_back(temp1[1]);
+			}
+		}
+	return retemp;	
+}
+
+
+
+
+vector<int> toListVector(vector<string> vect_temp1){
+	string temp;
+	for(int jj=0;jj<vect_temp1.size();jj++){
+	    temp=temp+vect_temp1[jj]+" ";
+	 }
+	 return toList(temp);
+}
+
+

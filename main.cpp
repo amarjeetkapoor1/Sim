@@ -11,7 +11,7 @@
 
 #include<iostream>
 #include<fstream>
-#include"header/structure.h"
+#include"src/header/structure.h"
 
 using namespace std;
 
