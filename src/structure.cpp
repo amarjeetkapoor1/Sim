@@ -1,7 +1,7 @@
 /*!
  *	\file structure.cpp 
  *
- *	\brief  It contain definitions for member functions of class structure
+ *	\brief  It contain definitions for member functions of class Structure
  *
  *      
  *  Compiler  g++
@@ -18,23 +18,12 @@ using namespace sql;
 void Structure::insert(){
 	try{
 		string message;
+		stmt->execute("USE Sim");
 		stmt->execute("start transaction");
 		int z;
-		job.insert(z,*con);	
+		job.insert(z,*connection);	
 		for(int i=0;i<job_joints.size();i++){
-			message="Job not Present";
-			prep_stmt = con->prepareStatement("INSERT INTO Joint(job_id,id,x,y,z,support) VALUES (?,?,?,?,?,?)");
-			prep_stmt->setInt(1,z);
-			message="duplicate entry of Joint id ="+job_joints[i].id;
-			prep_stmt->setInt(2,job_joints[i].id);
-			
-			prep_stmt->setDouble(3,job_joints[i].x);
-			message="No value of x in Joint id ="+job_joints[i].id;
-			prep_stmt->setDouble(4,job_joints[i].y);
-			message="No value of y in Joint id ="+job_joints[i].id;
-			prep_stmt->setDouble(5,job_joints[i].z);
-			prep_stmt->setString(6,job_joints[i].support);
-			prep_stmt->execute();
+			message=job_joints[i].insert(z,*connection);
 		}
 		insertMember(z);
 		insertMaterial(z);
@@ -53,7 +42,7 @@ void Structure::insert(){
 
 void Structure::insertMaterial(int z){
 	for(int i=0;i<job_material.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		prep_stmt = connection->prepareStatement("INSERT INTO Job_material(job_id,name,E,poisson,density,damp,alpha,G,strength,type) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
 		message="No name of material";
 		prep_stmt->setString(2,job_material[i].name);
@@ -74,7 +63,7 @@ void Structure::insertMaterial(int z){
 
 void Structure::insertMember(int z){
 		for(int i=0;i<job_members.size();i++){
-			prep_stmt = con->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
+			prep_stmt = connection->prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
 			prep_stmt->setInt(1,z);
 			stringstream sstm;
 			sstm<<"Duplicate Member id = "<<job_members[i].id;
@@ -82,7 +71,7 @@ void Structure::insertMember(int z){
 			prep_stmt->setInt(2,job_members[i].id);
 			prep_stmt->execute();
 			for(int k=0;k<job_members[i].joint_id.size();k++){
-		  prep_stmt = con->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+		  prep_stmt = connection->prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
 				prep_stmt->setInt(1,z);
 				prep_stmt->setInt(2,job_members[i].id);
 				stringstream sstm1;
@@ -97,7 +86,7 @@ void Structure::insertMember(int z){
 void Structure::insertMemberPro(int z){
 
 	for(int i=0;i<member_pr.size();i++){
-		prep_stmt = con->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
+		prep_stmt = connection->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
 		prep_stmt->setInt(1,z);
 		prep_stmt->setInt(2,i);
 		prep_stmt->setString(3,member_pr[i].type);
@@ -105,7 +94,7 @@ void Structure::insertMemberPro(int z){
 		prep_stmt->setDouble(5,member_pr[i].ZD);
 		prep_stmt->execute();
 		for(int j=0; j<member_pr[i].member_id.size();j++){
-			prep_stmt = con->prepareStatement("UPDATE Member SET member_property = ? where job_id = ? and member_id= ?");
+			prep_stmt = connection->prepareStatement("UPDATE Member SET member_property = ? where job_id = ? and member_id= ?");
 			prep_stmt->setDouble(1,i);
 			prep_stmt->setDouble(2,z);
 			prep_stmt->setInt(3,member_pr[i].member_id[j]);
@@ -116,7 +105,7 @@ void Structure::insertMemberPro(int z){
 
 Structure::~Structure(){
 	delete stmt;
-	delete con;
+	delete connection;
 }
 	
 void Load::print(){		
@@ -184,13 +173,11 @@ Structure::Structure(fstream &file)
     string str="", temp;
     
     driver =get_driver_instance();
-	con = driver->connect("localhost",USER,PASSWORD);
-	stmt = con->createStatement();
+	connection = driver->connect("localhost",USER,PASSWORD);
+	stmt = connection->createStatement();
 	stmt->execute("USE Sim");
     
     str=job.get(file);
-    
-    
 	temp=str;
 	
 	for(int i=0 ; i<temp.length();i++)
@@ -205,7 +192,7 @@ Structure::Structure(fstream &file)
         }
     }
    
-   
+   //get units
     getUnits(str);
     
   
@@ -357,8 +344,6 @@ void Structure::getJoint(string temp){
 	
     temp=split(vect_temp[1], "MEMBER INCIDENCES")[0];
     vect_temp=split(temp, "; ");
-    
-    
     for(int i=0;i<vect_temp.size();i++)
     {
         vect_temp1=split(vect_temp[i], " ");

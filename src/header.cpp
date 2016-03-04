@@ -1,7 +1,7 @@
 /*!
  *	\file header.cpp
  *
- *  \brief It contain defination of function split used to parse.    
+ *  \brief It contain defination of function split(), toList(),splitOr().. used to parse.    
  *
  *      
  *	compiler g++

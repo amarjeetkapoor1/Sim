@@ -1,7 +1,7 @@
 /*!
  *	\file job.h 
  *
- *	\brief  It contain class to define job
+ *	\brief  It contain class to define Job
  *
  *      
  *  Compiler  g++
@@ -16,7 +16,7 @@
 #include "header.h"
 
 
-class Job{
+class Job:public base{
 
 	string date,name,client,job_id,comment;
 	string checker_name,engineer_name,approved_name,checker_date;

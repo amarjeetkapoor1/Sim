@@ -1,7 +1,7 @@
 /*!
  *	\file material.cpp 
  *
- *	\brief  It contain definitions for member functions of class material
+ *	\brief  It contain definitions for member functions of class Material
  *
  *      
  *  Compiler  g++

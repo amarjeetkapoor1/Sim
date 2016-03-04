@@ -1,9 +1,12 @@
 CFLAGS=-I/header -L/usr/lib -lmysqlcppconn
 
-all: Main
+all: Main Doxygen
 
+Doxygen:
+	doxygen Doxyfile
 Main: main.cpp structure.o material.o header.o joint.o member.o job.o ConcreteDesign.o
 	g++  main.cpp structure.o ConcreteDesign.o header.o job.o joint.o member.o material.o -o Main $(CFLAGS)
+	
 
 structure.o:  
 	g++ src/structure.cpp -c 

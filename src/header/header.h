@@ -34,6 +34,17 @@
 #define PASSWORD "hashtagme"
 
 using namespace std;
+
+class base{
+	public:
+	sql::Driver *driver;
+	sql::Statement *stmt;
+	sql::Connection *connection;
+	sql::PreparedStatement  *prep_stmt;
+	sql::ResultSet *result;
+	
+};
+
 /*!
 	\brief This function is used to split string bases on given delimiter 
 	and for given no. of times. By default cut is 0 which means it will
