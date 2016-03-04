@@ -119,6 +119,9 @@ Structure::~Structure(){
 	delete con;
 }
 	
+void Load::print(){		
+	cout<<id<<","<<type<<","<<reduce<<","<<title<<","<<endl;
+}
 void Structure::print(){
 	
 	//printing job info
@@ -132,62 +135,40 @@ void Structure::print(){
     cout<<"joint id , x cooordinates, y coordinates, z coordinates  support\n";
     for(int i=0;i<job_joints.size();i++)
     {
-        cout<<job_joints[i].id<<","<<job_joints[i].x<<",";
-        cout<<job_joints[i].y<<","<<job_joints[i].z<<","<<job_joints[i].support<<","<<job_joints[i].jointload.FX<<endl;
+        job_joints[i].print();
+        cout<<endl;
     }
     
     //printing member incidences
     cout<<"MEMBER INCIDENCES:\n";
-    cout<<"member id , beta ,joint id ,joint id , .... \n";
+    cout<<"member id ,beta,joint id ,joint id , .... \n";
     for(int i=0;i<job_members.size();i++)
     {
-        cout<<job_members[i].id<<","<<job_members[i].beta<<","<<job_members[i].memberload.code<<",";
-        for(int j=0;j<job_members[i].joint_id.size();j++)
-        {
-            cout<<job_members[i].joint_id[j]<<",";
-        }
-        cout<<endl;
+        job_members[i].print();
+        cout<<endl; 
+        
     }
     
     //printing material defination
      for(int i=0;i<job_material.size();i++){
-    cout<<"material definition:\n";
-    cout<<"name,"<<job_material[i].name<<endl;
-    cout<<"E,"<<job_material[i].E<<endl;
-    cout<<"poisson,"<<job_material[i].poisson<<endl;
-    cout<<"density,"<<job_material[i].density<<endl;
-    cout<<"alpha,"<<job_material[i].alpha<<endl;
-    cout<<"damp,"<<job_material[i].damp<<endl;
-    cout<<"type,"<<job_material[i].type<<endl;
-    cout<<"strength,"<<job_material[i].strength<<endl;
-    cout<<"G,"<<job_material[i].G<<endl;
+    	job_material[i].print();
     }
+    
     //printing member property
     cout<<"MEMBER PROPERTY \n";
     cout<<"country,TYPE, YD, ZD, Member,  Member, Member, ...... \n";
     for(int i=0;i<member_pr.size();i++){
-    cout<<member_pr[i].country<<",";
-    	cout<<member_pr[i].type<<","<<member_pr[i].YD<<",";
-    	cout<<member_pr[i].ZD;
-    	for(int j=0;j<member_pr[i].member_id.size();j++)
-    		cout<<","<<member_pr[i].member_id[j];
+    	member_pr[i].print();
     	cout<<endl;
     }
     
     //printing concrete design info
-    cout<<"CONCRETE DESIGN INFORMATION"<<endl;
-    cout<<"CODE ,"<<con_des.code<<endl;
-    for(int i=0;i<con_des.cty.size();i++){
-    	cout<<con_des.cty[i].code<<","<<con_des.cty[i].section<<",";
-    	cout<<endl;
-    	for(int j=0;j<con_des.cty[i].member_id.size();j++)
-    		cout<<con_des.cty[i].member_id[j]<<",";
-    	cout<<endl;
-    }
+    con_des.print();
+    
     
     cout<<"LOAD"<<endl;
     for(int i=0;i<load.size();i++){
-    	cout<<load[i].id<<","<<load[i].type<<","<<load[i].reduce<<","<<load[i].title<<","<<endl;
+    	load[i].print();
     }
     
     //printing design column
@@ -864,8 +845,8 @@ void Structure::getMemberLoad(string temp){
 		   	for(int k=0;k<vect_temp2.size();k++){
 					for(int j=0;j<job_members.size();j++){
 				        if(job_members[j].id==vect_temp2[k]){
-				            job_members[j].memberload=*ml;
-				            
+				            job_members[j].memberload=ml;
+				            memberload.push_back(*ml);
 				        }
 		        	}
 				}

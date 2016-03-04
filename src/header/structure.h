@@ -15,70 +15,22 @@
 
 #include"header.h"
 #include"job.h"
+#include"joint.h"
+#include"member.h"
+#include"material.h"
+#include"ConcreteDesign.h"
 
 
-
-struct MemberLoad{
-	string code,specCode;
-	float spec;
-	vector<int>f;
-};
-
-struct Member{
-    vector<int> joint_id;
-    int id;
-    string material;
-    string beta="0";
-    MemberLoad memberload;
-};
-
-
-struct Material{
-    string name, type, strength;
-    double E,poisson, alpha, density, damp , G=9.8;
-};
-
-struct MemPro{
-	vector<int> member_id;
-	string type;
-	string country;
-	double YD;
-	double ZD;
-	double ZB;
-};
-
-
-struct CodeType{
-	string code;
-	string section;
-	vector<int> member_id;
-};
-
-struct ConcreteDesign{
-	string code;
-	vector<CodeType> cty;
-};
-
-struct Load{
+class Load{
+	public:
 	int id;
 	string type,title;
 	bool reduce;
+	
+	void print();
+		
 };	
-
-struct JointLoad{
-    int FX=0,FY=0,FZ=0, MX=0, MY=0, MZ=0;
-};
     
-//add an attribute to the joints struct:
-struct Joint{
-
-    int id;
-    double x, y, z;
-    //default value is free, and those 
-    //who are fixed will be modified in the function.
-    string support="FREE";
-    JointLoad jointload;
-};    
 
 class Structure{
 
@@ -101,6 +53,7 @@ class Structure{
 	ConcreteDesign con_des;
 	string message;
 	vector <Load> load;
+	vector<MemberLoad> memberload;
 	void getSupportsTypes(string temp1,string type);
 	public:
 		
