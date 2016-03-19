@@ -1,9 +1,15 @@
 CFLAGS=-I/header -L/usr/lib -lmysqlcppconn
 
-all: Main Doxygen
+all: Main Doxygen Mysql
 
 Doxygen:
 	doxygen Doxyfile
+
+Mysql:
+	mysql -u root -p$(password) -e "create database Sim;"
+	mysql -u root -p$(password) Sim<Sim.sql
+
+			
 Main: main.cpp structure.o material.o header.o joint.o member.o job.o ConcreteDesign.o
 	g++  main.cpp structure.o ConcreteDesign.o header.o job.o joint.o member.o material.o -o Main $(CFLAGS)
 	
@@ -32,3 +38,6 @@ header.o:
 clear:
 	rm -r *.o 
 	rm Main
+
+rm: clear
+	mysql -u root -p$(password) -e "drop database Sim;"

@@ -84,9 +84,19 @@ vector<int> toListVector(vector<string> vect_temp1);
 { X | Y | Z | GX | GY | GZ | PX | PY | PZ }
 	\param string string to be split
 	\param string string of delimiters
-	\param string delimiter that 
+	\param string delimiter that worked
 	\return vector<string>
 */
-vector<string> splitOr(string, string ,string&);
+vector<string> splitOr(string, string ,string&,int cut=0);
+
+/*!
+	\brief This function is used to split string bases on given delimiter based on follwing split rule
+*{ X | Y | Z | GX | GY | GZ | PX | PY | PZ }
+	\param string string to be split
+	\param string string of delimiters
+	\param vector<string> delimiter that worked
+	\return vector<string>
+*/
+vector<string> splitOrStar(string main, string cut,vector<string> &ans );
 
 #endif

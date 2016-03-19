@@ -33,3 +33,4 @@ Main
 html/*
 latex/*
 file*
+*.yy.cc

@@ -41,7 +41,8 @@ vector<string> split(string str, string del,int cut){
     return arr;
 }
 
-vector<int> toList(string temp) //this function a list of integers parsing from a list which contains TO, can be used anywhere
+//this function a list of integers parsing from a list which contains TO, can be used anywhere
+vector<int> toList(string temp) 
 {
 	//temp is the string containg only the list of numbers separated by spaces and the occasional TO
     vector<string> temp2, temp3;
@@ -84,11 +85,11 @@ vector<int> toList(string temp) //this function a list of integers parsing from 
 }
 
 
-vector<string> splitOr(string main, string cut,string &ans ){
+vector<string> splitOr(string main, string del,string &ans,int cut){
 	vector<string> temp,temp1;
-	temp=split(cut,",");
+	temp=split(del,",");
 	for(int i=0; i<temp.size();i++){
-		temp1=split(main,temp[i]);
+		temp1=split(main,temp[i],cut);
 			if(temp1.size()>1){
 				ans=temp[i];
 				break;
