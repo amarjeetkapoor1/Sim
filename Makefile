@@ -33,11 +33,17 @@ ConcreteDesign.o:
 	g++ src/ConcreteDesign.cpp -c
 	
 header.o:
-	g++ src/header.cpp -D USER=$(user) -D PASSWORD=$(password) -c
+	g++ src/header.cpp -D USER=\"$(user)\" -D PASSWORD=\"$(password)\" -c
 	
+Parse: scan.l parse.y
+	bison -d parse.y
+	flex scan.l
+	g++ -o $@ parse.tab.c lex.yy.c -lfl
 clear:
 	rm -r *.o 
 	rm Main
 
-rm: clear
-	mysql -u root -p$(password) -e "drop database Sim;"
+clean: delmysql clear
+
+delmysql:
+	mysql -u $(user) -p$(password) -e "drop database Sim;"
