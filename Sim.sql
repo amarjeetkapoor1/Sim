@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `Member` (
   `job_id` int(10) NOT NULL DEFAULT '0',
   `member_id` int(10) NOT NULL DEFAULT '0',
   `member_property` int(10) DEFAULT NULL,
-  PRIMARY KEY (`job_id`),
+  PRIMARY KEY (`member_id`,`job_id`),
   KEY `fk_job_id1` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

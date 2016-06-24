@@ -35,7 +35,11 @@ void Structure::insert(){
 	catch (sql::SQLException &e) {
 		stmt->execute("Rollback");
 		cerr<<message;
+<<<<<<< HEAD
 		cerr<<" \n sosaction terminated \n";
+=======
+		cerr<<" \n so transaction terminated \n";
+>>>>>>> 28b53d7cb588b231786ecd06b11a2f13adffd636
 	}
 }
 
@@ -86,7 +90,11 @@ void Structure::insertMember(int z){
 void Structure::insertMemberPro(int z){
 
 	for(int i=0;i<member_pr.size();i++){
+<<<<<<< HEAD
 		prep_stmt = connection->prepareStatement("INSERT INTO Member_property(job_id,idd,type,YD,ZD) VALUES (?,?,?,?,?)");
+=======
+		prep_stmt = connection->prepareStatement("INSERT INTO Member_property(job_id,id,type,YD,ZD) VALUES (?,?,?,?,?)");
+>>>>>>> 28b53d7cb588b231786ecd06b11a2f13adffd636
 		prep_stmt->setInt(1,z);
 		prep_stmt->setInt(2,i);
 		prep_stmt->setString(3,member_pr[i].type);

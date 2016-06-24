@@ -163,7 +163,11 @@ void Job::insert(int &r,sql::Connection &con )
 {
 	//create a database connection using the Driver 
 	stmt = con.createStatement();
+<<<<<<< HEAD
 	prep_stmt = con.prepareStatement("INSERT INTO Job(idd, name, date,client ,comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+=======
+	prep_stmt = con.prepareStatement("INSERT INTO Job(id, name, date,client ,comment, checker_name, engineer_name, approved_name, checker_date, ref, part, rev, approved_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+>>>>>>> 28b53d7cb588b231786ecd06b11a2f13adffd636
 	prep_stmt->setString(1,job_id);
 	prep_stmt->setString(2,name);
 	prep_stmt->setString(3,date);

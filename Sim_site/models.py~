@@ -1,0 +1,100 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from __future__ import unicode_literals
+
+from django.db import models
+
+
+class Job(models.Model):
+    job_id = models.AutoField(primary_key=True)
+    idd = models.CharField(max_length=24, blank=True, null=True)
+    name = models.CharField(max_length=10, blank=True, null=True)
+    date = models.CharField(max_length=10, blank=True, null=True)
+    client = models.CharField(max_length=24, blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    checker_name = models.CharField(max_length=24, blank=True, null=True)
+    engineer_name = models.CharField(max_length=24, blank=True, null=True)
+    approved_name = models.CharField(max_length=24, blank=True, null=True)
+    checker_date = models.CharField(max_length=10, blank=True, null=True)
+    ref = models.CharField(max_length=24, blank=True, null=True)
+    part = models.CharField(max_length=24, blank=True, null=True)
+    rev = models.CharField(max_length=24, blank=True, null=True)
+    approved_date = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        
+        db_table = 'Job'
+
+
+class JobMaterial(models.Model):
+	#job_id = models.IntegerField(primary_key=True)
+    job_id = models.ForeignKey(Job, models.DO_NOTHING, default="")
+    name = models.CharField(max_length=24, primary_key=True)
+    e = models.FloatField(db_column='E', blank=True, null=True)  # Field name made lowercase.
+    poisson = models.FloatField(blank=True, null=True)
+    density = models.FloatField(blank=True, null=True)
+    damp = models.FloatField(blank=True, null=True)
+    alpha = models.FloatField(blank=True, null=True)
+    g = models.FloatField(db_column='G', blank=True, null=True)  # Field name made lowercase.
+    strength = models.CharField(max_length=24, blank=True, null=True)
+    type = models.CharField(max_length=24, blank=True, null=True)
+
+    class Meta:
+        
+        db_table = 'Job_material'
+        unique_together = (('name', 'job_id'),)
+
+
+class Joint(models.Model):
+    Job_id = models.ForeignKey(Job, models.DO_NOTHING, default="")
+    #job = models.ForeignKey(Job, models.DO_NOTHING, default="")
+    idd = models.IntegerField(primary_key=True)
+    x = models.FloatField()
+    y = models.FloatField()
+    z = models.FloatField(blank=True, null=True)
+    support = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        
+        db_table = 'Joint'
+        unique_together = (('idd', 'job_id'),)
+
+
+class Member(models.Model):
+    job_id = models.ForeignKey(Job, models.DO_NOTHING, default="")
+    member_id = models.IntegerField(primary_key=True)
+    member_property = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        
+        db_table = 'Member'
+        unique_together = (('member_id', 'job_id'),)
+
+
+class MemberIncidence(models.Model):
+    job_id = models.ForeignKey(Job, models.DO_NOTHING, default="", primary_key=True)
+    member_id = models.ForeignKey(Member, models.DO_NOTHING, default="")
+    joint_id = models.ForeignKey(Joint, models.DO_NOTHING, default="")
+
+    class Meta:
+        
+        db_table = 'Member_incidence'
+        unique_together = (('job_id', 'member_id', 'joint_id'),)
+
+
+class MemberProperty(models.Model):
+    job = models.ForeignKey(Job, models.DO_NOTHING, default="")
+    idd = models.IntegerField()
+    type = models.CharField(max_length=24)
+    yd = models.FloatField(db_column='YD', blank=True, null=True)  # Field name made lowercase.
+    zd = models.FloatField(db_column='ZD', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        
+        db_table = 'Member_property'
+        unique_together = (('idd', 'job'),)
