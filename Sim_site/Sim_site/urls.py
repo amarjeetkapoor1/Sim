@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from Sim import views
 admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^tables/', admin.site.urls),
+    #url(r'^index/', views.index, name=index),
+    url(r'^hello',views.hello, name='hello'),
+    #url(r'^table/(?P<name>\w+)/$',views.tables, name='table'),
 ]

@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<table border="1" style="border-collapse:collapse;width:75%"align="center">
+			<tr>
+				{% for item in data|slice:":1" %}
+					{% for field, name in item.fields.items %}
+						<th>{{ field }}</th>
+					{% endfor %}
+				{% endfor %}
+			</tr>
+			{% for item in data %}
+			<tr> 
+				{% for field, value in item.fields.items %}
+					<td>{{ value }}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</table>
+
+	</body>
+</html>
