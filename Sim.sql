@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `Job` (
   `job_id` int(10) NOT NULL AUTO_INCREMENT,
-  `id` varchar(24) DEFAULT NULL,
+  `idd` varchar(24) DEFAULT NULL,
   `name` varchar(10) DEFAULT NULL,
   `date` varchar(10) DEFAULT NULL,
   `client` varchar(24) DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `Job` (
 --
 
 CREATE TABLE IF NOT EXISTS `Job_material` (
-  `job_id` int(24) NOT NULL,
+  `job_id` int(24)  NOT NULL DEFAULT '0',
   `name` varchar(24) NOT NULL,
   `E` double DEFAULT NULL,
   `poisson` double DEFAULT NULL,
@@ -72,13 +72,13 @@ CREATE TABLE IF NOT EXISTS `Job_material` (
 --
 
 CREATE TABLE IF NOT EXISTS `Joint` (
-  `job_id` int(10) NOT NULL,
-  `id` int(10) NOT NULL,
+  `job_id` int(10) NOT NULL DEFAULT '0',
+  `idd` int(10) NOT NULL,
   `x` double NOT NULL,
   `y` double NOT NULL,
   `z` double DEFAULT NULL,
   `support` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`id`,`job_id`),
+  PRIMARY KEY (`idd`,`job_id`),
   KEY `fk_job_id2` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `Joint` (
 --
 
 CREATE TABLE IF NOT EXISTS `Member` (
-  `job_id` int(10) NOT NULL,
+  `job_id` int(10) NOT NULL DEFAULT '0',
   `member_id` int(10) NOT NULL DEFAULT '0',
   `member_property` int(10) DEFAULT NULL,
   PRIMARY KEY (`member_id`,`job_id`),
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `Member` (
 --
 
 CREATE TABLE IF NOT EXISTS `Member_incidence` (
-  `job_id` int(10) NOT NULL,
+  `job_id` int(10) NOT NULL DEFAULT '0',
   `member_id` int(10) NOT NULL DEFAULT '0',
   `joint_id` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`job_id`,`member_id`,`joint_id`),
@@ -119,12 +119,12 @@ CREATE TABLE IF NOT EXISTS `Member_incidence` (
 --
 
 CREATE TABLE IF NOT EXISTS `Member_property` (
-  `job_id` int(10) NOT NULL,
-  `id` int(10) NOT NULL,
+  `job_id` int(10) NOT NULL DEFAULT '0',
+  `idd` int(10) NOT NULL,
   `type` varchar(24) NOT NULL,
   `YD` float DEFAULT NULL,
   `ZD` float DEFAULT NULL,
-  PRIMARY KEY (`id`,`job_id`),
+  PRIMARY KEY (`idd`,`job_id`),
   KEY `fk_job_id4` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -150,8 +150,8 @@ ALTER TABLE `Member`
 -- Constraints for table `Member_incidence`
 --
 ALTER TABLE `Member_incidence`
-  ADD CONSTRAINT `fk_joint_id` FOREIGN KEY (`joint_id`) REFERENCES `Joint` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_job_id3` FOREIGN KEY (`job_id`) REFERENCES `Joint` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_joint_id` FOREIGN KEY (`joint_id`) REFERENCES `Joint` (`idd`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_job_id3` FOREIGN KEY (`job_id`) REFERENCES `Job` (`job_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_member_id` FOREIGN KEY (`member_id`) REFERENCES `Member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

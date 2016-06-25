@@ -1,6 +1,6 @@
 CFLAGS=-I/header -L/usr/lib -lmysqlcppconn
 
-all: Main Doxygen Mysql
+all: Main
 
 Doxygen:
 	doxygen Doxyfile
@@ -43,7 +43,7 @@ clear:
 	rm -r *.o 
 	rm Main
 
-clean: delmysql clear
+clean: clear delmysql
 
 delmysql:
 	mysql -u $(user) -p$(password) -e "drop database Sim;"
