@@ -37,4 +37,5 @@ file*
 *~
 Sim_site/Sim/migrations/*
 *.pyc
+settings.py
 
