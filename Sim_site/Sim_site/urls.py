@@ -19,7 +19,7 @@ from Sim import views
 admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^index/', views.index, name='index'),
+    url(r'^index/$', views.index, name='index'),
     #url(r'^hello',views.hello, name='hello'),
-    url(r'^table/(?P<name>\w+)/$',views.tables),
+    url(r'^index/(?P<name>\w+)/$',views.tables),
 ]

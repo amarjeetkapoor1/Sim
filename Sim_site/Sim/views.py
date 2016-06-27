@@ -1,13 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
+from django.apps import apps
+#from .models import *
+#from django.db.models import get_model
 # Create your views here.
-from .models import *
 
 def index(request):
-	return render(request, 'Sim/index.html', {})
-					
+	tables = apps.get_app_config('Sim').get_models()
+	table_names = []
+	for t in tables:
+		table_names.append(t.__name__)
+	context = {'table_names' : table_names}
+	return render(request, 'Sim/index.html', context)
+	
 def tables(request, name):
+	tables = apps.get_app_config('Sim').get_models()
+	for t in tables:
+		if t.__name__ == name:
+			data = serializers.serialize("python", t.objects.all())
+			context = {'data':data}
+			return render(request, 'Sim/table.html', context)
+					
+"""def tables(request, name):
 	if name=="0":
 		data=serializers.serialize("python", Indianlegacysectionsangle.objects.all())
 		context = {'data':data}
@@ -139,7 +154,7 @@ def tables(request, name):
 		context = {'data':data}
 	return render(request, 'Sim/table.html', context)
 	
-	
+	"""
 	
 	
 	
