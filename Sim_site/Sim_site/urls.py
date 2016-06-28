@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^admin/', admin.site.urls),
     url(r'^index/$', views.index, name='index'),
-    url(r'^file/$', views.parseFile, name='file'),
+    url(r'^getfile/$', views.getfile, name='getfile'),
     url(r'^index/(?P<name>\w+)/$',views.tables),
 ]

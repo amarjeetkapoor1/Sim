@@ -22,7 +22,8 @@ def tables(request, name):
 					
 def home(request):
 	return render(request, 'Sim/home.html', {})
-def parseFile(request):
+	
+def getfile(request):
 	
 	#get the fileitem
 	fileitem=request.FILES['userfile']
@@ -43,7 +44,7 @@ def parseFile(request):
 		
 	f.close()
 	os.system('rm new.std')
-	return render(request, 'Sim/index.html', {'MESSAGE':message})
+	return render(request, 'Sim/getfile.html', {'message':m})
 	
 	
 	
