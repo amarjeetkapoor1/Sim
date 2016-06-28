@@ -11,11 +11,21 @@ staad.pro
 	libmysqlcppconn-dev
 	make 
 	
+	###For Website
+	    g++
+	    libmysqlcppconn-dev
+	    make
+	    Django
+	 
 ##Installation 
 	
 
 	cd Path/to/This/	
 	make all user= Your_sql_username password= Your_sql_password
+
+##Work setting website
+        cd Path/To/Sim/ 
+         ./InstallSimSite Your_sql_username
 
 # Running
 	./main.sh Name_of_std_file Name_of_destionation_file
