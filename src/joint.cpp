@@ -45,11 +45,7 @@ string Joint::insert(int &r,sql::Connection &con){
 	string message;
 	stmt = con.createStatement();
 	message="Job not Present";
-<<<<<<< HEAD
 	prep_stmt = con.prepareStatement("INSERT INTO Joint(job_id,idd,x,y,z,support) VALUES (?,?,?,?,?,?)");
-=======
-	prep_stmt = con.prepareStatement("INSERT INTO Joint(job_id,id,x,y,z,support) VALUES (?,?,?,?,?,?)");
->>>>>>> 28b53d7cb588b231786ecd06b11a2f13adffd636
 	prep_stmt->setInt(1,r);
 	message="duplicate entry of Joint id ="+id;
 	prep_stmt->setInt(2,id);
