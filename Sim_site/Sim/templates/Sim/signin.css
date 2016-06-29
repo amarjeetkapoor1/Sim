@@ -15,7 +15,7 @@
 #logIn:hover, #signIn{
 	width : 18%;
 	height : 50px;
-	background : #E01C1F;
+	background : #DC143C;
 	border-radius : none;
 	border :3px solid white;
 	font-size : 24px;
@@ -24,8 +24,8 @@
 	color : white;
 }
 #signIn:hover, #logIn{
-	background : #E01C1F;
-	border : 4px solid #E01C1F;
+	background : #DC143C;
+	border : 4px solid #DC143C;
 	color : #34434D;
 	width : 18%;
 	height : 50px;
