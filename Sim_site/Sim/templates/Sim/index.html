@@ -3,8 +3,31 @@
 		<title>SIM</title>
 	</head>
 	<body>
-		{% for table in table_names %}
-			<a href={{ table }}>{{ table }}</a><br><br>
-		{% endfor %}
+		<div>
+			<h4>Write your own SQL query. But beware, we know defensive programming</h4><br>
+			<form action = "{% url 'output' %}" method = "post">
+				{% csrf_token %}
+				SELECT <input type="text" name = "query1"></input> FROM 
+				<select name="option">
+					{% for table in table_names %}
+					<option value= {{table}}>{{table}}</option>
+					{% endfor %}
+				</select>
+				<input type="text" name = "query2"></input> ;
+				<input type = "submit" value = "Submit"></input>
+			</form>
+		</div>
+		<div>
+			<h4>See a whole table</h4><br>
+			<form action="{% url 'table' %}" method="post">
+				{% csrf_token %}
+				<select name="table">
+					{% for table in table_names %}
+						<option value= {{table}}>{{ table }}</option><br><br>
+					{% endfor %}
+				</select>
+				<input type = "submit" value = "Submit"></input>
+			</form>
+		</div>
 	</body>
 </html>
