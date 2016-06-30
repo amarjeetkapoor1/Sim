@@ -64,3 +64,19 @@ th ,td{
     padding : 15px;
     border-bottom: 1px solid #ddd;
 }
+
+/*Styling input in index.html (Tamandeep)*/
+
+#selctQuery{
+    border-color: #DC143C;
+    -webkit-transition: 0.5s;
+    padding : 5px;
+    width: 250px;
+    background-color: #000000;
+}
+#tableName{
+    background-color:#000000 ;
+    width: 200px;
+    padding: 5px 5px 5px 5px; 
+    text-decoration-color: #000000;
+}
