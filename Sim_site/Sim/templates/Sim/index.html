@@ -24,35 +24,34 @@
 	</nav>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-12">
-					<h4>Write your own SQL query. But beware, we know defensive 
-					programming</h4><br>
-					<form action = "{% url 'output' %}" method = "post">
-						{% csrf_token %}
-						SELECT <input id="selctQuery" type="text" name = "query1"></input> 
-						FROM 
-						<select id="tableName" name="option">
-							{% for table in table_names %}
-							<option value= {{table}}>{{table}}</option>
-							{% endfor %}
-							<option> table2 </option>
-						</select>
-						<input id="selctQuery" type="text" name = "query2"></input> ;
-						<input type = "submit" value = "Submit"></input>
-					</form>
-				</div>	
-			</div>
-			<div class="row">
-				<div class="col-md-12">		
-					<h4>See a whole table</h4><br>
+				<div class="col-md-6 col-md-offset-3" id="smallContainer" >
+					<h3>Write your own SQL query. But beware, we know defensive 
+					programming</h3><br>
+					<div  >
+						<form action = "{% url 'output' %}" method = "post">
+							<p class="setAlign" >{% csrf_token %}
+						    SELECT
+						    </p> 
+						    <input class="form-control"  type="text" name = "query1"></input> <br /><br />
+							<p  >FROM</p> 
+							<select id="tableName" name="option">
+								{% for table in table_names %}
+								<option value= {{table}}>{{table}}</option>
+								{% endfor %}
+							</select><br /><br />
+							<input class="form-control" type="text" name = "query2"></input> <br />
+							<input id="btnStyle" type = "submit" value = "Submit"></input>
+						</form><hr id ="hrline" />								
+					</div>
+					<h3>See a whole table</h3><br>
 					<form action="{% url 'table' %}" method="post">
 						{% csrf_token %}
-						<select name="table">
+						<select  id="tableName" name="table">
 							{% for table in table_names %}
 							<option value= {{table}}>{{ table }}</option><br><br>
 							{% endfor %}
-						</select>
-						<input type = "submit" value = "Submit"></input>
+						</select><br /><br />
+						<input id="btnStyle" type = "submit" value = "Submit"></input><br />
 					</form>
 				</div>
 			</div>
