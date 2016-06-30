@@ -1,14 +1,15 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>SIM</title>
+<head>
+	<title>Sim Main</title>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<link rel="stylesheet" href="style.css" >
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="signin.css">
-	</head>
-	<body>
+</head>
+<body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 	    <div class="container">
 		    <div class="navbar-header">
@@ -22,39 +23,18 @@
 		    </ul>
 	    </div>
 	</nav>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-6 col-md-offset-3" id="smallContainer" >
-					<h3>Write your own SQL query. But beware, we know defensive 
-					programming</h3><br>
-					<div  >
-						<form action = "{% url 'output' %}" method = "post">
-							<p class="setAlign" >{% csrf_token %}
-						    SELECT
-						    </p> 
-						    <input class="form-control"  type="text" name = "query1"></input> <br /><br />
-							<p  >FROM</p> 
-							<select id="tableName" name="option">
-								{% for table in table_names %}
-								<option value= {{table}}>{{table}}</option>
-								{% endfor %}
-							</select><br /><br />
-							<input class="form-control" type="text" name = "query2"></input> <br />
-							<input id="btnStyle" type = "submit" value = "Submit"></input>
-						</form><hr id ="hrline" />								
-					</div>
-					<h3>See a whole table</h3><br>
-					<form action="{% url 'table' %}" method="post">
-						{% csrf_token %}
-						<select  id="tableName" name="table">
-							{% for table in table_names %}
-							<option value= {{table}}>{{ table }}</option><br><br>
-							{% endfor %}
-						</select><br /><br />
-						<input id="btnStyle" type = "submit" value = "Submit"></input><br />
-					</form>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="indentation">
+					<h2>A POWERFUL TOOL FOR TABLE GENERATION</h2>
+					<p id="main-line"><strong>A CIVIL ENGINEER's GUIDE</strong></p>
+					<p id="last-line">Sim is a Open-Source platform related to<br/> Civil Engineering Students<br/> and teachers.</p>
+					<button type="button" id="signIn"><strong>Sign up</strong></button>
+					<button type="button" id="logIn"><strong>Log In</strong></button>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 </html>
