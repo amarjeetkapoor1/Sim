@@ -64,3 +64,53 @@ th ,td{
     padding : 15px;
     border-bottom: 1px solid #ddd;
 }
+
+/*Styling input in index.html (Tamandeep)*/
+
+/*#selctQuery{
+    border-color: #191970;
+    -webkit-transition: 0.5s;
+    padding : 5px;
+    width: 350px;
+    background-color: #F8F8FF;
+}*/
+#tableName{
+    background-color:#F8F8FF ;
+    width: 350px;
+    padding: 5px 5px 5px 5px; 
+}
+
+#smallContainer{
+    background-color: #F8F8FF;
+    margin-top: 2vh ;
+    margin-left: 29vw;
+}
+
+#btnStyle{
+    width: 100px;
+    height: 35px ;
+    background-color: #DC143C;
+    display: inline-block;
+    border-color: #DC143C;
+    border: solid 2px #DC143C;
+    transition-duration: 0.4s;
+    font-size: 120% ;
+    margin-left: 10px ;
+}
+
+#btnStyle:hover{
+
+    transition-duration: 0.4s;
+    color: white ;
+}
+
+#hrline{
+    color:#808080;
+    border-width: 2px;
+}
+
+/*.setAlign{
+    margin-left: 2px;
+    text-align: left;
+}*/
+
