@@ -1,7 +1,7 @@
 /*!
  *	\file joint.h  
  *
- *  \brief  It contain declarations for joint to be defined
+ *  \brief  It contain declarations for Joint and JointLoad to be defined
  *
  *      
  *	Compiler g++
@@ -15,17 +15,18 @@
 
 #include"header.h"
 
+
 class JointLoad{
     public:
     int FX,FY,FZ, MX, MY, MZ;
    
     JointLoad();
     void print();
-   
+   	string insert(int &r,sql::Connection &con);
 };
   
 
-class Joint{
+class Joint: public base{
 
 	public:
     int id;
@@ -37,8 +38,12 @@ class Joint{
     
     Joint();
     void print();
+    string insert(int &r,sql::Connection &con);
+    
     	
 };
+
+
 
 
 #endif

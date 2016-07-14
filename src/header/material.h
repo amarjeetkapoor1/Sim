@@ -1,7 +1,7 @@
 /*!
  *	\file material.h  
  *
- *  \brief  It contain declarations for material to be defined
+ *  \brief  It contain declarations for Material to be defined
  *
  *      
  *	Compiler g++

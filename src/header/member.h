@@ -1,7 +1,7 @@
 /*!
- *	\file structure.h  
+ *	\file member.h  
  *
- *  \brief  It contain declarations for structure to be defined
+ *  \brief  It contain declarations for Member,MemberLoad,MemPro  to be defined
  *
  *      
  *	Compiler g++

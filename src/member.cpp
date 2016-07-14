@@ -1,6 +1,16 @@
+/*!
+ *	\file member.cpp 
+ *
+ *	\brief  It contain definitions for member functions of class Member, MemPro,
+ *	MemberLoad
+ *      
+ *  Compiler  g++
+ *
+ *  \author amarjeet singh kapoor
+ *      
+ */
+
 #include"header/member.h"
-
-
 
 void MemPro::print(){
 	cout<<country<<",";

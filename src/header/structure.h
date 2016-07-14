@@ -1,7 +1,7 @@
 /*!
  *	\file structure.h  
  *
- *  \brief  It contain declarations for structure to be defined
+ *  \brief  It contain declarations for Structure to be defined
  *
  *      
  *	Compiler g++
@@ -32,20 +32,14 @@ class Load{
 };	
     
 
-class Structure{
-
+class Structure: public base{
 	Job job;
-	sql::Driver *driver;
-	sql::Statement *stmt;
-	sql::Connection *con;
-	sql::PreparedStatement  *prep_stmt;
 	string width, unit, group;
     vector<Joint> job_joints;
     vector<Member> job_members;
     vector<Material> job_material;
 	string units;
 	string widht;
-	Joint jo;
 	string x;
 	vector<int> beam;
 	vector<int> column;

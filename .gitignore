@@ -33,3 +33,9 @@ Main
 html/*
 latex/*
 file*
+*.yy.cc
+*~
+Sim_site/Sim/migrations/*
+*.pyc
+settings.py
+
