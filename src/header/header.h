@@ -31,7 +31,7 @@
 #include <cppconn/prepared_statement.h>
 
 #define USER "root"
-#define PASSWORD "hashtagme"
+#define PASSWORD "dnivog"
 
 using namespace std;
 

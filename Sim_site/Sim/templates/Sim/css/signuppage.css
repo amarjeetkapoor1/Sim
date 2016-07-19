@@ -1,0 +1,29 @@
+#smallContainer{
+	background: white;
+	text-align : left;
+	margin-top : 30px;
+	margin-left : 29vw;
+}
+#smallContainer div{
+	margin-top : 20px;
+}
+#smallContainer p{
+	font-size : 24px;
+}
+#smallContainer input{
+	height : 40px;
+	margin-top : 20px;
+}
+#smallContainer button{
+	margin : 40px 0px 20px 30px;
+	float : right;
+	width : 180px;
+	height : 35px;
+	background : #DC143C;
+	border : 2px solid #DC143C;
+	font-size : 18px;
+}
+#smallContainer button:hover{
+	color :white;
+}
+
