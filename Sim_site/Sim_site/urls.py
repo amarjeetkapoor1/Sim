@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls import include, url
 from Sim import views
 admin.autodiscover()
 urlpatterns = [
+    url(r'', include('drawing_freecad.urls')),
     url(r'^$', views.home),
     url(r'^admin/', admin.site.urls),
     url(r'^index/$', views.index, name='index'),

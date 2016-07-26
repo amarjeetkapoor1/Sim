@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(BASE_DIR), "/drawing_freecad/templates"),
+    )
 
 # Application definition
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Sim',
+    'drawing_freecad',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -80,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Sim',
 		'USER': 'root',
-		'PASSWORD': 'dnivog',
+		'PASSWORD': 'a',
 		'HOST': 'localhost',
 		'PORT': '3869',
     }

@@ -389,66 +389,77 @@ void Structure::getMember(string temp){
     }
     vect_temp.clear();
 }
-	
+
+
 void Structure::getMemberPro(string temp){
 
     vector<string> vect_temp1;
     vector<string> vect_temp;
     vect_temp1=split(temp, "MEMBER PROPERTY");
-     if(vect_temp1.size()==1){
-    	cerr<<"NO Member Property \n";
-    	return ;
-	}
-	
-	
-	for(int ii=1; ii<vect_temp1.size();ii++){
-		temp=split(vect_temp1[ii], "CONSTANTS")[0];
-		
-		vect_temp=split(temp," ");
-		
-		MemPro *me;
-		me=new MemPro;
-		if(!isdigit(vect_temp[0][0])){
-			string x=vect_temp[0];
-			me->country=x;
-		}
-		for(int i=1; i<vect_temp.size();i++){
-			
-			float l=0,l1=0;
-			if(isdigit(vect_temp[i][0])){
-				istringstream(vect_temp[i])>>l;
-				(*me).member_id.push_back(l);
-				continue;
-			}
-				if(vect_temp[i]=="TO"){
-					istringstream(vect_temp[i-1])>>l;
-					istringstream(vect_temp[i+1])>>l1;
-					for( int j=l+1;j<l1;j++){
-						
-						(*me).member_id.push_back(j);
-					}
-				}
-				
-				if(vect_temp[i]=="PRIS"){
-					istringstream(vect_temp[i+2])>>l;
-					istringstream(vect_temp[i+4])>>l1;
-					(*me).type=vect_temp[i];
-					(*me).YD=l;
-					(*me).ZD=l1;
-					member_pr.push_back(*me);
-					delete me;
-					MemPro *me;
-					me=new MemPro;
-					me->country=x;
-					i=i+4;
-					
-				}
-			
-		}
-	}
-    
+    if(vect_temp1.size()==1){
+        cerr<<"NO Member Property \n";
+        return ;
+    }
 
-}
+
+    for(int it=1; it<vect_temp1.size();it++){
+        
+        temp=split(vect_temp1[it], "CONSTANTS")[0];
+        vect_temp=split(temp," ");
+        
+        MemPro *me;
+        me=new MemPro;
+        int i;
+        if(!isdigit(vect_temp[0][0])){
+            string x=vect_temp[0];
+            me->country=x;
+            i=1;
+        }
+        else{
+            i=0;
+        }
+        for(; i<vect_temp.size();i++){
+            
+            float memberId=0,memberId2=0;
+            if(isdigit(vect_temp[i][0])){
+                istringstream(vect_temp[i])>>memberId;
+                (*me).member_id.push_back(memberId);
+                continue;
+            }
+            if(vect_temp[i]=="TO"){
+                istringstream(vect_temp[i-1])>>memberId;
+                istringstream(vect_temp[i+1])>>memberId2;
+                for( int j=memberId+1;j<memberId2;j++){
+                    
+                    (*me).member_id.push_back(j);
+                }
+            }
+                
+            if(vect_temp[i]=="PRIS"){
+                float yd=0,zd=0;
+                int incr;
+                if(vect_temp[i+1]=="YD"){
+                    istringstream(vect_temp[i+2])>>yd;
+                    incr=2;
+                }    
+                (*me).YD=yd;
+                if(vect_temp[i+1]=="YD"){
+                if(vect_temp[i+3]=="ZD"){
+                    istringstream(vect_temp[i+4])>>zd;
+                    incr=4;
+                }	
+                
+                (*me).type=vect_temp[i];
+            
+                (*me).ZD=zd;
+                member_pr.push_back(*me);
+                delete me;
+                me=new MemPro;
+                i=i+incr;    
+            }
+        }
+    }
+    }}
 
 
 void Structure::getDesign(string temp){
@@ -581,8 +592,12 @@ spring-spec = *{KFX f1 | KFY f2 | KFZ f3 | KMX f4 | KMY f5
 
 void Structure::getSupports(string temp)
 {
-    temp=split(temp, "SUPPORTS")[1];
-    
+    vector <string> vectTemp;
+    vectTemp=split(temp, "SUPPORTS");
+    if(vectTemp.size()==1){
+        return;
+    }
+    temp=vectTemp[1];
     getSupportsTypes(temp,"FIXED");
     getSupportsTypes(temp,"HINGED");
     getSupportsTypes(temp,"ROLLED");
