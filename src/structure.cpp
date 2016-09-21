@@ -458,7 +458,9 @@ void Structure::getMemberPro(string temp){
             }
         }
     }
+
 }
+
 
 
 void Structure::getDesign(string temp){
