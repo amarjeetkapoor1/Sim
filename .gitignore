@@ -29,6 +29,12 @@
 Main
 *.csv
 *.std
+!some.csv
+*.svg
+*.pdf
+*.zip
+*.fcstd
+*.fcstd1
 
 html/*
 latex/*

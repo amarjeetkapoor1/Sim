@@ -15,7 +15,7 @@ staad.pro
 	    g++
 	    libmysqlcppconn-dev
 	    make
-	    Django
+	    Django 1.9.7
 	 
 ##Installation 
 	
