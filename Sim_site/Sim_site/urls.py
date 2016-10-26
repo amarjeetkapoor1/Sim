@@ -20,11 +20,7 @@ from Sim import views
 admin.autodiscover()
 urlpatterns = [
     url(r'', include('drawing_freecad.urls')),
-    url(r'^$', views.home),
+    url(r'', include('Sim.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^index/$', views.index, name='index'),
-    url(r'^getfile/$', views.getfile, name='getfile'),
-    url(r'^index/(?P<name>\w+)/$',views.tables),
-    url(r'^output/$', views.output, name = 'output'),
-    url(r'^table/$', views.table, name = 'table')
+    url(r'^$', views.home, name='view_home')
 ]
