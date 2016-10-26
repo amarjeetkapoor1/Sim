@@ -1,39 +1,55 @@
+{% load static %}
 <html>
-	<head>
-		<title>SIM</title>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		<link rel="stylesheet" href="style.css" >
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="signin.css">
-	</head>
-	<body>
-	<nav class="navbar navbar-default navbar-fixed-top">
-	    <div class="container">
-		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#"><strong>Simulation</strong></a>
-		    </div>
-		    <ul class="nav navbar-nav" id="send-right">
-			    <li class="active"><a href="#">Home</a></li>
-			    <li><a href="#">Link 1</a></li>
-			    <li><a href="#">Link 2</a></li>
-		        <li><a href="#">Link 3</a></li> 
-		    </ul>
-	    </div>
+<head>
+	<title>Drawing FreeCad</title>
+	<meta charset="utf-8" />
+	<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC" rel="stylesheet">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+</head>
+
+<body>
+	<!-- navbar here -->
+	<nav role="navigation" class="navbar">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+				<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+				</button>
+				<a href="#" class="navbar-brand" id="brand" ><b>SIM</b></a>
+		</div>
+		<!-- Collection of nav links and other content for toggling -->
+		<div id="navbarCollapse" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav" id="links" >
+						<li><a href="{% url 'indexD' %}">Drawing-FreeCad</a></li>
+						<li><a href="{% url 'view_home' %}">SIM</a></li>
+						<li><a href="#">other</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" id="links" >
+						<li><a href="#">Login</a></li>
+				</ul>
+		</div>
 	</nav>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" id="smallContainer" >
-					<h3>Write your own SQL query. But beware, we know defensive 
+					<h3>Write your own SQL query. But beware, we know defensive
 					programming</h3><br>
 					<div  >
 						<form action = "{% url 'output' %}" method = "post">
 							<p class="setAlign" >{% csrf_token %}
 						    SELECT
-						    </p> 
+						    </p>
 						    <input class="form-control"  type="text" name = "query1"></input> <br /><br />
-							<p  >FROM</p> 
+							<p  >FROM</p>
 							<select id="tableName" name="option">
 								{% for table in table_names %}
 								<option value= {{table}}>{{table}}</option>
@@ -41,7 +57,7 @@
 							</select><br /><br />
 							<input class="form-control" type="text" name = "query2"></input> <br />
 							<input id="btnStyle" type = "submit" value = "Submit"></input>
-						</form><hr id ="hrline" />								
+						</form><hr id ="hrline" />
 					</div>
 					<h3>See a whole table</h3><br>
 					<form action="{% url 'table' %}" method="post">
@@ -56,5 +72,5 @@
 				</div>
 			</div>
 		</div>
-	</body>
+</body>
 </html>
