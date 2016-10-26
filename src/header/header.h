@@ -31,7 +31,7 @@
 #include <cppconn/prepared_statement.h>
 
 #define USER "root"
-#define PASSWORD "a"
+#define PASSWORD "taman"
 
 using namespace std;
 
