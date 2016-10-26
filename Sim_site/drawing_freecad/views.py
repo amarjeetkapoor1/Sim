@@ -8,8 +8,8 @@ from collections import OrderedDict
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'drawing_freecad/index.html')
+def indexD(request):
+    return render(request, 'web_app/indexD.html')
 
 #lists = {'stories':'','dep_of_foun':'','plinth_lev':'','cclear_height':'',
 #    'dep_slab':'','rep_span_len':'','rep_span_wid':'','col_type':'',
@@ -50,9 +50,9 @@ def specs(request):
 #    print l
 #    print request.POST
 #    print len(request.POST)
-        return render(request, 'drawing_freecad/specs.html', {'lists': lists})
+        return render(request, 'web_app/specs.html', {'lists': lists})
     except:
-        return render(request, 'drawing_freecad/specs.html',
+        return render(request, 'web_app/specs.html',
         {'message': 'please fill again'})
 
 def download(request):
