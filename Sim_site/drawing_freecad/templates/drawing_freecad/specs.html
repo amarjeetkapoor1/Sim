@@ -1,17 +1,33 @@
 {% extends "drawing_freecad/base.html" %}                               
 {% block body %}  
-<h1>specificationi</h1>
 
-{% for key, value in lists.items %}
-    {{ key }} : {{ value }} </br>
-{% endfor %}
+<p style="font-size:160%;text-align:center;">Building specifications</p>
 
-<a href="{% url 'download' %}">download</a>
+<center>
+<table class="highlight" style="width:70%;">
+        <thead>
+          <tr>
+              <th data-field="id">Attribute</th>
+              <th data-field="name">Dimensions in metre</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for key, value in list_pass2template.items %}
+                <tr>
+                    <td>{{ value.0 }}</td>
+                    <td>{{ value.1 }}<td>
+                </tr>
+        {% endfor %}
+        </tbody>
+</table>
+</center>
 
-<a href="{% url 'convert_fcstd2webgl' %}">Show building</a>
-
-
-
+<div class="row">
+        <center>
+            <a class="btn waves-effect waves-light red" href="{% url 'download' %}" style="margin:2%;">Download</a>
+            <a class="btn waves-effect waves-light red" href="{% url 'convert_fcstd2webgl' %}" target=blank>View 3D model</a>
+        </center>
+</div>
 <!--
 <form action="{% url 'drawing' %}" method="POST">
     {% csrf_token %} 
