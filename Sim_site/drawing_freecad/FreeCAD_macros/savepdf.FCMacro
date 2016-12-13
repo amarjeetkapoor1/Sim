@@ -26,6 +26,7 @@ for i in list_view.keys():
     page_name = "page_"+i
     obj = App.ActiveDocument.getObject(page_name)
     print 2
+    print "Inside list_voew obj.label "+obj.Label
     file_location = os.path.expanduser("../drawings/svg_pdf" + os.sep + obj.Label + ".pdf")
     print file_location
     page = getattr(obj, 'PageResult')
@@ -36,9 +37,12 @@ for i in list_view.keys():
     cmd = "cp "+page+" ../drawings/svg_pdf && chmod 777 ../drawings/*"
     os.system(cmd)
 
+
 for i in range(0, building_specs.stories):                                             
     page_name = "storey"+str(i)   
     obj = App.ActiveDocument.getObject(page_name)
+    print "os.sep "+os.sep
+    print "obj.Label "+obj.Label
     file_location = os.path.expanduser("../drawings/svg_pdf" + os.sep + obj.Label + ".pdf")
     print file_location
     page = getattr(obj, 'PageResult')

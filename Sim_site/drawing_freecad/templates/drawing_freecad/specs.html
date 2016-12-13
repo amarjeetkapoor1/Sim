@@ -1,10 +1,17 @@
-<h1>specification</h1>
+{% extends "drawing_freecad/base.html" %}                               
+{% block body %}  
+<h1>specificationi</h1>
 
 {% for key, value in lists.items %}
     {{ key }} : {{ value }} </br>
 {% endfor %}
 
 <a href="{% url 'download' %}">download</a>
+
+<a href="{% url 'convert_fcstd2webgl' %}">Show building</a>
+
+
+
 <!--
 <form action="{% url 'drawing' %}" method="POST">
     {% csrf_token %} 
@@ -40,3 +47,4 @@
         </tr>
     </table>
 </form>-->
+ {% endblock %} 

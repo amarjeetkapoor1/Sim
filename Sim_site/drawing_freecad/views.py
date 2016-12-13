@@ -32,12 +32,10 @@ def specs(request):
         global lis
         bb = list()
         for var in lists.keys():
-            lists[var] = request.POST.get(var)
-            # print("session  %s"  %request.session[var])
+            #print var +"  "+request.POST.get(var)
+            lists[var] = str(request.POST.get(var))
         print lists
-#    print lists['rep_span_len']
 
-#    print("list is : %s" %bb)
         f = open('drawing_freecad/some.csv', 'w')
         ww = csv.writer(f, delimiter=' ')
         a = []
@@ -47,9 +45,6 @@ def specs(request):
         f.close()
         os.system('rm project.fcstd')
         os.system('cd drawing_freecad/FreeCAD_macros && freecadcmd drawing.py')
-#    print l
-#    print request.POST
-#    print len(request.POST)
         return render(request, 'drawing_freecad/specs.html', {'lists': lists})
     except:
         return render(request, 'drawing_freecad/specs.html',
@@ -68,6 +63,11 @@ def download(request):
 
 draw_list = OrderedDict([('x_dir', ''), ('y_dir', ''), ('z_dir', ''),
                 ('hid_lines', ''), ('scale_size', ''), ('rotation', '')])
+
+
+def convert_fcstd2webgl(request):
+    os.system('cd drawing_freecad/FreeCAD_macros && freecadcmd fcstd2webgl.FCMacro')
+    return render(request, 'drawing_freecad/show.html')
 
 def drawing(request):
     global draw_list
