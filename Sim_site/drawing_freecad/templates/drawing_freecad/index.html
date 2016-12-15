@@ -9,21 +9,21 @@
         {% csrf_token %} 
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="stories" name="stories" type="number">
+                <input id="stories" name="stories" type="number" value=6>
                 <label for="stories">Stories</label>
             </div>
                 <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="dep_of_foun" name="dep_of_foun" type="number" class="validate">
+                <input id="dep_of_foun" name="dep_of_foun" type="number" class="validate" value=6>
                 <label for="dep_of_foun">Depth of foundation</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="plinth_lev" name="plinth_lev" type="number" class="validate">
+                <input id="plinth_lev" name="plinth_lev" type="number" class="validate" value=4>
                 <label for="plinth_lev">Plinth level</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
@@ -31,21 +31,21 @@
 
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="cclear_height" name="cclear_height" type="text" pattern="[0-9,@,+]+" class="validate">
+                <input id="cclear_height" name="cclear_height" type="text" pattern="[0-9,@,+]+" class="validate" value=6@8>
                 <label for="cclear_height" data-error="wrong">Clear height</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="dep_slab" name="dep_slab" type="number" class="validate">
+                <input id="dep_slab" name="dep_slab" type="number" class="validate" value=1>
                 <label for="dep_slab">Depth of slab</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="rep_span_len" name="rep_span_len" type="text" pattern="[0-9,@,+]+" class="validate">
+                <input id="rep_span_len" name="rep_span_len" type="text" pattern="[0-9,@,+]+" class="validate" value="6@8">
                 <label for="rep_span_len" data-error="wrong">Representaion of span length</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
@@ -53,7 +53,7 @@
 
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="rep_span_wid" name="rep_span_wid" type="text" pattern="[0-9,@,+]+" class="validate">
+                <input id="rep_span_wid" name="rep_span_wid" type="text" pattern="[0-9,@,+]+" class="validate" value="5@6">
                 <label for="rep_span_wid" data-error="wrong">Representation of span width</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
@@ -63,7 +63,7 @@
                 <select id="col_type" name="col_type">
                     <option value="" disabled selected>Column type</option>
                     <option value=0>Circular</option>
-                    <option value=1>Rectangular</option>
+                    <option value=1 selected>Rectangular</option>
                 </select>
                 <label>Column type</label>
             </div>
@@ -72,14 +72,14 @@
 
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="len_col" name="len_col" type="number" class="validate" disabled>
+                <input id="len_col" name="len_col" type="number" class="validate" value=1>
                 <label for="len_col">Length of column</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="wid_col" name="wid_col" type="number" class="validate" disabled>
+                <input id="wid_col" name="wid_col" type="number" class="validate" value=1>
                 <label for="wid_col">Width of column</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
@@ -112,14 +112,14 @@ $("#col_type").change(update_col_type);
 </script>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="dep_beam" name="dep_beam" type="number" class="validate">
+                <input id="dep_beam" name="dep_beam" type="number" class="validate" value=1>
                 <label for="dep_beam">Depth of beam</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>
         </div>
         <div class="row">
             <div class="input-field col s8 offset-s2">
-                <input id="wid_beam" name="wid_beam" type="number" class="validate">
+                <input id="wid_beam" name="wid_beam" type="number" class="validate" value=1>
                 <label for="wid_beam">Width of beam</label>
             </div>
             <i class="tiny material-icons tooltipped" style="margin-top: 30px;" data-position="right" data-delay="50" data-tooltip="I am tooltip">info_outline</i>

@@ -44,9 +44,9 @@ def specs(request):
             list_pass2template[var][1] = lists[var]
         print lists
         if list_pass2template["col_type"][1] == '0':
-            list_pass2template["col_type"][1] = "Circular column"
+            list_pass2template["col_type"][1] = "Circular"
         elif list_pass2template["col_type"][1] == '1':
-            list_pass2template["col_type"][1] = "Rectangular column"
+            list_pass2template["col_type"][1] = "Rectangular"
         print list_pass2template
 
         f = open('drawing_freecad/some.csv', 'w')

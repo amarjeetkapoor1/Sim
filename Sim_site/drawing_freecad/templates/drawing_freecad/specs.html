@@ -1,34 +1,38 @@
-{% extends "drawing_freecad/base.html" %}                               
-{% block body %}  
+{% extends "drawing_freecad/base.html" %}
+{% block body %}
+    <p style="font-size:160%;text-align:center;">Building specifications</p>
 
-<p style="font-size:160%;text-align:center;">Building specifications</p>
-
-<center>
-<table class="highlight" style="width:70%;">
-        <thead>
-          <tr>
-              <th data-field="id">Attribute</th>
-              <th data-field="name">Dimensions in metre</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for key, value in list_pass2template.items %}
+    <center>
+        <table class="highlight" style="width:70%;">
+            <thead>
                 <tr>
-                    <td>{{ value.0 }}</td>
-                    <td>{{ value.1 }}<td>
+                    <th data-field="id">Attribute</th>
+                    <th data-field="name">Dimensions in metre</th>
                 </tr>
-        {% endfor %}
-        </tbody>
-</table>
-</center>
+            </thead>
+            <tbody>
+            {% for key, value in list_pass2template.items %}
+            <tr>
+                <td>{{ value.0 }}</td>
+                <td>{{ value.1 }}<td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </center>
 
-<div class="row">
-        <center>
-            <a class="btn waves-effect waves-light red" href="{% url 'download' %}" style="margin:2%;">Download</a>
-            <a class="btn waves-effect waves-light red" href="{% url 'convert_fcstd2webgl' %}" target=blank>View 3D model</a>
-        </center>
-</div>
-<!--
+            <div class="row">
+                <center>
+                    <a class="btn waves-effect waves-light red" href="{% url 'download' %}" style="margin:2%;">Download</a>
+                    <a class="btn waves-effect waves-light red" href="{% url 'convert_fcstd2webgl' %}" target=blank>View 3D model</a>
+                </center>
+            </div>
+
+            </body>
+            </html>
+
+
+            <!--
 <form action="{% url 'drawing' %}" method="POST">
     {% csrf_token %} 
     <table>
@@ -63,4 +67,4 @@
         </tr>
     </table>
 </form>-->
- {% endblock %} 
+{% endblock %}
