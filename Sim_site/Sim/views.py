@@ -53,26 +53,29 @@ def home(request):
 def getfile(request):
 
 	#get the fileitem
-	fileitem=request.FILES['userfile']
-        print fileitem
-	if fileitem.file:
-		#yay...we got a file
-		message=fileitem.file.read()
-	f=open('new.std','w')
-	f.write(message)
-	f.close()
-	os.system('.././Main new.std>file 2>file2')
+	try:
+            fileitem=request.FILES['userfile']
+            print fileitem
+            if fileitem.file:
+                    #yay...we got a file
+                    message=fileitem.file.read()
+            f=open('new.std','w')
+            f.write(message)
+            f.close()
+            os.system('.././Main new.std>file 2>file2')
 
-	f=open('file2','r')
-	m=f.read()
-	if(m):
-		pass
-	else:
-		m="succesfull"
+            f=open('file2','r')
+            m=f.read()
+            if(m):
+                    pass
+            else:
+                    m="succesfull"
 
-	f.close()
-	os.system('rm new.std')
-	return render(request, 'Sim/getfile.html', {'message':m})
+            f.close()
+            os.system('rm new.std')
+        except:
+            m="Please browser the right file"
+        return render(request, 'Sim/getfile.html', {'message':m})
 
 
 

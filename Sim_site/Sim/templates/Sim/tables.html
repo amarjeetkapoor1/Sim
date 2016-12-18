@@ -8,7 +8,22 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{% static 'jquery-3.1.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
-	
+	<style>
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+.row{                                                                   
+    margin-left: 0;                                                     
+    margin-right: 0;                                                    
+    } 
+</style>
+
     <!--<link rel="stylesheet" type="text/css" href="signin.css">-->
 	</head>
 	<body>
@@ -63,5 +78,34 @@ $( document ).ready(function() {
             <tbody>
 			</table>
         </center>
+
+  <main>
+    <div class="container">
+  </main>
+
+
+        <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">SIM</h5>
+                <p class="grey-text text-lighten-4">SIM stands on Structure Information Modeling.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Contact Us</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="https://github.com/GreatDevelopers">Great Developers</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+                Copyright © 2016 Great Developers
+            </div>
+          </div>
+        </footer>
+
+
 	</body>
 </html>

@@ -7,6 +7,22 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="{% static 'jquery-3.1.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+<style>
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+ .row{
+    margin-left: 0;
+    margin-right: 0;
+    }
+</style>
 
     </head>
 	<body>
@@ -41,13 +57,13 @@ $( document ).ready(function() {
     </ul>                                                                
 
     <p style="font-size:160%;text-align:center;">Upload STAAD.Pro file to store it into database</p>
-      <div class="row">
-         <form class="col s8" action="{% url 'getfile' %}" method="post" enctype="multipart/form-data">
+<div class="row">
+         <form class="col s12 m12 l8" action="{% url 'getfile' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                <label>Choose .std file input</label>
                <div class="file-field input-field">
-                  <div class="btn waves-effect waves-light red">
+                  <div class="btn red">
                      <span>Browse</span>
                      <input type="file" name="userfile">
                   </div>
@@ -56,10 +72,38 @@ $( document ).ready(function() {
                   </div>
                </div>
             </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light red" type="submit" value="Submit">Submit<i class="material-icons right">send</i></button> 
+            <div class="row">                                           
+                <button class="btn waves-effect waves-light red" type="submit" value="Submit">Submit<i class="material-icons right">send</i></button>
             </div>
-        </form>
-    </div>
+            </form>
+            </div>
+   <main>
+    <div class="container">
+  </main>
+
+
+        <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">SIM</h5>
+                <p class="grey-text text-lighten-4">SIM stands on Structure Information Modeling.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Contact Us</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="https://github.com/GreatDevelopers">Great Developers</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+                Copyright © 2016 Great Developers
+            </div>
+          </div>
+        </footer>
+
+
 	</body>
 </html>

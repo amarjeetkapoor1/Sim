@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(BASE_DIR), "/drawing_freecad/templates"),
-    )
 
 # Application definition
 
@@ -60,7 +57,7 @@ ROOT_URLCONF = 'Sim_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["/drawing_freecad/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
