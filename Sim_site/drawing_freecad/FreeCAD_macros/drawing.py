@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       drawing.py                                                    *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import os
 import subprocess
 #from PySide import QtGui

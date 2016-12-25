@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       building_specs.py                                             *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import csv, sys
 
 #sys.path.insert(0, '..')
