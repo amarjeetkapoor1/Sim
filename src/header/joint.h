@@ -22,7 +22,7 @@ class JointLoad{
    
     JointLoad();
     void print();
-   	string insert(int &r,sql::Connection &con);
+    string insert(int &r,sql::Connection &con);
 };
   
 
@@ -44,6 +44,9 @@ class Joint: public base{
 };
 
 
-
+class vectJoint{
+	public:
+	vector<Joint> list;
+};
 
 #endif

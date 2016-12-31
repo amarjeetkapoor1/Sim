@@ -35,8 +35,6 @@ class Load{
 class Structure: public base{
 	Job job;
 	string width, unit, group;
-    vector<Joint> job_joints;
-    vector<Member> job_members;
     vector<Material> job_material;
 	string units;
 	string widht;
@@ -50,6 +48,8 @@ class Structure: public base{
 	vector<MemberLoad> memberload;
 	void getSupportsTypes(string temp1,string type);
 	public:
+		vectJoint job_joints;
+		vector<Member> job_members;
 		
 		/*!
 			\brief This is constructor that is used initialize all member
