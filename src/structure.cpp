@@ -22,8 +22,8 @@ void Structure::insert(){
 		stmt->execute("start transaction");
 		int z;
 		job.insert(z,*connection);	
-		for(int i=0;i<job_joints.size();i++){
-			message=job_joints[i].insert(z,*connection);
+		for(int i=0;i<job_joints.list.size();i++){
+			message=job_joints.list[i].insert(z,*connection);
 		}
 		insertMember(z);
 		insertMaterial(z);
@@ -111,6 +111,7 @@ Structure::~Structure(){
 void Load::print(){		
 	cout<<id<<","<<type<<","<<reduce<<","<<title<<","<<endl;
 }
+
 void Structure::print(){
 	
 	//printing job info
@@ -122,9 +123,9 @@ void Structure::print(){
     //printing joint coordinates
     cout<<"JOINT COORDINATES:\n";
     cout<<"joint id , x cooordinates, y coordinates, z coordinates  support\n";
-    for(int i=0;i<job_joints.size();i++)
+    for(int i=0;i<job_joints.list.size();i++)
     {
-        job_joints[i].print();
+        job_joints.list[i].print();
         cout<<endl;
     }
     
@@ -167,6 +168,7 @@ void Structure::print(){
     }
 }
 
+Structure::Structure(){}
     
 Structure::Structure(fstream &file)   
 {
@@ -352,7 +354,7 @@ void Structure::getJoint(string temp){
         istringstream(vect_temp1[1])>>j.x;
         istringstream(vect_temp1[2])>>j.y;
         istringstream(vect_temp1[3])>>j.z;
-        job_joints.push_back(j);
+        job_joints.list.push_back(j);
         vect_temp1.clear();
     }
     
@@ -619,11 +621,11 @@ void Structure::getSupportsTypes(string temp,string type)
     vector<int> lst=toList(temp);
     for(int i=0;i<lst.size();i++)
     {
-        for(int j=0;j<job_joints.size();j++)
+        for(int j=0;j<job_joints.list.size();j++)
         {
-            if(job_joints[j].id==lst[i])
+            if(job_joints.list[j].id==lst[i])
             {
-                job_joints[j].support=type;
+                job_joints.list[j].support=type;
                 break;
             }
         }
@@ -797,9 +799,9 @@ void Structure::getJointLoad(string temp){
             
 	    	vector <int>vect_temp2=toListVector(vect_temp1);
 	    	for(int k=0;k<vect_temp2.size();k++){
-	    		for(int j=0;j<job_joints.size();j++){
-		            if(job_joints[j].id==vect_temp2[k]){
-		                job_joints[j].jointload=*jl;
+	    		for(int j=0;j<job_joints.list.size();j++){
+		            if(job_joints.list[j].id==vect_temp2[k]){
+		                job_joints.list[j].jointload=*jl;
 		                
 		            }
             	}

@@ -14,7 +14,7 @@ extern "C" FILE *yyin;
  
 void yyerror(const char *s);
 
-
+class Structure *mainstructure;
 
 %}
 
@@ -23,7 +23,6 @@ void yyerror(const char *s);
     int ival;
     class Joint *joint;
     class vectJoint *joints;
-    class Structure *mainStructure;
 }
 
 
@@ -33,16 +32,16 @@ void yyerror(const char *s);
 %type <joint> points
 %type <joints> number
 %type <joints> joint_coordinates
-%type <mainStructure> structure
+
 
 %%
 
 structure: 
-	| joint_coordinates structure { $$->job_joints=*$1; };
+	| joint_coordinates structure { mainstructure->job_joints=*$1; };
  	/* member rule */
 
 joint_coordinates: 
-    |JOINT '\n' number { $$=$3; }
+    | JOINT '\n' number { $$=$3; }
     ;
 number:
     |points ';' end number { $$->list.push_back(*$1); }
@@ -81,6 +80,7 @@ int main(int, char**) {
     do {
         yyparse();
     } while (!feof(yyin));
+
 }
 
 void yyerror(const char *s) {

@@ -58,7 +58,7 @@ class Structure: public base{
     	
     	
 		Structure(fstream &);
-		
+		Structure();
 		/*!
 			\brief This member function is used to get units nad input widht
 			 and is called in structure()
