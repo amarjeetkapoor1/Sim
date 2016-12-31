@@ -38,6 +38,16 @@ class Member{
 	void print();
 };
 
+class vectmem{
+	public:
+	vector<int> list;
+};
+
+class Memberlist{
+	public:
+	vector<Member> list;
+};
+
 class MemPro{
 	public:
 	vector<int> member_id;
