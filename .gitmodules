@@ -1,0 +1,3 @@
+[submodule "materialize"]
+	path = Sim_site/drawing_freecad/static/materialize
+	url = https://github.com/Dogfalo/materialize.git
