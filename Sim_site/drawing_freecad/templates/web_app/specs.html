@@ -1,0 +1,49 @@
+{% load static %}
+<head>
+  <title>Drawing FreeCad | specs</title>
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC" rel="stylesheet">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/specs.css' %}" />
+</head>
+<body>
+  <!-- navbar here -->
+  <nav role="navigation" class="navbar">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="#" class="navbar-brand" id="brand" ><b>SIM</b></a>
+    </div>
+    <!-- Collection of nav links and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav" id="links" >
+            <li><a href="{% url 'indexD' %}">Drawing-FreeCad</a></li>
+            <li><a href="{% url 'view_home' %}">SIM</a></li>
+            <li><a href="#">other</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" id="links" >
+            <li><a href="#">Login</a></li>
+        </ul>
+    </div>
+  </nav>
+  <h1>Specification</h1>
+  <center>
+    {% for key, value in lists.items %}
+        {{ key }} : {{ value }} </br>
+    {% endfor %}
+    <br />
+    <button class="btns" ><a href="{% url 'download' %}" >Download</a></button>
+  </center>
+
+</body>

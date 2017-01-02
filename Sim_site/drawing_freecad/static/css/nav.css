@@ -1,0 +1,31 @@
+.navbar{
+  background-color: #002852;
+}
+/*#ff0000*/
+
+body{
+  background-color: #f4f7f7;
+}
+
+#brand{
+  color: white;
+  font-family: 'Alegreya Sans SC', sans-serif;
+  font-size: 150%;
+  text-decoration: bold;
+  
+  padding-right: 50px;
+}
+
+#links a{
+  color:#f4f7f7;
+  font-size: 120%;
+  text-decoration: bold;
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+#links a:hover{
+  background-color: #f4f7f7;
+  color:#002852;
+}
