@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       building_func.py                                              *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 from building_specs import *
 import string
 import FreeCAD, Part#, PartGui

@@ -22,7 +22,7 @@ class Indianlegacysectionsangle(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsAngle'
 
 
@@ -49,7 +49,7 @@ class Indianlegacysectionschannel(models.Model):
     h1 = models.FloatField(blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsChannel'
 
 
@@ -59,7 +59,7 @@ class IndianlegacysectionsconversionErrors(models.Model):
     error_description = models.TextField(db_column='Error Description', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsConversion Errors'
 
 
@@ -71,7 +71,7 @@ class Indianlegacysectionsdbinfo(models.Model):
     version = models.CharField(db_column='Version', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsDBInfo'
 
 
@@ -101,7 +101,7 @@ class IndianlegacysectionsfieldUnits(models.Model):
     field21 = models.CharField(db_column='Field21', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsField Units'
 
 
@@ -122,7 +122,7 @@ class IndianlegacysectionsiShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsI Shape'
 
 
@@ -143,7 +143,7 @@ class IndianlegacysectionsmShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsM Shape'
 
 
@@ -158,7 +158,7 @@ class Indianlegacysectionspipe(models.Model):
     z = models.FloatField(db_column='Z', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsPipe'
 
 
@@ -187,7 +187,7 @@ class IndianlegacysectionssShape(models.Model):
     h1 = models.FloatField(blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsS Shape'
 
 
@@ -208,7 +208,7 @@ class IndianlegacysectionstShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsT Shape'
 
 
@@ -227,7 +227,7 @@ class Indianlegacysectionstube(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsTube'
 
 
@@ -248,7 +248,7 @@ class IndianlegacysectionswShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianLegacySectionsW Shape'
 
 
@@ -264,7 +264,7 @@ class Indiansectionsangle(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsAngle'
 
 
@@ -291,7 +291,7 @@ class Indiansectionschannel(models.Model):
     h1 = models.FloatField(blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'IndianSectionsChannel'
 
 
@@ -304,7 +304,7 @@ class Indiansectionsdbinfo(models.Model):
     description = models.CharField(db_column='Description', max_length=510, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsDBInfo'
 
 
@@ -334,7 +334,7 @@ class IndiansectionsfieldUnits(models.Model):
     field21 = models.CharField(db_column='Field21', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsField Units'
 
 
@@ -355,7 +355,7 @@ class IndiansectionsiShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsI Shape'
 
 
@@ -376,7 +376,7 @@ class IndiansectionsmShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsM Shape'
 
 
@@ -391,7 +391,7 @@ class Indiansectionspipe(models.Model):
     z = models.FloatField(db_column='Z', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsPipe'
 
 
@@ -420,7 +420,7 @@ class IndiansectionssShape(models.Model):
     h1 = models.FloatField(blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'IndianSectionsS Shape'
 
 
@@ -441,7 +441,7 @@ class IndiansectionstShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsT Shape'
 
 
@@ -460,7 +460,7 @@ class Indiansectionstube(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsTube'
 
 
@@ -481,7 +481,7 @@ class IndiansectionswShape(models.Model):
     zy = models.FloatField(db_column='Zy', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'IndianSectionsW Shape'
 
 
@@ -493,7 +493,7 @@ class Jindalsectionsdbinfo(models.Model):
     version = models.CharField(db_column='Version', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsDBInfo'
 
 
@@ -523,7 +523,7 @@ class JindalsectionsfieldUnits(models.Model):
     field21 = models.CharField(db_column='Field21', max_length=510, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsField Units'
 
 
@@ -545,7 +545,7 @@ class JindalsectionsheShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsHE Shape'
 
 
@@ -567,7 +567,7 @@ class JindalsectionsipeShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsIPE Shape'
 
 
@@ -590,7 +590,7 @@ class JindalsectionsismcShape(models.Model):
     r2 = models.FloatField(db_column='R2', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsISMC Shape'
 
 
@@ -612,7 +612,7 @@ class JindalsectionsnpbShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsNPB Shape'
 
 
@@ -634,7 +634,7 @@ class JindalsectionsubShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsUB Shape'
 
 
@@ -656,7 +656,7 @@ class JindalsectionsucShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsUC Shape'
 
 
@@ -678,7 +678,7 @@ class JindalsectionswpbShape(models.Model):
     r1 = models.FloatField(db_column='R1', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'JindalSectionsWPB Shape'
 
 
@@ -699,7 +699,7 @@ class Job(models.Model):
     approved_date = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'Job'
 
 
@@ -716,7 +716,7 @@ class JobMaterial(models.Model):
     type = models.CharField(max_length=24, blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'Job_material'
 
 
@@ -730,7 +730,7 @@ class Joint(models.Model):
     support = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'Joint'
         unique_together = (('job_id', 'idd'),)
 
@@ -742,10 +742,9 @@ class Member(models.Model):
     member_property = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        
+
         db_table = 'Member'
         unique_together = (('job_id', 'member_id'),)
-
 
 class MemberIncidence(models.Model):
     sno = models.AutoField(db_column='Sno', primary_key=True)  # Field name made lowercase.
@@ -754,7 +753,7 @@ class MemberIncidence(models.Model):
     joint_id = models.IntegerField()
 
     class Meta:
-        
+
         db_table = 'Member_incidence'
         unique_together = (('job_id', 'member_id', 'joint_id'),)
 
@@ -768,7 +767,6 @@ class MemberProperty(models.Model):
     zd = models.FloatField(db_column='ZD', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
         db_table = 'Member_property'
         unique_together = (('job_id', 'idd'),)
 
@@ -785,7 +783,7 @@ class Tatastructuressectionschs(models.Model):
     c = models.FloatField(db_column='C', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'TataStructuresSectionsCHS'
 
 
@@ -798,7 +796,7 @@ class Tatastructuressectionsdbinfo(models.Model):
     description = models.TextField(db_column='Description', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'TataStructuresSectionsDBInfo'
 
 
@@ -827,7 +825,7 @@ class TatastructuressectionsfieldUnits(models.Model):
     field20 = models.CharField(db_column='Field20', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'TataStructuresSectionsField Units'
 
 
@@ -847,7 +845,7 @@ class Tatastructuressectionsrhs(models.Model):
     c = models.FloatField(db_column='C', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'TataStructuresSectionsRHS'
 
 
@@ -867,7 +865,7 @@ class Tatastructuressectionsshs(models.Model):
     c = models.FloatField(db_column='C', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+
         db_table = 'TataStructuresSectionsSHS'
 
 

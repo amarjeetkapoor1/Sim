@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       joints_old.py                                                 *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import mysql.connector`
 
 cnx=mysql.connector.connect(user='root',password='a', database='Sim')

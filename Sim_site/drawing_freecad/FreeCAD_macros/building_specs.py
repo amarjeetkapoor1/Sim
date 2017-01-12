@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       building_specs.py                                             *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import csv, sys
 
 #sys.path.insert(0, '..')
@@ -6,14 +19,21 @@ import csv, sys
 
 #print lis
 
-
-
 f = open('../some.csv')
 sp = csv.reader(f, delimiter=' ')
 
 for i in sp:
-    data = i
+    temp = i
 
+data = []
+for i in temp:
+    if i == "None":
+        data.append(0)
+    else:
+        data.append(i)
+
+#data = [x if x is not "None" else 0 for x in temp]
+print data
 
 stories=int(data[0])                       #Number of stories
 
@@ -46,6 +66,7 @@ wid_beam=float(data[12])                      #Width of Beam
 
 print("stories %s" %stories)
 print("wid_beam %s" %wid_beam)
+
 """
 stories=8                       #Number of stories
 

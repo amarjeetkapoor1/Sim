@@ -1,0 +1,35 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       fcstd2webgl.FCMacro                                           *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
+import os
+
+FreeCAD.open(u"../project.fcstd")
+App.setActiveDocument("project")
+App.ActiveDocument=App.getDocument("project")
+__objs__=[]
+__objs__.append(FreeCAD.getDocument("project").getObject("Compound"))
+import importWebGL
+importWebGL.export(__objs__,u"../templates/drawing_freecad/show.html")
+del __objs__
+
+#../templates/drawing_freecad
+#../drawings/svg_pdf/project.fcstd
+
+cmd = "sed -e 's/camera.position.set[\(].*[\)]/camera.position.set\(0, -200, 50)/g' ../templates/drawing_freecad/show.html > ../templates/drawing_freecad/show_old.html && mv ../templates/drawing_freecad/show_old.html ../templates/drawing_freecad/show.html"
+os.system(cmd)
+
+cmd = "sed -e 's/THREE.MeshBasicMaterial[\(].*[\)]/THREE.MeshBasicMaterial\( \{ color: 0xcccccc \} \)/g' ../templates/drawing_freecad/show.html > ../templates/drawing_freecad/show_old.html && mv ../templates/drawing_freecad/show_old.html ../templates/drawing_freecad/show.html"
+os.system(cmd)
+
+cmd = "sed -e 's/THREE.LineBasicMaterial[\(].*[\)]/THREE.LineBasicMaterial\(\{linewidth: 2, color: 0x000000,\}\)/g' ../templates/drawing_freecad/show.html > ../templates/drawing_freecad/show_old.html && mv ../templates/drawing_freecad/show_old.html ../templates/drawing_freecad/show.html"
+os.system(cmd)

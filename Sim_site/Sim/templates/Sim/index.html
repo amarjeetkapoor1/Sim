@@ -1,60 +1,148 @@
 <html>
 	<head>
 		<title>SIM</title>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		<link rel="stylesheet" href="style.css" >
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="signin.css">
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'materialize/css/materialize.min.css' %}" media="screen,projection" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'jquery-3.1.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+	<style>
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+.row{                                                                  
+    margin-left: 0;                                                     
+    margin-right: 0;                                                    
+    }  
+</style>
+
+
+    <!--<link rel="stylesheet" type="text/css" href="signin.css">-->
 	</head>
 	<body>
-	<nav class="navbar navbar-default navbar-fixed-top">
-	    <div class="container">
-		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#"><strong>Simulation</strong></a>
-		    </div>
-		    <ul class="nav navbar-nav" id="send-right">
-			    <li class="active"><a href="#">Home</a></li>
-			    <li><a href="#">Link 1</a></li>
-			    <li><a href="#">Link 2</a></li>
-		        <li><a href="#">Link 3</a></li> 
-		    </ul>
-	    </div>
-	</nav>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-6 col-md-offset-3" id="smallContainer" >
-					<h3>Write your own SQL query. But beware, we know defensive 
-					programming</h3><br>
-					<div  >
-						<form action = "{% url 'output' %}" method = "post">
-							<p class="setAlign" >{% csrf_token %}
-						    SELECT
-						    </p> 
-						    <input class="form-control"  type="text" name = "query1"></input> <br /><br />
-							<p  >FROM</p> 
-							<select id="tableName" name="option">
-								{% for table in table_names %}
-								<option value= {{table}}>{{table}}</option>
-								{% endfor %}
-							</select><br /><br />
-							<input class="form-control" type="text" name = "query2"></input> <br />
-							<input id="btnStyle" type = "submit" value = "Submit"></input>
-						</form><hr id ="hrline" />								
-					</div>
-					<h3>See a whole table</h3><br>
-					<form action="{% url 'table' %}" method="post">
-						{% csrf_token %}
-						<select  id="tableName" name="table">
-							{% for table in table_names %}
-							<option value= {{table}}>{{ table }}</option><br><br>
-							{% endfor %}
-						</select><br /><br />
-						<input id="btnStyle" type = "submit" value = "Submit"></input><br />
-					</form>
-				</div>
-			</div>
-		</div>
+<script type="text/javascript">
+        $(document).ready(function() {
+        $('select').material_select();
+        });
+
+$( document ).ready(function() {                                      
+   $(".button-collapse").sideNav();                                  
+  });
+
+</script>
+<div class="navbar-fixed"> 
+    <nav>
+    <div class="nav-wrapper">                                           
+        <a href="/" class="brand-logo" style="margin-left:20px; font-size:160%">SIM</a>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu material-icons">menu</i></a>
+                                                                            
+        <ul class="right hide-on-med-and-down">                               
+            <li><a href="/drawing/">Automation of drawing</a>i</li>
+            <li><a href="/admin/">Login</a></li>
+        </ul>                                                                 
+</div>
+</nav>
+</div>
+    <ul id="slide-out" class="side-nav">                                  
+        <li class="bold"><a href="/drawing/" data-activates="side-menu">Automation of drawing</a></li>
+        <li class="bold"><a href="/admin/" data-activates="side-menu">Login</a></li>
+    </ul>                                                                
+
+
+<p style="font-size:160%;text-align:center;">Write your own SQL query</p>
+<div class="row">
+    <form class="col s12" action="{% url 'output' %}" method="POST">
+        {% csrf_token %} 
+        <div class="row">
+            <div class="input-field col s8 offset-s2">SELECT</div>
+        </div>
+        <div class="row">
+            <div class="input-field col s8 offset-s2">
+                <input name="query1" type="text">
+            </div>
+        </div>
+        <div class="row">                                               
+            <div class="input-field col s8 offset-s2">FROM</div>      
+        </div> 
+        <div class="row">
+            <div class="input-field col s8 offset-s2">
+               <select id="tableName" name="option">
+                  <option value="" disabled selected>Options</option>
+                  {% for table in table_names %}
+                    <option value={{table}}>{{table}}</option>
+                  {% endfor %}
+               </select>               
+            </div>
+        </div>
+         <div class="row">
+            <div class="input-field col s8 offset-s2">
+                <input name="query2" type="text">
+            </div>
+        </div>
+        <div class="row">                                               
+            <div class="input-field col s8 offset-s2">
+            <button class="btn waves-effect waves-light red" type="submit" value="Submit">Submit</button>
+        </div>
+        </div>
+</form>
+</div>
+
+<p style="font-size:160%;text-align:center;">See a whole table</p>
+
+<div class="row"> 
+	<form class="col s12" action="{% url 'table' %}" method="post">
+		{% csrf_token %}
+        <div class="row">
+            <div class="input-field col s8 offset-s2">
+                <select  id="tableName" name="table">
+                <option value="" disabled selected>Options</option>
+                {% for table in table_names %}
+                    <option value= {{table}}>{{ table }}</option><br><br>
+                {% endfor %}
+		        </select>
+            </div>
+        </div>
+		 <div class="row">                                               
+            <div class="input-field col s8 offset-s2">
+                <button class="btn waves-effect waves-light red" type="submit" value="Submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>   
+
+  <main>                                                                  
+    <div class="container">                                             
+  </main>                                                               
+                                                                        
+                                                                        
+        <footer class="page-footer">                                    
+          <div class="container">                                       
+            <div class="row">                                           
+              <div class="col l6 s12">                                  
+                <h5 class="white-text">SIM</h5>                         
+                <p class="grey-text text-lighten-4">SIM stands for Structure Information Modeling.</p>
+              </div>                                                    
+              <div class="col l4 offset-l2 s12">                        
+                <h5 class="white-text">Contact Us</h5>                  
+                <ul>                                                    
+                  <li><a class="grey-text text-lighten-3" href="https://github.com/GreatDevelopers">Great Developers</a></li>
+                </ul>                                                   
+              </div>                                                    
+            </div>                                                      
+          </div>                                                        
+          <div class="footer-copyright">                                
+            <div class="container">                                     
+                Copyright © 2016 Great Developers                       
+            </div>                                                      
+          </div>                                                        
+        </footer> 
 	</body>
 </html>

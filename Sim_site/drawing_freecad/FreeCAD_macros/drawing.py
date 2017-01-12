@@ -1,3 +1,16 @@
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       drawing.py                                                    *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import os
 import subprocess
 #from PySide import QtGui
@@ -163,12 +176,13 @@ for i in list_view.keys():
 #viewIso = obj_view_specs("viewIso", "Compound", 1, 1, 1, 335, 60, True, 2, 120, "page2")
 #obj_view_specs.draw_obj_view(viewIso)
 
-#import building_specs
-#for i in range(0, stories):
-#	a = "storey"+str(i)
-#	sec_obj = section_view_specs("Compound", 10, 0, 0, 0, 0, 1, 0, 150, 160, 3, 0, i, a)
-#	section_view_specs.draw_section_view(sec_obj)
-#        FreeCAD.getDocument("project").getObject(a).Template = "/usr/share/freecad/Mod/Drawing/Templates/A3_Landscape.svg"
-#
+import building_specs
+for i in range(0, stories):
+    a = "storey"+str(i)
+    sec_obj = section_view_specs("Compound", 10, 0, 0, 0, 0, 1, 0, 150, 160, 3, 0, i, a)
+    section_view_specs.draw_section_view(sec_obj)
+    FreeCAD.getDocument("project").getObject(a).Template = "/usr/share/freecad/Mod/Drawing/Templates/A3_Landscape.svg"
+
+
 App.getDocument("project").saveAs("../project.fcstd")
 #FreeCAD.closeDocument("project")

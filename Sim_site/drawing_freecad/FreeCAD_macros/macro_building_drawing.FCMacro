@@ -1,4 +1,16 @@
-print 11
+#***********************************************************************
+#*                                                                     *
+#*   File:                                                             *
+#*       macro_building_drawing.FCMacro                                *
+#*                                                                     *
+#*   Author:                                                           *
+#*      Amritpal Singh <amrit3701@gmail.com>                           *
+#*                                                                     *
+#*   Brief:                                                            *
+#*      This program file contain FreeCAD macros.                      *
+#*                                                                     *
+#***********************************************************************
+
 import pdb
 import csv, sys
 sys.path.insert(0, '.')
